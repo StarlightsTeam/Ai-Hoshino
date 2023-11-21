@@ -144,7 +144,7 @@ async function clearTmp() {
 
 setInterval(async () => {
 	await clearTmp()
-	console.log(chalk.cyan(`\nSe limpio la carpeta tmp\n`))
+	console.log(chalk.cyan(`Se limpio la carpeta tmp`))
 }, 60000) //3 muntos
 
 async function connectionUpdate(update) {
