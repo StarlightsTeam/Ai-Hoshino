@@ -33,7 +33,7 @@ let handler = async (m, { conn, text }) => {
       }
    })
    const buffer = Buffer.from(json.data.result.image, 'base64')
-   let stick = await sticker(buffer, false, global.wm.name, global.wm.author)
+   let stick = await sticker(buffer, false, packname, author)
    await conn.sendFile(m.chat, stick, 'Quotly.webp', '', m)
 }
 
