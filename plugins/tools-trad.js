@@ -1,37 +1,38 @@
-import translate from '@vitalets/google-translate-api'
-import fetch from 'node-fetch'
+import fetch from "node-fetch"
+
 let handler = async (m, { args, usedPrefix, command }) => {
-let msg = `*乂 EJEMPLO 乂*
-
-◦${usedPrefix + command} <idioma> [texto]
-◦${usedPrefix + command} es Hello World
-
-❄️ Lista de idiomas ❄️
-
-*https://cloud.google.com/translate/docs/languages*`
-if (!args || !args[0]) return m.reply(msg)  
-let lang = args[0]
-let text = args.slice(1).join(' ')
-const defaultLang = 'es'
-if ((args[0] || '').length !== 2) {
-lang = defaultLang
-text = args.join(' ')}
-if (!text && m.quoted && m.quoted.text) text = m.quoted.text
-try {      
-let result = await translate(`${text}`, { to: lang, autoCorrect: true })
-await m.reply('*Traducción:* ' + result.text)
-} catch {
-try {    
-let lol = await fetch(`https://api.lolhuman.xyz/api/translate/auto/${lang}?apikey=${lolkeysapi}&text=${text}`)
-let loll = await lol.json()
-let result2 = loll.result.translated
-await conn.reply(m.chat, '*Traducción ∙* ' + result2, m, adReply)
-} catch { 
-await conn.reply(m.chat, '*☓ Ocurrió un error inesperado*', m, adReply).then(_ => m.react('✖️'))
-}}}
+    let lang, text
+    if (args.length >= 2) {
+        lang = args[0] ? args[0] : "id", text = args.slice(1).join(" ")
+    } else if (m.quoted && m.quoted.text) {
+        lang = args[0] ? args[0] : "id", text = m.quoted.text
+    } else return conn.reply(m.chat, `*🚩 Ejemplo: ${usedPrefix + command} es Hello World*`, m, adReply)
+    try {
+    const prompt = encodeURIComponent(text)
+        let reis = await fetch("https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=" + lang + "&dt=t&q=" + prompt)
+        let res = await reis.json()
+        let lister = Object.keys(await langList())
+        let supp = `Error: Idioma *${lang}* no admitido`
+        if (!lister.includes(lang)) return m.reply('El idioma que ingresaste no es *válido*, por favor intenta con un idioma *válido*\n\n❄️ Lista de idiomas ❄️\n*https://cloud.google.com/translate/docs/languages*')
+        await m.react('🕓')
+        let Detect = (res[2].toUpperCase() ? res[2].toUpperCase() : "US")
+        let ToLang = (lang.toUpperCase())
+        let caption = `*Traducción ∙* ${res[0][0][0]}`
+        await conn.reply(m.chat, caption, m, adReply)
+        await m.react('✅')
+    } catch (e) {
+        conn.reply(m.chat, `*☓ Ocurrió un error inesperado*`, m, adReply).then(_ => m.react('✖️'))
+    }
+}
 handler.help = ['trad <leng> <texto>']
 handler.tags = ['tools']
 handler.command = /^(translate|traducir|trad)$/i
 handler.star = 1
 handler.register = true 
 export default handler
+
+async function langList() {
+    let data = await fetch("https://translate.google.com/translate_a/l?client=webapp&sl=auto&tl=en&v=1.0&hl=en&pv=1&tk=&source=bh&ssel=0&tsel=0&kc=1&tk=626515.626515&q=")
+        .then((response) => response.json())
+    return data.tl;
+}

@@ -1,36 +1,31 @@
 import axios from 'axios'
-import fetch from 'node-fetch'
+import cheerio from 'cheerio'
 
-let handler = async (m, { args }) => {
-    if (!args[0]) {
-        return conn.reply(m.chat, '*🚩 Escribe la URL de un video de Facebook que deseas descargar.*', m, adReply)
-    }
-    try {
-    await m.react('🕓')
-        const url = args[0];
-        const headersList = {
-            "Accept": "*/*",
-            "User-Agent": "Thunder Client (https://www.thunderclient.com)"
+let handler = async (m, { conn, args, command }) => {
+	if (!args[0]) return conn.reply(m.chat, '*🚩 Escribe la URL de un video de Facebook que deseas descargar.*', m, adReply)
+	try {
+	await m.react('🕓')
+	const config = {
+        'id': args[0],
+        'locale': 'id'
+      }
+    const { data, status } = await axios('https://getmyfb.com/process', {
+        method: 'POST',
+        data: new URLSearchParams(Object.entries(config)),
+        headers: {
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36",
+          "cookie": "PHPSESSID=914a5et39uur28e84t9env0378; popCookie=1; prefetchAd_4301805=true"
         }
-
-        const reqOptions = {
-            url: `https://backend.shirokamiryzen.repl.co/fb?u=${url}`,
-            method: "GET",
-            headers: headersList,
-        }
-
-        const response = await axios.request(reqOptions);
-        const firstUrls = response.data.map(item => item.split(','))
-
-        const hdMedia = firstUrls[0][0]
-
-            const hdFile = await fetch(hdMedia);
-            await conn.sendFile(m.chat, await hdFile.buffer(), 'video_hd.mp4', null, estilo)
-            await m.react('✅')
-
-} catch (error) {
-conn.reply(m.chat, '*☓ Ocurrió un error inesperado*', m, adReply).then(_ => m.react('✖️'))
-}}
+      })
+      const $ = cheerio.load(data)
+      const HD = $('div.container > div.results-download > ul > li:nth-child(1) > a').attr('href')
+      const SD = $('div.container > div.results-download > ul > li:nth-child(2) > a').attr('href')
+	await conn.sendMessage(m.chat, { video: { url: HD || SD }, caption: null }, { quoted: estilo})
+	await m.react('✅')
+	} catch (e) {
+		conn.reply(m.chat, '*☓ Ocurrió un error inesperado*', m, adReply).then(_ => m.react('✖️'))
+	}
+}
 handler.help = ['facebook'].map(v => v + ' <url fb>')
 handler.tags = ['downloader']
 handler.command = /^((facebook|fb)(downloder|dl)?)$/i
