@@ -188,8 +188,8 @@ global.reloadHandler = async function (restatConn) {
     conn.ev.off('creds.update', conn.credsUpdate)
   }
 
-  conn.welcome = `┌─★ *Ai Hoshino - MD* \n│「 Bienvenido 」\n└┬★ 「 @user 」\n   │✑  Bienvenido a\n   │✑  @subject\n   └───────────────┈ ⳹`
-  conn.bye = `┌─★ *Ai Hoshino - MD* \n│「 ADIOS 👋 」\n└┬★ 「 @user 」\n   │✑  Se fue\n   │✑ Jamás te quisimos aquí\n   └───────────────┈ ⳹`
+  /*conn.welcome = `┌─★ *Ai Hoshino - MD* \n│「 Bienvenido 」\n└┬★ 「 @user 」\n   │✑  Bienvenido a\n   │✑  @subject\n   └───────────────┈ ⳹`
+  conn.bye = `┌─★ *Ai Hoshino - MD* \n│「 ADIOS 👋 」\n└┬★ 「 @user 」\n   │✑  Se fue\n   │✑ Jamás te quisimos aquí\n   └───────────────┈ ⳹`*/
   conn.spromote = '@user promovió a admin'
   conn.sdemote = '@user degradado'
   conn.sDesc = 'La descripción ha sido cambiada a \n@desc'
@@ -234,12 +234,12 @@ global.reload = async (_ev, filename) => {
   if (pluginFilter(filename)) {
     let dir = global.__filename(join(pluginFolder, filename), true)
     if (filename in global.plugins) {
-      if (existsSync(dir)) conn.logger.info(`🌟 Plugin Actualizado - '${filename}'`)
+      if (existsSync(dir)) conn.logger.info(`Plugin Actualizado - '${filename}'`)
       else {
-        conn.logger.warn(`🗑️ Plugin Eliminado - '${filename}'`)
+        conn.logger.warn(`Plugin Eliminado - '${filename}'`)
         return delete global.plugins[filename]
       }
-    } else conn.logger.info(`✨ Nuevo plugin - '${filename}'`)
+    } else conn.logger.info(`Nuevo plugin - '${filename}'`)
     let err = syntaxerror(readFileSync(dir), filename, {
       sourceType: 'module',
       allowAwaitOutsideFunction: true

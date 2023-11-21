@@ -34,7 +34,6 @@ export async function handler(chatUpdate) {
         m = smsg(this, m) || m
         if (!m)
             return
-        global.mconn = m 
         m.exp = 0
         m.star = false
         try {
@@ -442,77 +441,59 @@ export async function handler(chatUpdate) {
 
 /**
  * Handle groups participants update
- * @param {import('@whiskeysockets/baileys').BaileysEventMap<unknown>['group-participants.update']} groupsUpdate
+ * @param {import('@adiwajshing/baileys').BaileysEventMap<unknown>['group-participants.update']} groupsUpdate 
  */
-export async function participantsUpdate({id, participants, action}) {
-  const m = mconn
-  if (opts['self']) return;
-  //if (m.conn.isInit) return;
-  if (global.db.data == null) await loadDatabase();
-  const chat = global.db.data.chats[id] || {};
-  const botTt = global.db.data.settings[m.conn.user.jid] || {};
-  let text = '';
-  switch (action) {
-    case 'add':
-    case 'remove':
-      if (chat.welcome && !chat?.isBanned) {
-        const groupMetadata = await m.conn.groupMetadata(id) || (conn.chats[id] || {}).metadata;
-        for (const user of participants) {
-          let pp = './src/avatar_contact.png';
-          try {
-            pp = await m.conn.profilePictureUrl(user, 'image');
-          } catch (e) {
-          } finally {
-            const apii = await m.conn.getFile(pp);
-            const botTt2 = groupMetadata.participants.find((u) => m.conn.decodeJid(u.id) == m.conn.user.jid) || {};
-            const isBotAdminNn = botTt2?.admin === 'admin' || false;
-            text = (action === 'add' ? (chat.sWelcome || this.welcome || conn.welcome || 'Welcome, @user!').replace('@subject', await m.conn.getName(id)).replace('@desc', groupMetadata.desc?.toString() || '*𝚂𝙸𝙽 𝙳𝙴𝚂𝙲𝚁𝙸𝙿𝙲𝙸𝙾𝙽*') :
-                              (chat.sBye || this.bye || conn.bye || 'Bye, @user!')).replace('@user', '@' + user.split('@')[0]);
-             await m.conn.sendMessage(
-    m.chat,
-    {
-      image: {
-        url: pp,
-      },
-      caption: text,
-      contextInfo: {
-      mentionedJid: [user],
-      forwardingScore: 9999, 
-       isForwarded: true, 
-        externalAdReply: {
-          title: namebot,
-          sourceUrl: group,
-          mediaType: 1,
-          renderLargerThumbnail: true, 
-          thumbnail: thumbnail,
-        },
-      },
-    },
-    {
-      quoted: estilo,
+export async function participantsUpdate({ id, participants, action }) {
+    if (opts['self'])
+        return
+    // if (id in conn.chats) return // First login will spam
+    if (this.isInit)
+        return
+    if (global.db.data == null)
+        await loadDatabase()
+    let chat = global.db.data.chats[id] || {}
+    let text = ''
+    switch (action) {
+        case 'add':
+          let puserd = participants
+          //if (`${puserd}`.startsWith('51')) return this.groupParticipantsUpdate(id, [puserd], 'remove')
+          
+        break
+
+        case 'remove':
+            if (chat.welcome) {
+                let groupMetadata = await this.groupMetadata(id) || (conn.chats[id] || {}).metadata
+                for (let user of participants) {
+                    let pp = './src/avatar_contact.png'
+                    try {
+                        pp = await this.profilePictureUrl(user, 'image')
+                    } catch (e) {
+                    } finally {
+                        text = (action === 'add' ? (chat.sWelcome || this.welcome || conn.welcome || 'Bienvenido, @user').replace('@group', await this.getName(id)).replace('@desc', groupMetadata.desc?.toString() || 'Desconocido') :
+                            (chat.sBye || this.bye || conn.bye || 'Adiós, @user')).replace('@user', '@' + user.split('@')[0])
+                        //this.sendFile(id, pp, 'pp.jpg', text, null, false, { mentions: [user] })
+                    }
+                }
+            }
+            break
+           
+        case 'promote':
+        case 'promover':
+            text = (chat.sPromote || this.spromote || conn.spromote || '@user ahora es administrador')
+        case 'demote':
+        case 'degradar':
+            if (!text)
+                text = (chat.sDemote || this.sdemote || conn.sdemote || '@user ya no es administrador')
+            text = text.replace('@user', '@' + participants[0].split('@')[0])
+            if (chat.detect)
+                this.sendMessage(id, { text, mentions: this.parseMention(text) })
+            break
     }
-  )                
-          }
-        }
-      }
-      break;
-    case 'promote':
-      text = (chat.sPromote || this.spromote || conn.spromote || '@user ```is now Admin```');
-    case 'demote':
-      if (!text) {
-        text = (chat.sDemote || this.sdemote || conn.sdemote || '@user ```is no longer Admin```');
-      }
-      text = text.replace('@user', '@' + participants[0].split('@')[0]);
-      if (chat.detect && !chat?.isBanned) {
-        mconn.conn.sendMessage(id, {text, mentions: mconn.conn.parseMention(text)});
-      }
-      break;
-  }
 }
 
 /**
  * Handle groups update
- * @param {import('@whiskeysockets/baileys').BaileysEventMap<unknown>['groups.update']} groupsUpdate
+ * @param {import('@adiwajshing/baileys').BaileysEventMap<unknown>['groups.update']} groupsUpdate 
  */
 export async function groupsUpdate(groupsUpdate) {
     if (opts['self'])
