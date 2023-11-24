@@ -16,7 +16,7 @@ let handler = async (m, { conn, args, usedPrefix, command }) => {
 }
 
 handler.help = ['nsfw on/off']
-handler.tags = ['group']
+handler.tags = ['nable']
 handler.command = ['nsfw']
 handler.use = ['on/off']
 handler.group = true 
