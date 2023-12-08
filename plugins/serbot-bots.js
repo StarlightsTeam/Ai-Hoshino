@@ -1,13 +1,25 @@
-
-import ws from 'ws';
-async function handler(m, { usedPrefix }) {
-  let users = [...new Set([...global.conns.filter(conn => conn.user && conn.ws.socket && conn.ws.socket.readyState !== ws.CLOSED).map(conn => conn.user)])]
-  let b = users.map((v, i) => `${i + 1}- wa.me/${v.jid.replace(/[^0-9]/g, '')}?text=${usedPrefix}menu`).join('\n')
- m.reply(`${b}`) 
-  
+async function handler(m, { conn, usedPrefix }) {
+  const connectedUsers = new Set()
+  const addedNumbers = new Set()
+  global.conns
+    .filter(conn => conn.user && conn.state !== 'close')
+    .forEach(user => {
+      const userJid = user.user.jid.replace(/[^0-9]/g, '');
+      if (!addedNumbers.has(userJid)) {
+        addedNumbers.add(userJid);
+        const userName = user.user.name || "Ai Hoshino - MD"
+        connectedUsers.add(`Wa.me/${userJid}?text=${usedPrefix}menu (${userName})`)
+      }
+    })
+  const connectedUserCount = connectedUsers.size
+  if (connectedUserCount > 0) {
+    const userList = [...connectedUsers].join(`\n\n`)
+    await m.reply(userList)
+  } else {
+    await m.reply('')
+  }
 }
+handler.command = ['listjadibot', 'bots']
 handler.help = ['bots']
 handler.tags = ['serbot']
-handler.command = ['listbot', 'listbots', 'bots', 'bebots', 'botlist'] 
-
 export default handler

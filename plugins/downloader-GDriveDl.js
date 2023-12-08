@@ -1,7 +1,7 @@
 import fetch from 'node-fetch'
 import { sizeFormatter } from 'human-readable'
 let handler = async (m, { conn, args }) => {
-let limit = 300
+let limit = 200
 	if (!(args[0] || '').match(/([\w-]){33}|([\w-]){19}/)) return conn.reply(m.chat, `*🚩 Escribe la URL de un archivo de GoogleDrive que deseas descargar.*`, m, adReply)
 	await m.react('🕓')
 	try {

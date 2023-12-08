@@ -12,8 +12,8 @@ let teks = `*🔎 Resultado de* : ${text}\n\n`
 for (let g of res) {
 teks += `*Titulo ∙* ${g.title}\n*Link ∙* ${g.link}\n*Info ∙* ${g.snippet}\n\n`
 } 
-await conn.reply(m.chat, teks, m, adReply).then(_ => m.react('✅'))
 })
+await conn.reply(m.chat, teks, m, adReply).then(_ => m.react('✅'))
 }
 handler.help = ['google <búsqueda>'];
 handler.tags = ['tools', 'search'];

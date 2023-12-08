@@ -10,6 +10,6 @@ let handler = async (m, {conn, usedPrefix}) => {
 
 handler.help = ['estrellas']
 handler.tags = ['rpg']
-handler.command = ['wallet', 'cartera', 'estrellas']
+handler.command = ['wallet', 'cartera', 'estrellas', 'stars']
 handler.register = true 
 export default handler

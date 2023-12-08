@@ -14,7 +14,7 @@ let handler = async (m, { conn, text, args, usedPrefix, command }) => {
     let dl_url = await yt.video[q].download()
     let ttl = await yt.title
     let size = await yt.video[q].fileSizeH
-    let ytmsg = { key: { fromMe: false, participant: `0@s.whatsapp.net`, ...(false ? { remoteJid: "17608914335-1625305606@g.us" } : {}) }, message: { "extendedTextMessage": { "text":'Downloader YT', "title": 'Miku Bot - MD', 'jpegThumbnail': ytlogo}}}
+    let ytmsg = { key: { fromMe: false, participant: `0@s.whatsapp.net`, ...(false ? { remoteJid: "17608914335-1625305606@g.us" } : {}) }, message: { "extendedTextMessage": { "text":'Downloader YT', "title": 'Ai Hoshino - MD', 'jpegThumbnail': ytlogo}}}
     let ytestilo = { key: {  fromMe: false, participant: `0@s.whatsapp.net`, ...(false ? { remoteJid: "5219992095479-1625305606@g.us" } : {}) }, message: { orderMessage: { itemCount : -999999, status: 1, surface : 1, message: `${vid.title}`, orderTitle: 'Bang', thumbnail: catalogo, sellerJid: '0@s.whatsapp.net'}}}
     let { title, description, thumbnail, videoId, timestamp, views, ago, url } = vid
     if (size.split('MB')[0] >= limit) return conn.reply(m.chat,`El archivo pesa mas de ${limit} MB, se canceló la Descarga.`, m, adReply).then(_ => m.react('✖️'))
