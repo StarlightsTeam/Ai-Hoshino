@@ -68,8 +68,8 @@ export async function handler(chatUpdate) {
                     user.warn = 0
                 if (!isNumber(user.level))
                     user.level = 0
-                if (!('prem' in user))
-                    user.prem = false
+                if (!('premium' in user))
+                    user.premium = false
                 if (!user.premiumTime) 
                     user.premiumTime = 0
             } else
@@ -85,7 +85,7 @@ export async function handler(chatUpdate) {
                     banned: false,
                     warn: 0,
                     level: 0,
-                    prem: false,
+                    premium: false,
                     premiumTime: 0,
                 }
             let chat = global.db.data.chats[m.chat]
@@ -128,7 +128,6 @@ export async function handler(chatUpdate) {
                     delete: true,
                     antiLink: false,
                     viewonce: false,
-                    useDocument: true,
                     nsfw: false, 
                     expired: 0,
                 }
@@ -139,8 +138,8 @@ export async function handler(chatUpdate) {
                 if (!('autoread' in settings)) settings.autoread = false
                 if (!('restrict' in settings)) settings.restrict = false
                 if (!('status' in settings)) settings.status = 0
-                if (!('onlypv' in settings)) settings.onlypv = false // el bot responde solo por dm
-                if (!('onlygp' in settings)) settings.onlygp = false // el bot responde solo en grupos
+                if (!('onlypv' in settings)) settings.onlypv = false 
+                if (!('onlygp' in settings)) settings.onlygp = false
             } else global.db.data.settings[this.user.jid] = {
                 self: false,
                 autoread: false,
@@ -328,7 +327,7 @@ export async function handler(chatUpdate) {
                 else
                     m.exp += xp
                 if (!isPrems && plugin.star && global.db.data.users[m.sender].star < plugin.star * 1) {
-                conn.reply(m.chat, `Lo siento @${m.sender.split`@`[0]}, se agotaron tus *Estrellas ⭐*`, estilo, adReply)
+                conn.reply(m.chat, `Lo siento @${m.sender.split`@`[0]}, se agotaron tus *Estrellas ⭐*`, estilo, adReply).then(_ => m.react('✖️'))
                     continue // star habis
                 }
                 let extra = {

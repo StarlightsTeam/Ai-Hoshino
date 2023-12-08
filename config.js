@@ -10,11 +10,10 @@ import moment from "moment-timezone"
 //⊱ ━━━━.⋅ Añada los numeros a ser Propietario/a ⋅.━━━ ⊰  
 
 global.owner = [
-  ['50662333781', 'おDaniel', true],
+  ['5218132588591', 'おDanịel.xyz⁩', true],
   ['5218139760662'],
-  ['4794069908'],
   ['5218261009198'],
-  ['5218132588591']
+  ['50662333781']
 ] //Numeros de owner 
 
 //━━━━━━━━━━━ ฅ^•ﻌ•^ฅ ━━━━━━━━━━━
@@ -61,7 +60,7 @@ global.group = 'https://chat.whatsapp.com/CI2lyPkp3Ks3temWFfswZJ'
 global.adanime = `🌸 | Anime By Ai Hoshino - MD 🈴` 
 global.addescargas = `📤 | Descargas By Ai Hoshino - MD 🌸`
 global.adimagen = `🌅 | Imágenes By Ai Hoshino - MD 🌿` 
-global.adyoutube = `🍁  | Descargas de YouTube 📤` 
+global.adyoutube = `🍁 | Descargas de YouTube 📤` 
 global.adsticker = `🏞️ | Stickers By Ai Hoshino - MD 🌺` 
 global.adsearch  = `🔎 | Busquedas By Ai Hoshino - MD 🐢` 
 global.adnsfw = `🔞 | Nsfw By Ai Hoshino - MD ⭐`
