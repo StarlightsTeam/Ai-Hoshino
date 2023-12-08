@@ -19,13 +19,6 @@
    <p>
 </h1>
 
-<div align="center">
-<details>
-      <summary>♡</summary>
-      <p> ⭐ ฅ^•ﻌ•^ฅ 💫 </p>
-</details>
-</div>
-
 ---------
 
 ## <img src="https://i0.wp.com/i230.photobucket.com/albums/ee124/joaclint/joaclint_istgud/ruedas.gif" alt="Herramientas" width="35" height="35"> Herramientas
