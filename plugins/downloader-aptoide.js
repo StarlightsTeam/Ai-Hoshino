@@ -62,5 +62,5 @@ handler.command = ['apk', 'adpk2', 'dlapk', 'apkdl', 'modapk', 'aptoide']
 handler.tags = ['downloader']
 handler.help = ['aptoide search <nombre>', 'aptoide dl <ID>']
 handler.register = true 
-handler.star = 10
+handler.star = 5
 export default handler

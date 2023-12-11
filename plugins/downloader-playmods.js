@@ -57,13 +57,12 @@ handler.command = ['playmods']
 handler.tags = ['downloader']
 handler.help = ['playmods search <nombre>', 'playmods dl <link>']
 handler.register = true 
-handler.star = 10
+handler.star = 5
 export default handler
 
-/* New Line */
 async function searchApp(q) {
   try {
-    const url = 'https://m.playmods.net/id/search/' + q; // Ganti dengan URL sumber HTML
+    const url = 'https://m.playmods.net/id/search/' + q; 
 
     const response = await fetch(url);
     const html = await response.text();
