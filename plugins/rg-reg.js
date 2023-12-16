@@ -19,12 +19,11 @@ let handler = async function (m, { conn, text, usedPrefix, command }) {
   user.age = age
   user.regTime = + new Date
   user.registered = true
-  let sn = createHash('md5').update(m.sender).digest('hex')
+  user.star = + 50
   let txt = `\t\t\t*乂  R E G I S T R O*\n\n`
        txt += `*Nombre* : ${name}\n`
        txt += `*Edad* : ${age} años\n`
-       txt += `*Numero de serie* : \n`
-       txt += `- ${sn}`
+       txt += `*Estrellas* : +50 ⭐`
 await conn.reply(m.chat, txt, m, adReply).then(_ => m.react('✅'))
 }
 handler.help = ['reg'].map(v => v + ' <nombre.edad>')

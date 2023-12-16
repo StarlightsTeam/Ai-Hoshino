@@ -13,7 +13,7 @@ async function handler(m, { conn, usedPrefix }) {
     })
   const connectedUserCount = connectedUsers.size
   if (connectedUserCount > 0) {
-    const userList = [...connectedUsers].join(`\n\n`)
+    const userList = [...connectedUsers].join(`\n`)
     await m.reply(userList)
   } else {
     await m.reply('')

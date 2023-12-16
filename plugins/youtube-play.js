@@ -10,7 +10,7 @@ let handler = async (m, { conn, args, usedPrefix, text, command }) => {
         "mp3doc",
         "mp4doc"
     ]
-    let ytmsg = { key: { fromMe: false, participant: `0@s.whatsapp.net`, ...(false ? { remoteJid: "17608914335-1625305606@g.us" } : {}) }, message: { "extendedTextMessage": { "text":'Downloader YT', "title": 'Ai Hoshino - MD', 'jpegThumbnail': ytlogo}}}
+    let ytmsg = { key: { fromMe: false, participant: `0@s.whatsapp.net`, ...(false ? { remoteJid: "17608914335-1625305606@g.us" } : {}) }, message: { "extendedTextMessage": { "text":'Downloader YouTube', "title": 'Ai Hoshino - MD', 'jpegThumbnail': ytlogo}}}
     
     let [feature, inputs, inputs_, inputs__, inputs___] = text.split(" ")
     if (!lister.includes(feature)) return conn.reply(m.chat, `*🚩 Ingresa el formato en que deseas descargar más el titulo de un video o musica de YouTube.*\n\nEjemplo : ${usedPrefix + command} *mp3* SUICIDAL-IDOL - ecstacy\n\nFormatos disponibles :\n${usedPrefix + command} *mp3*\n${usedPrefix + command} *mp3doc*\n${usedPrefix + command} *mp4*\n${usedPrefix + command} *mp4doc*`, m, adReply)
@@ -54,6 +54,9 @@ conn.sendMessage(m.chat, buttonMessage, { quoted: ytmsg })
        try {
        let yt = await fg.yta(vid.url, q)
        let { title, dl_url, size } = yt
+       let limit = 100
+       
+if (size.split('MB')[0] >= limit) return conn.reply(m.chat,`El archivo pesa mas de ${limit} MB, se canceló la Descarga.`, m, adReply).then(_ => m.react('✖️'))
        
 await conn.sendMessage(m.chat, { audio: { url: dl_url }, mimetype: "audio/mp4", fileName: vid.title + '.mp3', quoted: m, contextInfo: {
 'forwardingScore': 200,
@@ -70,6 +73,9 @@ thumbnail: await (await fetch(vid.thumbnail)).buffer()}}}, { quoted: m })
        try {
        let yt = await fg.ytmp3(vid.url, q)
        let { title, dl_url, size } = yt
+       let limit = 100
+       
+if (size.split('MB')[0] >= limit) return conn.reply(m.chat,`El archivo pesa mas de ${limit} MB, se canceló la Descarga.`, m, adReply).then(_ => m.react('✖️'))
        
        await conn.sendMessage(m.chat, { audio: { url: dl_url }, mimetype: "audio/mp4", fileName: vid.title + '.mp3', quoted: m, contextInfo: {
 'forwardingScore': 200,
@@ -127,6 +133,9 @@ conn.sendMessage(m.chat, buttonMessage, { quoted: ytmsg })
        try {
        let yt = await fg.ytv(vid.url, q)
        let { title, dl_url, size } = yt
+       let limit = 100
+       
+if (size.split('MB')[0] >= limit) return conn.reply(m.chat,`El archivo pesa mas de ${limit} MB, se canceló la Descarga.`, m, adReply).then(_ => m.react('✖️'))
        
        await conn.sendFile(m.chat, dl_url, 'yt.jpg', `${vid.title}\n⇆ㅤㅤ◁ㅤㅤ❚❚ㅤㅤ▷ㅤㅤ↻\n00:15 ━━━━●────── ${vid.timestamp}`, ytestilo)
        await m.react('✅')
@@ -134,6 +143,9 @@ conn.sendMessage(m.chat, buttonMessage, { quoted: ytmsg })
        try {
        let yt = await fg.ytmp4(vid.url, q)
        let { title, dl_url, size } = yt
+       let limit = 100
+       
+if (size.split('MB')[0] >= limit) return conn.reply(m.chat,`El archivo pesa mas de ${limit} MB, se canceló la Descarga.`, m, adReply).then(_ => m.react('✖️'))
        
        await conn.sendFile(m.chat, dl_url, 'yt.jpg', `${vid.title}\n⇆ㅤㅤ◁ㅤㅤ❚❚ㅤㅤ▷ㅤㅤ↻\n00:15 ━━━━●────── ${vid.timestamp}`, ytestilo)
        await m.react('✅')
@@ -180,6 +192,9 @@ conn.sendMessage(m.chat, buttonMessage, { quoted: ytmsg })
        try {
        let yt = await fg.yta(vid.url, q)
        let { title, dl_url, size } = yt
+       let limit = 100
+       
+if (size.split('MB')[0] >= limit) return conn.reply(m.chat,`El archivo pesa mas de ${limit} MB, se canceló la Descarga.`, m, adReply).then(_ => m.react('✖️'))
        
        await conn.sendMessage(m.chat, { document: { url: dl_url }, mimetype: "audio/mpeg", fileName: vid.title + '.mp3', quoted: m, contextInfo: {
 'forwardingScore': 200,
@@ -196,6 +211,9 @@ thumbnail: await (await fetch(vid.thumbnail)).buffer()}}}, { quoted: m })
        try {
        let yt = await fg.ytmp3(vid.url, q)
        let { title, dl_url, size } = yt
+       let limit = 100
+       
+if (size.split('MB')[0] >= limit) return conn.reply(m.chat,`El archivo pesa mas de ${limit} MB, se canceló la Descarga.`, m, adReply).then(_ => m.react('✖️'))
        
        await conn.sendMessage(m.chat, { document: { url: dl_url }, mimetype: "audio/mpeg", fileName: vid.title + '.mp3', quoted: m, contextInfo: {
 'forwardingScore': 200,
@@ -251,6 +269,9 @@ conn.sendMessage(m.chat, buttonMessage, { quoted: ytmsg })
        try {
        let yt = await fg.ytv(vid.url, q)
        let { title, dl_url, size } = yt
+       let limit = 300
+       
+if (size.split('MB')[0] >= limit) return conn.reply(m.chat,`El archivo pesa mas de ${limit} MB, se canceló la Descarga.`, m, adReply).then(_ => m.react('✖️'))
        
        await conn.sendMessage(m.chat, { document: { url: dl_url }, caption: `${vid.title}\n⇆ㅤㅤ◁ㅤㅤ❚❚ㅤㅤ▷ㅤㅤ↻\n00:15 ━━●────── ${vid.timestamp}`, mimetype: 'video/mp4', fileName: `${vid.title}` + `.mp4`, quoted: m, contextInfo: {
 'forwardingScore': 200,
@@ -267,6 +288,9 @@ thumbnail: await (await fetch(vid.thumbnail)).buffer()}}}, { quoted: m })
        try {
        let yt = await fg.ytmp4(vid.url, q)
        let { title, dl_url, size } = yt
+       let limit = 300
+       
+if (size.split('MB')[0] >= limit) return conn.reply(m.chat,`El archivo pesa mas de ${limit} MB, se canceló la Descarga.`, m, adReply).then(_ => m.react('✖️'))
        
        await conn.sendMessage(m.chat, { document: { url: dl_url }, caption: `${vid.title}\n⇆ㅤㅤ◁ㅤㅤ❚❚ㅤㅤ▷ㅤㅤ↻\n00:15 ━━●────── ${vid.timestamp}`, mimetype: 'video/mp4', fileName: `${vid.title}` + `.mp4`, quoted: m, contextInfo: {
 'forwardingScore': 200,
