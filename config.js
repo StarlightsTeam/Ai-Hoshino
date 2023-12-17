@@ -53,7 +53,7 @@ global.estilo = { key: {  fromMe: false, participant: `0@s.whatsapp.net`, ...(fa
 
 //━━━━━━━━━━━ ฅ^•ﻌ•^ฅ ━━━━━━━━━━━
 
-global.group = 'https://chat.whatsapp.com/CI2lyPkp3Ks3temWFfswZJ'
+global.group = 'https://chat.whatsapp.com/CqdWTXmS702JD31SQzr0Ph'
 
 //━━━━━━━━━━━ ฅ^•ﻌ•^ฅ ━━━━━━━━━━━
 
