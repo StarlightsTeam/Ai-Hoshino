@@ -38,6 +38,7 @@ await conn.sendFile(m.chat, dl_url, 'yt.jpg', `${vid.title}\n⇆ㅤㅤ◁ㅤㅤ�
 await m.react('✅')
 } catch {
 await conn.reply(m.chat,`*☓ Ocurrió un error inesperado*`, m, adReply).then(_ => m.react('✖️'))
+console.error(error)
 }}}
 handler.help = ['ytmp4 <url yt>']
 handler.tags = ['downloader']

@@ -59,6 +59,7 @@ thumbnail: await (await fetch(vid.thumbnail)).buffer()}}}, { quoted: m })
 await m.react('✅')
 } catch {
 await conn.reply(m.chat,`*☓ Ocurrió un error inesperado*`, m, adReply).then(_ => m.react('✖️'))
+console.error(error)
 }}}
 handler.help = ['ytmp4doc <url yt>']
 handler.tags = ['downloader']

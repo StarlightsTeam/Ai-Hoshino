@@ -28,7 +28,8 @@ let handler = async (m, { conn, args, usedPrefix, text, command }) => {
        txt += `│📚 *Autor ∙* ${vid.author.name}\n`
        txt += `│📅 *Publicado ∙* ${vid.ago}\n`
        txt += `│⛓ *Url ∙* ${'https://youtu.be/' + vid.videoId}\n`
-       txt += `╰──────────✰`
+       txt += `╰──────────✰\n\n`
+       txt += `*↻ Espera @${m.sender.split`@`[0]}, soy lenta. . .*`
 let buttonMessage= {
 'document': { url: `https://github.com/NakanoTeam/Ai-Hoshino` },
 'mimetype': `application/pdf`,
@@ -36,6 +37,7 @@ let buttonMessage= {
 'fileLength': 99999999999999,
 'pageCount': 200,
 'contextInfo': {
+'mentionedJid': [m.sender],
 'forwardingScore': 200,
 'isForwarded': true,
 'externalAdReply': {
@@ -90,6 +92,7 @@ thumbnail: await (await fetch(vid.thumbnail)).buffer()}}}, { quoted: m })
        await m.react('✅')
        } catch (error) {
         await conn.reply(m.chat,`*☓ Ocurrió un error inesperado*`, m, adReply).then(_ => m.react('✖️'))
+        console.error(error)
     }}}
         
         if (feature == "mp4") {
@@ -105,7 +108,8 @@ thumbnail: await (await fetch(vid.thumbnail)).buffer()}}}, { quoted: m })
        txt += `│📚 *Autor ∙* ${vid.author.name}\n`
        txt += `│📅 *Publicado ∙* ${vid.ago}\n`
        txt += `│⛓ *Url ∙* ${'https://youtu.be/' + vid.videoId}\n`
-       txt += `╰──────────✰`
+       txt += `╰──────────✰\n\n`
+       txt += `*↻ Espera @${m.sender.split`@`[0]}, soy lenta. . .*`
 let buttonMessage= {
 'document': { url: `https://github.com/NakanoTeam/Ai-Hoshino` },
 'mimetype': `application/pdf`,
@@ -113,6 +117,7 @@ let buttonMessage= {
 'fileLength': 99999999999999,
 'pageCount': 200,
 'contextInfo': {
+'mentionedJid': [m.sender],
 'forwardingScore': 200,
 'isForwarded': true,
 'externalAdReply': {
@@ -151,6 +156,7 @@ if (size.split('MB')[0] >= limit) return conn.reply(m.chat,`El archivo pesa mas 
        await m.react('✅')
        } catch (error) {
         await conn.reply(m.chat,`*☓ Ocurrió un error inesperado*`, m, adReply).then(_ => m.react('✖️'))
+        console.error(error)
     }}}
     
     if (feature == "mp3doc") {
@@ -166,7 +172,8 @@ if (size.split('MB')[0] >= limit) return conn.reply(m.chat,`El archivo pesa mas 
        txt += `│📚 *Autor ∙* ${vid.author.name}\n`
        txt += `│📅 *Publicado ∙* ${vid.ago}\n`
        txt += `│⛓ *Url ∙* ${'https://youtu.be/' + vid.videoId}\n`
-       txt += `╰──────────✰`
+       txt += `╰──────────✰\n\n`
+       txt += `*↻ Espera @${m.sender.split`@`[0]}, soy lenta. . .*`
 let buttonMessage= {
 'document': { url: `https://github.com/NakanoTeam/Ai-Hoshino` },
 'mimetype': `application/pdf`,
@@ -174,6 +181,7 @@ let buttonMessage= {
 'fileLength': 99999999999999,
 'pageCount': 200,
 'contextInfo': {
+'mentionedJid': [m.sender],
 'forwardingScore': 200,
 'isForwarded': true,
 'externalAdReply': {
@@ -228,6 +236,7 @@ thumbnail: await (await fetch(vid.thumbnail)).buffer()}}}, { quoted: m })
        await m.react('✅')
        } catch (error) {
         await conn.reply(m.chat,`*☓ Ocurrió un error inesperado*`, m, adReply).then(_ => m.react('✖️'))
+        console.error(error)
     }}}
     
     if (feature == "mp4doc") {
@@ -243,7 +252,8 @@ thumbnail: await (await fetch(vid.thumbnail)).buffer()}}}, { quoted: m })
        txt += `│📚 *Autor ∙* ${vid.author.name}\n`
        txt += `│📅 *Publicado ∙* ${vid.ago}\n`
        txt += `│⛓ *Url ∙* ${'https://youtu.be/' + vid.videoId}\n`
-       txt += `╰──────────✰`
+       txt += `╰──────────✰\n\n`
+       txt += `*↻ Espera @${m.sender.split`@`[0]}, soy lenta. . .*`
 let buttonMessage= {
 'document': { url: `https://github.com/NakanoTeam/Ai-Hoshino` },
 'mimetype': `application/pdf`,
@@ -251,6 +261,7 @@ let buttonMessage= {
 'fileLength': 99999999999999,
 'pageCount': 200,
 'contextInfo': {
+'mentionedJid': [m.sender],
 'forwardingScore': 200,
 'isForwarded': true,
 'externalAdReply': {
@@ -305,6 +316,7 @@ thumbnail: await (await fetch(vid.thumbnail)).buffer()}}}, { quoted: m })
        await m.react('✅')
        } catch (error) {
         await conn.reply(m.chat,`*☓ Ocurrió un error inesperado*`, m, adReply).then(_ => m.react('✖️'))
+        console.error(error)
 }}}}}
 handler.help = ["play"].map(v => v + " <formato> <búsqueda>")
 handler.tags = ["downloader"]
