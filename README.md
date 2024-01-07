@@ -117,11 +117,6 @@ npm start
 ![github toplang](https://github-readme-stats.vercel.app/api/top-langs/?username=NakanoTeam&layout=compact&theme=chartreuse-dark)
 
 ---------
-
-## `Agradecimientos` 
-<a href="https://github.com/BrunoSobrino"><img src="https://github.com/BrunoSobrino.png" width="200" height="200" alt="BrunoSobrino"/></a>
-
----------
 <div align="center">
   <h1 align="center">Editor y Propietario de la Bot</h1>
 
