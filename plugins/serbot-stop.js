@@ -1,13 +1,11 @@
-
 let handler = async (m, { conn }) => {
   if (global.conn.user.jid === conn.user.jid) {
-   await conn.reply(m.chat, '✳️ ¿Por qué no vas directamente a la terminal?', m);
+   await conn.reply(m.chat, '¿Por qué no vas directamente a la terminal?', m, adReply)
   } else {
-    //Si el número no coincide, se detiene el bot.
-    await conn.reply(m.chat, `✅ Bot desconectado`, m);
-    conn.ws.close();
+    await conn.reply(m.chat, `Bot desconectado`, m, adReply)
+    conn.ws.close()
   }
-};
+}
 handler.help = ['stop']
 handler.tags = ['serbot']
 handler.command = ['stop', 'stopbot', 'stopbebot']

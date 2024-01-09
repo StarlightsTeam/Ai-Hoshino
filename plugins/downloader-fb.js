@@ -5,11 +5,11 @@ let handler = async (m, { conn, args, command }) => {
 	if (!args[0]) return conn.reply(m.chat, '*🚩 Escribe la URL de un video de Facebook que deseas descargar.*', m, adReply)
 	try {
 	await m.react('🕓')
-	const config = {
+	let config = {
         'id': args[0],
         'locale': 'id'
       }
-    const { data, status } = await axios('https://getmyfb.com/process', {
+    let { data, status } = await axios('https://getmyfb.com/process', {
         method: 'POST',
         data: new URLSearchParams(Object.entries(config)),
         headers: {
@@ -17,9 +17,9 @@ let handler = async (m, { conn, args, command }) => {
           "cookie": "PHPSESSID=914a5et39uur28e84t9env0378; popCookie=1; prefetchAd_4301805=true"
         }
       })
-      const $ = cheerio.load(data)
-      const HD = $('div.container > div.results-download > ul > li:nth-child(1) > a').attr('href')
-      const SD = $('div.container > div.results-download > ul > li:nth-child(2) > a').attr('href')
+      let $ = cheerio.load(data)
+      let HD = $('div.container > div.results-download > ul > li:nth-child(1) > a').attr('href')
+      let SD = $('div.container > div.results-download > ul > li:nth-child(2) > a').attr('href')
 	await conn.sendMessage(m.chat, { video: { url: HD || SD }, caption: null }, { quoted: estilo})
 	await m.react('✅')
 	} catch (e) {

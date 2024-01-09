@@ -10,7 +10,7 @@ let tags = {
   'rpg': 'ECONOMÍA',
   'rg': 'REGISTRO',
   'downloader': 'DESCARGAS',
-  'marker': 'LOGO - MAKER',
+//  'marker': 'LOGO - MAKER',
   'nable': 'ACTIVADORES',
   'group': 'GRUPOS',
   'search': 'BUSCADOR',
@@ -41,9 +41,9 @@ Hola *%taguser*, soy *Ai Hoshino*, en que puedo ayudarte hoy?
 %readmore
 *─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
-\t\t\t*L I S T A  -  M E N U S*
+\t\t\t*L I S T A  -  M E N Ú S*
 `.trimStart(),
-  header: '╭───═[ *MENU メ %category* ]═────⋆\n│╭───────────────···',
+  header: '╭───═[ *MENÚ メ %category* ]═────⋆\n│╭───────────────···',
   body: '✩│ *%cmd*\n',
   footer: '│╰────────────────···\n╰───────────═┅═──────────\n',
   after: '\n*Simple WhatsApp Bot Multi Device*',

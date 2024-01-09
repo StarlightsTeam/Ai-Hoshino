@@ -1,27 +1,26 @@
 import fetch from 'node-fetch'
 
-const regex = /(?:https|git)(?::\/\/|@)github\.com[\/:]([^\/:]+)\/(.+)/i
-const handler = async (m, { args, usedPrefix, command }) => {
+let regex = /(?:https|git)(?::\/\/|@)github\.com[\/:]([^\/:]+)\/(.+)/i
+let handler = async (m, { args, usedPrefix, command }) => {
   if (!args[0]) {
     return conn.reply(m.chat, `*🚩 Escribe la URL de un repositorio de GitHub que deseas descargar.*`, m, adReply)
   }
   if (!regex.test(args[0])) {
     return conn.reply(m.chat, `Verifica que la *URL* sea de GitHub`, m, adReply).then(_ => m.react('✖️'))
   }
-  const [_, user, repo] = args[0].match(regex) || []
-  const sanitizedRepo = repo.replace(/.git$/, '')
-  const repoUrl = `https://api.github.com/repos/${user}/${sanitizedRepo}`
-  const zipUrl = `https://api.github.com/repos/${user}/${sanitizedRepo}/zipball`
+  let [_, user, repo] = args[0].match(regex) || []
+  let sanitizedRepo = repo.replace(/.git$/, '')
+  let repoUrl = `https://api.github.com/repos/${user}/${sanitizedRepo}`
+  let zipUrl = `https://api.github.com/repos/${user}/${sanitizedRepo}/zipball`
   await m.react('🕓')
   try {
-    const [repoResponse, zipResponse] = await Promise.all([
+    let [repoResponse, zipResponse] = await Promise.all([
       fetch(repoUrl),
       fetch(zipUrl),
     ])
-    const repoData = await repoResponse.json()
-    const filename = zipResponse.headers.get('content-disposition').match(/attachment; filename=(.*)/)[1]
-    const type = zipResponse.headers.get('content-type')
-    const img = 'https://i.ibb.co/qsz2RZ4/images.jpg'
+    let repoData = await repoResponse.json()
+    let filename = zipResponse.headers.get('content-disposition').match(/attachment; filename=(.*)/)[1]
+    let type = zipResponse.headers.get('content-type')
     let txt = `📓 *Nombre ∙* ${filename}\n`
        txt += `⚙️ *Repositorio ∙* ${user}/${sanitizedRepo}\n`
        txt += `👤 *Creador ∙* ${repoData.owner.login}\n`

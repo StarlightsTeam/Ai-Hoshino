@@ -5,7 +5,7 @@ import fetch from "node-fetch"
 let handler = async(m, { conn, args }) => {
 if (!global.db.data.chats[m.chat].nsfw) return conn.reply(m.chat, `❎ En este grupo no esta permitido el contenido *+18*`, m, adReply).then(_ => m.react('✖️'))
 let code = (args[0] || '').replace(/\D/g, '')
-if (!code) return conn.reply(m.chat, `*🚩 Ingresa el código del hentai que deseas descargar*`, m, adReply)
+if (!code) return conn.reply(m.chat, `*🚩 Ingresa el código de NHentai que deseas descargar*`, m, adReply)
 	await m.react('🕓')
 	try {
 let data = await nhentaiScraper(code)

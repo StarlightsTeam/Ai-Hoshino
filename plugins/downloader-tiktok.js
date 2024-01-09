@@ -2,7 +2,7 @@ import fg from 'api-dylux'
 import { tiktokdl } from '@bochilteam/scraper'
 let handler = async (m, { conn, text, args, usedPrefix, command}) => {
 
-if (!args[0]) return conn.reply(m.chat, `*🚩 Escribe la URL de un video de Facebook que deseas descargar.*`, m, adReply)
+if (!args[0]) return conn.reply(m.chat, `*🚩 Escribe la URL de un video de TikTok que deseas descargar.*`, m, adReply)
 if (!args[0].match(/tiktok/gi)) return conn.reply(m.chat, `Verifica que la *URL* sea de TikTok`, m, adReply).then(_ => m.react('✖️'))
 await m.react('🕓')
 try {

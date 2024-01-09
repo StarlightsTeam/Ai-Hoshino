@@ -8,21 +8,21 @@ import {
   readFileSync,
   watch
 } from 'fs'
-let handler = async (m, { conn, usedPrefix: _p, __dirname, args, text }) => {
+let handler = async (m, { conn, usedPrefix: _p, command, __dirname, args, text }) => {
 
 let ar = Object.keys(plugins)
     let ar1 = ar.map(v => v.replace('.js', ''))
-    if (!text) throw `📌 *_Ejemplo de uso:_*\n*#deleteplugin Menu▪oficial*`
-    if (!ar1.includes(args[0])) return m.reply(`*🗃️ NO ENCONTRADO!*\n•••••••••••••••••••••••••••••••••••••••••••••••••••••••\n\n${ar1.map(v => ' ' + v).join`\n`}`)
+    if (!text) return conn.reply(m.chat, `*Ejemplo de uso:*\n\n*${_p + command}* main-menu`, m, adReply)
+    if (!ar1.includes(args[0])) return conn.reply(m.chat,  `*🗃️ NO ENCONTRADO!*\n•••••••••••••••••••••••••••••••••••••••••••••••••••••••\n\n${ar1.map(v => ' ' + v).join`\n`}`, m, adReply)
 const file = join(__dirname, '../plugins/' + args[0] + '.js')
 unlinkSync(file)
-conn.reply(m.chat, `⚠️ *_El plugin "plugins/${args[0]}.js" se ha eliminado con éxito._*`, m)
+conn.reply(m.chat, `⚠️ *_El plugin "plugins/${args[0]}.js" se ha eliminado con éxito._*`, m, adReply)
     
 }
 handler.help = ['deleteplugin <nombre>']
 handler.tags = ['owner']
 handler.command = /^(deleteplugin|dp|deleteplu)$/i
 
-handler.mods = true
+handler.rowner = true
 
 export default handler
