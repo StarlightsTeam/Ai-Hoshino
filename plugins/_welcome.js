@@ -3,16 +3,7 @@ import fetch from 'node-fetch';
 
 export async function before(m, {conn, participants, groupMetadata}) {
   if (!m.messageStubType || !m.isGroup) return !0;
-  let pp = await conn.profilePictureUrl(m.messageStubParameters[0], 'image').catch(_ => 'https://tinyurl.com/yt2a7wdk')
-  let d = new Date(new Date + 3600000)
-    let locale = 'es'
-    let date = d.toLocaleDateString(locale, {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
-    })
-    let img = `https://api.popcat.xyz/welcomecard?background=https://tinyurl.com/ywrcvffd&text1=Ai%20Hoshino%20-%20MD&text2=Bienvenido+Al+Grupo&text3=${date}&avatar=${pp}`
-    
+  let pp = await conn.profilePictureUrl(m.messageStubParameters[0], 'image').catch(_ => './src/avatar_contact.png')
   let chat = global.db.data.chats[m.chat]
   
   if (chat.welcome && m.messageStubType == 27) {
@@ -22,7 +13,7 @@ export async function before(m, {conn, participants, groupMetadata}) {
     m.chat,
     {
       image: {
-        url: img,
+        url: pp,
       },
       caption: welcome,
       contextInfo: {
@@ -51,7 +42,7 @@ if (chat.welcome && m.messageStubType == 28) {
     m.chat,
     {
       image: {
-        url: img,
+        url: pp,
       },
       caption: bye,
       contextInfo: {
@@ -80,7 +71,7 @@ if (chat.welcome && m.messageStubType == 28) {
     m.chat,
     {
       image: {
-        url: img,
+        url: pp,
       },
       caption: kick,
       contextInfo: {
