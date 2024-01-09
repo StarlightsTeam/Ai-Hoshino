@@ -5,7 +5,7 @@ export async function before(m, {conn, participants, groupMetadata}) {
   if (!m.messageStubType || !m.isGroup) return !0;
   let pp = await conn.profilePictureUrl(m.messageStubParameters[0], 'image').catch(_ => './src/avatar_contact.png')
   let chat = global.db.data.chats[m.chat]
-  
+
   if (chat.welcome && m.messageStubType == 27) {
     let welcome = `┌─★ *Ai Hoshino - MD* \n│「 Bienvenido 」\n└┬★ 「 @${m.messageStubParameters[0].split`@`[0]} 」\n   │✑  Bienvenido a\n   │✑  ${groupMetadata.subject}\n   └───────────────┈ ⳹`
     
@@ -21,8 +21,8 @@ export async function before(m, {conn, participants, groupMetadata}) {
       forwardingScore: 9999, 
        isForwarded: true, 
         externalAdReply: {
-          title: namebot,
-          sourceUrl: group,
+          title: gcname,
+          sourceUrl: linkgc,
           mediaType: 1,
           renderLargerThumbnail: true, 
           thumbnail: thumbnail,
@@ -50,8 +50,8 @@ if (chat.welcome && m.messageStubType == 28) {
       forwardingScore: 9999, 
        isForwarded: true, 
         externalAdReply: {
-          title: namebot,
-          sourceUrl: group,
+          title: gcname,
+          sourceUrl: linkgc,
           mediaType: 1,
           renderLargerThumbnail: true, 
           thumbnail: thumbnail,
@@ -79,8 +79,8 @@ if (chat.welcome && m.messageStubType == 28) {
       forwardingScore: 9999, 
        isForwarded: true, 
         externalAdReply: {
-          title: namebot,
-          sourceUrl: group,
+          title: gcname,
+          sourceUrl: linkgc,
           mediaType: 1,
           renderLargerThumbnail: true, 
           thumbnail: thumbnail,
