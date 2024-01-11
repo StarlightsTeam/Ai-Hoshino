@@ -22,7 +22,7 @@ export async function before(m, {conn, participants, groupMetadata}) {
        isForwarded: true, 
         externalAdReply: {
           title: gcname,
-          sourceUrl: linkgc,
+          sourceUrl: group,
           mediaType: 1,
           renderLargerThumbnail: true, 
           thumbnail: thumbnail,
@@ -51,7 +51,7 @@ if (chat.welcome && m.messageStubType == 28) {
        isForwarded: true, 
         externalAdReply: {
           title: gcname,
-          sourceUrl: linkgc,
+          sourceUrl: group,
           mediaType: 1,
           renderLargerThumbnail: true, 
           thumbnail: thumbnail,
@@ -80,7 +80,7 @@ if (chat.welcome && m.messageStubType == 28) {
        isForwarded: true, 
         externalAdReply: {
           title: gcname,
-          sourceUrl: linkgc,
+          sourceUrl: group,
           mediaType: 1,
           renderLargerThumbnail: true, 
           thumbnail: thumbnail,
