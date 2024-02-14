@@ -4,19 +4,14 @@ import yts from 'yt-search'
 import fetch from 'node-fetch' 
 
 let handler = async (m, { conn, args, usedPrefix, text, command }) => {
-    let lister = [
-        "mp3",
-        "mp4", 
-        "mp3doc",
-        "mp4doc"
-    ]
+    let lister = ["mp3", "yta", "audio", "ytv", "video", "vídeo", "mp4", "mp3doc", "ytadoc", "audiodoc", "mp4doc", "ytvdoc", "videodoc", "vídeodoc"]
     let ytmsg = { key: { fromMe: false, participant: `0@s.whatsapp.net`, ...(false ? { remoteJid: "17608914335-1625305606@g.us" } : {}) }, message: { "extendedTextMessage": { "text":'Downloader YouTube', "title": 'Ai Hoshino - MD', 'jpegThumbnail': ytlogo}}}
     
     let [feature, inputs, inputs_, inputs__, inputs___] = text.split(" ")
-    if (!lister.includes(feature)) return conn.reply(m.chat, `*🚩 Ingresa el formato en que deseas descargar más el titulo de un video o musica de YouTube.*\n\nEjemplo : ${usedPrefix + command} *mp3* SUICIDAL-IDOL - ecstacy\n\nFormatos disponibles :\n${usedPrefix + command} *mp3*\n${usedPrefix + command} *mp3doc*\n${usedPrefix + command} *mp4*\n${usedPrefix + command} *mp4doc*`, m, adReply)
+    if (!lister.includes(feature)) return conn.reply(m.chat, `*🚩 Ingresa el formato en que deseas descargar más el titulo de un video o musica de YouTube.*\n\nEjemplo : ${usedPrefix + command} *mp3* SUICIDAL-IDOL - ecstacy\n\nFormatos disponibles :\n${usedPrefix + command} *mp3*\n${usedPrefix + command} *mp3doc*\n${usedPrefix + command} *mp4*\n${usedPrefix + command} *mp4doc*`, m)
     if (lister.includes(feature)) {
-        if (feature == "mp3") {
-            if (!inputs) return conn.reply(m.chat, `*🚩 Ingresa el titulo de un video o musica de YouTube.*`, m, adReply)
+        if (feature == "mp3" || feature == "yta" || feature == "audio") {
+            if (!inputs) return conn.reply(m.chat, `*🚩 Ingresa el titulo de un video o musica de YouTube.*`, m)
     await m.react('🕓')
     let res = await yts(text)
     let vid = res.videos[0]
@@ -95,7 +90,7 @@ thumbnail: await (await fetch(vid.thumbnail)).buffer()}}}, { quoted: m })
         console.error(error)
     }}}
         
-        if (feature == "mp4") {
+        if (feature == "mp4" || feature == "ytv" || feature == "video" || feature == "video") {
             if (!inputs) return conn.reply(m.chat, `*🚩 Ingresa el titulo de un video o musica de YouTube.*`, m, adReply)
     await m.react('🕓')
     let res = await yts(text)
@@ -159,7 +154,7 @@ if (size.split('MB')[0] >= limit) return conn.reply(m.chat,`El archivo pesa mas 
         console.error(error)
     }}}
     
-    if (feature == "mp3doc") {
+    if (feature == "mp3doc" || feature == "ytadoc" || feature == "audiodoc") {
             if (!inputs) return conn.reply(m.chat, `*🚩 Ingresa el titulo de un video o musica de YouTube.*`, m, adReply)
     await m.react('🕓')
     let res = await yts(text)
@@ -239,7 +234,7 @@ thumbnail: await (await fetch(vid.thumbnail)).buffer()}}}, { quoted: m })
         console.error(error)
     }}}
     
-    if (feature == "mp4doc") {
+    if (feature == "mp4doc" || feature == "ytvdoc" || feature == "videodoc" || feature == "videodoc") {
             if (!inputs) return conn.reply(m.chat, `*🚩 Ingresa el titulo de un video o musica de YouTube.*`, m, adReply)
     await m.react('🕓')
     let res = await yts(text)
