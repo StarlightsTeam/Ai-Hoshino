@@ -1,3 +1,5 @@
+//Youtube : https://youtube.com/@samuel_gf
+
 import axios from 'axios'
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
