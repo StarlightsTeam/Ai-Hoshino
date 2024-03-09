@@ -68,6 +68,8 @@ export async function handler(chatUpdate) {
                     user.warn = 0
                 if (!isNumber(user.level))
                     user.level = 0
+                if (!('useDocument' in user))
+                    user.useDocument = false
                 if (!('premium' in user))
                     user.premium = false
                 if (!user.premiumTime) 
@@ -85,6 +87,7 @@ export async function handler(chatUpdate) {
                     banned: false,
                     warn: 0,
                     level: 0,
+                    useDocument: true,
                     premium: false,
                     premiumTime: 0,
                 }

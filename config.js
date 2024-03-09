@@ -13,6 +13,7 @@ global.owner = [
   ['5218132588591', 'おDanịel.xyz⁩', true],
   ['5218139760662'],
   ['5218261009198'],
+  ['5218261275256'],
   ['50662333781']
 ] //Numeros de owner 
 
@@ -46,6 +47,54 @@ global.ytlogo = fs.readFileSync('./storage/img/ytlogo.jpg')
 global.miniurl = fs.readFileSync('./storage/img/miniurl.jpg') 
 global.catalogo = fs.readFileSync('./storage/img/catalogo.png')
 global.thumbnail = fs.readFileSync('./storage/img/thumbnail.jpg')
+
+global.keysZens = ['LuOlangNgentot', 'c2459db922', '37CC845916', '6fb0eff124', 'hdiiofficial', 'fiktod', 'BF39D349845E', '675e34de8a', '0b917b905e6f']
+global.keysxxx = keysZens[Math.floor(keysZens.length * Math.random())]
+global.keysxteammm = ['29d4b59a4aa687ca', '5LTV57azwaid7dXfz5fzJu', 'cb15ed422c71a2fb', '5bd33b276d41d6b4', 'HIRO', 'kurrxd09', 'ebb6251cc00f9c63']
+global.keysxteam = keysxteammm[Math.floor(keysxteammm.length * Math.random())]
+global.keysneoxrrr = ['5VC9rvNx', 'cfALv5']
+global.keysneoxr = keysneoxrrr[Math.floor(keysneoxrrr.length * Math.random())]
+global.lolkeysapi = ['GataDios'] // ['BrunoSobrino_2']
+global.skizo = ['konekocyz']
+global.lann = 'p8ADYJib'
+global.kiicode = 'usU5RWzmQq'
+global.itsrose = ['4b146102c4d500809da9d1ff']
+global.botcahxkey = ['NDM8oaRr', 'Gi8erBvz', 'SYUTqCrg', 'DcAWSMo9']
+global.botcahx = botcahxkey[Math.floor(botcahxkey.length * Math.random())]
+
+global.APIs = {
+  xteam: 'https://api.xteam.xyz',
+  dzx: 'https://api.dhamzxploit.my.id',
+  lol: 'https://api.lolhuman.xyz',
+  neoxr: 'https://api.neoxr.my.id',
+  zenzapis: 'https://api.zahwazein.xyz',
+  akuari: 'https://api.akuari.my.id',
+  akuari2: 'https://apimu.my.id',
+  can: 'https://pnggilajacn.my.id',
+  fgmods: 'https://api-fgmods.ddns.net',
+  botcahx: 'https://api.botcahx.biz.id',
+  ibeng: 'https://api.ibeng.tech/docs',
+  rose: 'https://api.itsrose.site',
+  popcat: 'https://api.popcat.xyz',
+  xcoders: 'https://api-xcoders.site',
+  vihangayt: 'https://vihangayt.me',
+  erdwpe: 'https://api.erdwpe.com',
+  xyroinee: 'https://api.xyroinee.xyz',
+  nekobot: 'https://nekobot.xyz'
+},
+global.APIKeys = {
+  'https://api.xteam.xyz': `${keysxteam}`,
+  'https://api.lolhuman.xyz': 'GataDios',
+  'https://api.neoxr.my.id': `${keysneoxr}`,
+  'https://api.zahwazein.xyz': `${keysxxx}`,
+  'https://api-fgmods.ddns.net': 'fg-dylux',
+  'https://api.botcahx.biz.id': 'Admin',
+  'https://api.ibeng.tech/docs': 'tamvan',
+  'https://api.itsrose.site': 'Rs-Zeltoria',
+  'https://pnggilajacn.my.id': 'ItsukaChan',
+  'https://api-xcoders.site': 'Frieren',
+  'https://api.xyroinee.xyz': 'uwgflzFEh6'
+}
 
 //━━━━━━━━━━━ ฅ^•ﻌ•^ฅ ━━━━━━━━━━━
 
