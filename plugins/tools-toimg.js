@@ -3,7 +3,7 @@ let handler = async (m, {conn, usedPrefix, command}) => {
   if (!m.quoted) return conn.reply(m.chat, `Responde a un *Sticker*`, m, adReply)
   let q = m.quoted || m
   let mime = q.mediaType || ''
-  if (!/sticker/.test(mime)) return conn.reply(m.chat, `Responde a un *Sticker*`, m, adReply)
+  if (!/sticker/.test(mime)) return conn.reply(m.chat, `Responde a un *Sticker*`, m)
   await m.react('🕓')
   let media = await q.download()
   let out = await webp2png(media).catch((_) => null) || Buffer.alloc(0)

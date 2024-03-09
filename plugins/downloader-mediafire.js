@@ -1,8 +1,8 @@
 import { mediafiredl } from '@bochilteam/scraper'
 let handler = async (m, { conn, args, usedPrefix, command }) => {
 let limit = 200
-if (!args[0]) return conn.reply(m.chat, `*🚩 Escribe la URL de un archivo de Mediafire que deseas descargar.*`, m, adReply)
-if (!args[0].match(/mediafire/gi)) return conn.reply(m.chat, `Verifica que la *URL* sea de Mediafire.`, m, adReply).then(_ => m.react('✖️'))
+if (!args[0]) return conn.reply(m.chat, `*🚩 Escribe la URL de un archivo de Mediafire que deseas descargar.*`, m)
+if (!args[0].match(/mediafire/gi)) return conn.reply(m.chat, `Verifica que la *URL* sea de Mediafire.`, m).then(_ => m.react('✖️'))
 await m.react('🕓')
 let res = await mediafiredl(args[0])
 let { url, url2, filename, ext, aploud, filesize, filesizeH } = res

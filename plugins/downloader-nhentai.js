@@ -5,7 +5,7 @@ import fetch from "node-fetch"
 let handler = async(m, { conn, args }) => {
 if (!global.db.data.chats[m.chat].nsfw) return conn.reply(m.chat, `❎ En este grupo no esta permitido el contenido *+18*`, m, adReply).then(_ => m.react('✖️'))
 let code = (args[0] || '').replace(/\D/g, '')
-if (!code) return conn.reply(m.chat, `*🚩 Ingresa el código de NHentai que deseas descargar*`, m, adReply)
+if (!code) return conn.reply(m.chat, `*🚩 Ingresa el código de NHentai que deseas descargar*`, m)
 	await m.react('🕓')
 	try {
 let data = await nhentaiScraper(code)
@@ -21,7 +21,7 @@ let imagepdf = await toPDF(pages)
 await conn.sendMessage(m.chat, { document: imagepdf, jpegThumbnail, fileName: data.title.english + '.pdf', mimetype: 'application/pdf' }, { quoted: m })
 await m.react('✅')
 } catch {
-await conn.reply(m.chat,`*☓ Ocurrió un error inesperado*`, m, adReply).then(_ => m.react('✖️'))
+await conn.reply(m.chat,`*☓ Ocurrió un error inesperado*`, m).then(_ => m.react('✖️'))
 }}
 handler.tags = ['downloader', 'nsfw']
 handler.help = ['nhentai'].map(v => v + ' <codigo>')

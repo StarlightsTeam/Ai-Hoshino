@@ -57,6 +57,7 @@ let handler = async (m, { conn, usedPrefix }) => {
 
 ┌  ✩  *Creador* : @${owner[0][0].split('@s.whatsapp.net')[0]}
 │  ✩  *Prefijo* : [  ${usedPrefix}  ]
+│  ✩  *Total Comandos* : 402
 │  ✩  *Plataforma* : ${platform()}
 │  ✩  *Servidor* : ${hostname()}
 │  ✩  *RAM* : ${format(totalmem() - freemem())} / ${format(totalmem())}

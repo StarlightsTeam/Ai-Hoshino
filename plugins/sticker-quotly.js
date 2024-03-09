@@ -2,9 +2,9 @@ import { sticker } from '../lib/sticker.js'
 import axios from 'axios'
 
 let handler = async (m, { conn, text }) => {
-   if (!text) return conn.reply(m.chat, '*🚩 Escribe un Texto.*', m, adReply)
-   if (text.length > 30) return conn.reply(m.chat, 'Solo se permiten 30 caracteres como Máximo.', m, adReply)
-   await conn.reply(m.chat, `*↻ Espera @${m.sender.split`@`[0]}, soy lenta. . .*`, estilo, adSticker)
+   if (!text) return conn.reply(m.chat, '*🚩 Escribe un Texto.*', m)
+   if (text.length > 30) return conn.reply(m.chat, 'Solo se permiten 30 caracteres como Máximo.', m)
+//   await conn.reply(m.chat, `*↻ Espera @${m.sender.split`@`[0]}, soy lenta. . .*`, estilo, adSticker)
    let pp = await conn.profilePictureUrl(m.sender, 'image').catch(_ => global.imgbot.noprofileurl)
    const obj = {
       "type": "quote",

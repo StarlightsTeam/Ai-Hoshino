@@ -3,7 +3,7 @@ import {ffmpeg} from '../lib/converter.js'
 const handler = async (m, {conn, usedPrefix, command}) => {
   if (!m.quoted) return conn.reply(m.chat, `Responde a un *Sticker*`, m, adReply)
   const mime = m.quoted.mimetype || ''
-  if (!/webp/.test(mime)) return conn.reply(m.chat, `Responde a un *Sticker*`, m, adReply)
+  if (!/webp/.test(mime)) return conn.reply(m.chat, `Responde a un *Sticker*`, m)
   await m.react('🕓')
   const media = await m.quoted.download()
   let out = Buffer.alloc(0)

@@ -27,7 +27,7 @@ let handler = async (m, { conn, text }) => {
     conn.reply(m.chat, `El resultado de *${format}* = ${result}`, m, adReply)
   } catch (e) {
     if (e == undefined) return conn.reply(m.chat, '*🚩 Escribe la ecuación*\n\nSímbolos compatibles -, +, *, /, ×, ÷, π, e, (, )', m, adReply)
-    return conn.reply(m.chat, 'Formato incorrecto, solo 0-9 y símbolo -, +, *, /, ×, ÷, π, e, (, ) que puedes usar', m, adReply)
+    return conn.reply(m.chat, 'Formato incorrecto, solo 0-9 y símbolo -, +, *, /, ×, ÷, π, e, (, ) que puedes usar', m)
   }
 }
 handler.help = ['cal <ecuacion>']

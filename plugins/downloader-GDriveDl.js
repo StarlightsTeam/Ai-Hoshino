@@ -2,11 +2,11 @@ import fetch from 'node-fetch'
 import { sizeFormatter } from 'human-readable'
 let handler = async (m, { conn, args }) => {
 let limit = 200
-	if (!(args[0] || '').match(/([\w-]){33}|([\w-]){19}/)) return conn.reply(m.chat, `*🚩 Escribe la URL de un archivo de GoogleDrive que deseas descargar.*`, m, adReply)
+	if (!(args[0] || '').match(/([\w-]){33}|([\w-]){19}/)) return conn.reply(m.chat, `*🚩 Escribe la URL de un archivo de GoogleDrive que deseas descargar.*`, m)
 	await m.react('🕓')
 	try {
 		let res = await GDriveDl(args[0])
-        if (res.fileSize.split('MB')[0] >= limit) return conn.reply(m.chat, `El archivo pesa mas de ${limit} MB, se canceló la Descarga.`, m, adReply).then(_ => m.react('✖️'))
+        if (res.fileSize.split('MB')[0] >= limit) return conn.reply(m.chat, `El archivo pesa mas de ${limit} MB, se canceló la Descarga.`, m).then(_ => m.react('✖️'))
 		let txt = `*📓 Nombre ∙* ${res.fileName}\n`
 		txt += `*📁 Peso ∙* ${res.fileSize}\n`
 		txt += `*📄 Tipo ∙* ${res.mimetype}\n\n`
@@ -17,7 +17,7 @@ let limit = 200
 		await m.react('✅')
 	} catch (e) {
 		console.log(e)
-		return conn.reply(m.chat, `*☓ Ocurrió un error inesperado*`, m, adReply).then(_ => m.react('✖️'))
+		return conn.reply(m.chat, `*☓ Ocurrió un error inesperado*`, m).then(_ => m.react('✖️'))
 	}
 }
 handler.help = ['gdrive <url>']

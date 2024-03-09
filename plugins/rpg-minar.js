@@ -4,9 +4,9 @@ let handler = async (m, { conn }) => {
 
   let stars = Math.floor(Math.random() * 20)
   let time = global.db.data.users[m.sender].lastmiming + 14400000
-  if (new Date - global.db.data.users[m.sender].lastmiming < 14400000) return conn.reply(m.chat, `Espera *${msToTime(time - new Date())}* para regresar a la Mina`, m, adReply)
+  if (new Date - global.db.data.users[m.sender].lastmiming < 14400000) return conn.reply(m.chat, `Espera *${msToTime(time - new Date())}* para regresar a la Mina`, m)
   global.db.data.users[m.sender].star += stars
-  conn.reply(m.chat, `🚩 Genial! minaste *${stars} ⭐ Estrellas*`, m, adReply)
+  conn.reply(m.chat, `🚩 Genial! minaste *${stars} ⭐ Estrellas*`, m)
   global.db.data.users[m.sender].lastmiming = new Date * 1
 }
 handler.help = ['minar']

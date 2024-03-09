@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
 let handler = async (m, {conn, args, text}) => {
-if (!text) return conn.reply(m.chat, `*🚩 Escribe la URL que deseas acortar.*`, m, adReply)
+if (!text) return conn.reply(m.chat, `*🚩 Escribe la URL que deseas acortar.*`, m)
 await m.react('🕓')
 let shortUrl = await (await fetch(`https://tinyurl.com/api-create.php?url=${args[0]}`)).text()
 if (!shortUrl) return conn.reply(m.chat,`*☓ Ocurrió un error inesperado*`, m, adReply).then(_ => m.react('✖️'))

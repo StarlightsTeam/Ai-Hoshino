@@ -1,4 +1,4 @@
-let handler = async (m, { conn, usedPrefix, command, args: [event], text }) => {
+/*let handler = async (m, { conn, usedPrefix, command, args: [event], text }) => {
 
   let chat = global.db.data.chats[m.chat]
   if (!chat.welcome) return conn.reply(m.chat, `✳️ Para usar este comando debe actvar las Bienvenidas con\n\n *${usedPrefix}welcome* on`, m, adReply)
@@ -49,4 +49,4 @@ handler.command = ['simular', 'simulate']
 handler.admin = true
 handler.group = true
 
-export default handler
+export default handler*/
