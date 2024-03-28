@@ -127,6 +127,6 @@ npm start
 <div align="center">
   <h1 align="center">Editor y Propietario de la Bot</h1>
 
-<a href="https://github.com/NakanoTeam"><img src="https://github.com/NakanoTeam.png" width="300" height="300" alt="おDanịel.xyz⁩"/></a>
+<a href="https://github.com/SumiFX"><img src="https://github.com/SumiFX.png" width="300" height="300" alt="おDanịel.xyz⁩"/></a>
 
 `© Ai Hoshino - MD`
