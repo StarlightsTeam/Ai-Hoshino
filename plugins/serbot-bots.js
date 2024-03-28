@@ -1,4 +1,4 @@
-async function handler(m, { conn, usedPrefix }) {
+/*async function handler(m, { conn, usedPrefix }) {
   const connectedUsers = new Set()
   const addedNumbers = new Set()
   global.conns
@@ -22,4 +22,4 @@ async function handler(m, { conn, usedPrefix }) {
 handler.command = ['listjadibot', 'bots']
 handler.help = ['bots']
 handler.tags = ['serbot']
-export default handler
+export default handler*/
