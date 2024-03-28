@@ -1,4 +1,4 @@
-process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
+ process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 import './config.js'; 
 import { createRequire } from "module"; // Bring in the ability to create the 'require' method
 import path, { join } from 'path'
@@ -18,7 +18,6 @@ import { Low, JSONFile } from 'lowdb';
 import pino from 'pino';
 import { mongoDB, mongoDBV2 } from './lib/mongoDB.js';
 import store from './lib/store.js'
-import { Boom } from '@hapi/boom'
 import {
     useMultiFileAuthState,
     DisconnectReason,
@@ -42,7 +41,7 @@ global.timestamp = {
 const __dirname = global.__dirname(import.meta.url)
 
 global.opts = new Object(yargs(process.argv.slice(2)).exitProcess(false).parse())
-global.prefix = new RegExp('^[' + (opts['prefix'] || '‎/#.\\-').replace(/[|\\{}()[\]^$+*?.\-\^]/g, '\\$&') + ']')
+global.prefix = new RegExp('^[' + (opts['prefix'] || '‎z/i!#$%+£¢€¥^°=¶∆×÷π√✓©®:;?&.,\\-').replace(/[|\\{}()[\]^$+*?.\-\^]/g, '\\$&') + ']')
 
 // global.opts['db'] = process.env['db']
 
@@ -83,11 +82,12 @@ loadDatabase()
 global.authFolder = `sessions`
 const { state, saveCreds } = await useMultiFileAuthState(global.authFolder)
 let { version, isLatest } = await fetchLatestBaileysVersion() 
+
 const connectionOptions = {
 	    version,
         printQRInTerminal: true,
         auth: state,
-        browser: ['Ai Hoshino - MD', 'Safari', '1.0.0'], 
+        browser: ['Ai Hoshino', 'Safari', '3.1.0'], 
 	      patchMessageBeforeSending: (message) => {
                 const requiresPatch = !!(
                     message.buttonsMessage 
@@ -137,28 +137,27 @@ async function clearTmp() {
   //---
   return filename.map(file => {
     const stats = statSync(file)
-    if (stats.isFile() && (Date.now() - stats.mtimeMs >= 1000 * 60 * 1)) return unlinkSync(file) // 3 minuto
+    if (stats.isFile() && (Date.now() - stats.mtimeMs >= 1000 * 60 * 3)) return unlinkSync(file) // 3 minuto
     return false
   })
 }
-
 setInterval(async () => {
-	await clearTmp()
+	var a = await clearTmp()
 	console.log(chalk.cyan(`Se limpio la carpeta tmp`))
-}, 60000) //3 muntos
+}, 180000) //3 muntos
 
 async function connectionUpdate(update) {
-  const { connection, lastDisconnect, isNewLogin } = update
-  if (isNewLogin) conn.isInit = true
-  const code = lastDisconnect?.error?.output?.statusCode || lastDisconnect?.error?.output?.payload?.statusCode
+  const {connection, lastDisconnect, isNewLogin} = update;
+  if (isNewLogin) conn.isInit = true;
+  const code = lastDisconnect?.error?.output?.statusCode || lastDisconnect?.error?.output?.payload?.statusCode;
   if (code && code !== DisconnectReason.loggedOut && conn?.ws.socket == null) {
-    console.log(await global.reloadHandler(true).catch(console.error))
-    global.timestamp.connect = new Date
+    console.log(await global.reloadHandler(true).catch(console.error));
+    global.timestamp.connect = new Date;
   }
   
   if (global.db.data == null) loadDatabase()
+}
 
-} //-- cu 
 
 process.on('uncaughtException', console.error)
 // let strQuot = /(["'])(?:(?=(\\?))\2.)*?\1/
@@ -187,6 +186,8 @@ global.reloadHandler = async function (restatConn) {
     conn.ev.off('connection.update', conn.connectionUpdate)
     conn.ev.off('creds.update', conn.credsUpdate)
   }
+
+  conn.handler = handler.handler.bind(global.conn)
   conn.participantsUpdate = handler.participantsUpdate.bind(global.conn)
   conn.groupsUpdate = handler.groupsUpdate.bind(global.conn)
   conn.onDelete = handler.deleteUpdate.bind(global.conn)
@@ -204,21 +205,21 @@ global.reloadHandler = async function (restatConn) {
 }
 
 const pluginFolder = global.__dirname(join(__dirname, './plugins/index'))
-const pluginFilter = (filename) => /\.js$/.test(filename);
-global.plugins = {};
+const pluginFilter = filename => /\.js$/.test(filename)
+global.plugins = {}
 async function filesInit() {
-  for (const filename of readdirSync(pluginFolder).filter(pluginFilter)) {
+  for (let filename of readdirSync(pluginFolder).filter(pluginFilter)) {
     try {
-      const file = global.__filename(join(pluginFolder, filename));
-      const module = await import(file);
-      global.plugins[filename] = module.default || module;
+      let file = global.__filename(join(pluginFolder, filename))
+      const module = await import(file)
+      global.plugins[filename] = module.default || module
     } catch (e) {
-      conn.logger.error(e);
-      delete global.plugins[filename];
+      conn.logger.error(e)
+      delete global.plugins[filename]
     }
   }
 }
-filesInit().then((_) => Object.keys(global.plugins)).catch(console.error)
+filesInit().then(_ => console.log(Object.keys(global.plugins))).catch(console.error)
 
 global.reload = async (_ev, filename) => {
   if (pluginFilter(filename)) {
@@ -282,9 +283,10 @@ async function _quickTest() {
     gm,
     find
   }
+  // require('./lib/sticker').support = s
   Object.freeze(global.support)
 }
 
 _quickTest()
-  .then(() => conn.logger.info('Cargando . . .'))
+  .then(() => conn.logger.info('Cargando. . .'))
   .catch(console.error)
