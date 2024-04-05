@@ -117,16 +117,9 @@ npm start
 ![github toplang](https://github-readme-stats.vercel.app/api/top-langs/?username=NakanoTeam&layout=compact&theme=chartreuse-dark)
 
 ---------
-
-## `Créditos` 
-
-<a href="https://github.com/FG98F"><img src="https://github.com/FG98F.png" width="150" height="150" alt="FG98F"/></a>
-
----------
-
 <div align="center">
   <h1 align="center">Editor y Propietario de la Bot</h1>
 
-<a href="https://github.com/SumiFX"><img src="https://github.com/SumiFX.png" width="300" height="300" alt="おDanịel.xyz⁩"/></a>
+<a href="https://github.com/NakanoTeam"><img src="https://github.com/NakanoTeam.png" width="300" height="300" alt="おDaniel"/></a>
 
-`© Ai Hoshino - MD`
+`© Ai Hoshino - MD / Nakano - Team _ By おDaniel`
