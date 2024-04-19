@@ -7,14 +7,14 @@
         <a href="#"><img title="simple-whatsapp-bot" src="https://img.shields.io/badge/-SIMPLE--WHATSAPP--BOT-green?colorA=%23ff0000&colorB=%23017e40&style=for-the-badge"></a>
     </p>
     <p>
-        <a href="https://github.com/Sumi-Sakurasawa"><img title="Author"    src="https://img.shields.io/badge/Author-おDaniel-purple.svg?style=for-the-badge&logo=github"></a>
+        <a href="https://github.com/StarlightsTeam"><img title="Author"    src="https://img.shields.io/badge/Author-おDaniel-purple.svg?style=for-the-badge&logo=github"></a>
     </p>
     <p>
-        <a href="https://github.com/Sumi-Sakurasawaollowers"><img title="Followers" src="https://img.shields.io/github/followers/Sumi-Sakurasawa?color=blue&style=flat-square"></a>
-        <a href="https://github.com/Sumi-Sakurasawa/Sumi-Sakurasawa/stargazers/"><img title="Stars" src="https://img.shields.io/github/stars/Sumi-Sakurasawa/Sumi-Sakurasawa?color=red&style=flat-square"></a>
-        <a href="https://github.com/Sumi-Sakurasawa/Sumi-Sakurasawa/network/members"><img title="Forks" src="http://img.shields.io/github/forks/Sumi-Sakurasawa/Sumi-Sakurasawa?color=red&style=flat-square"></a>
+        <a href="https://github.com/StarlightsTeam"><img title="Followers" src="https://img.shields.io/github/followers/StarlightsTeam?color=blue&style=flat-square"></a>
+        <a href="https://github.com/StarlightsTeam/Sumi-Sakurasawa/stargazers/"><img title="Stars" src="https://img.shields.io/github/stars/StarlightsTeam/Sumi-Sakurasawa?color=red&style=flat-square"></a>
+        <a href="https://github.com/StarlightsTeam/Sumi-Sakurasawa/network/members"><img title="Forks" src="http://img.shields.io/github/forks/StarlightsTeam/Sumi-Sakurasawa?color=red&style=flat-square"></a>
         <a href="#"><img src="https://img.shields.io/badge/MANTENIMIENTO-SI-blue.svg"</a>
-        <img src="https://img.shields.io/github/repo-size/Sumi-Sakurasawa/Sumi-Sakurasawa" /> <br>
+        <img src="https://img.shields.io/github/repo-size/StarlightsTeam/Sumi-Sakurasawa" /> <br>
    </p>
    <p>
 </h1>
@@ -47,7 +47,7 @@ pkg install -y git nodejs ffmpeg imagemagick && pkg install yarn
 ```
 
 ```bash
-git clone https://github.com/Sumi-Sakurasawa/Sumi-Sakurasawa.git && cd Sumi-Sakurasawa
+git clone https://github.com/StarlightsTeam/Sumi-Sakurasawa.git && cd Sumi-Sakurasawa
 ```
 
 ```bash
@@ -92,7 +92,7 @@ npm start
 
 - Si tiene algún problema la bot contactame ฅ^•ﻌ•^ฅ
 
-* <a href="https://wa.me/5218132588591"><img alt="WhatsApp" src="https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white"/></a>
+* <a href="https://wa.me/5218261275256"><img alt="WhatsApp" src="https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white"/></a>
 
 ---------
 
@@ -107,19 +107,19 @@ npm start
 
 ## Repo Stats 🔭
 
-![github card](https://github-readme-stats.vercel.app/api/pin/?username=Sumi-Sakurasawa&repo=Sumi-Sakurasawa&theme=chartreuse-dark)
+![github card](https://github-readme-stats.vercel.app/api/pin/?username=StarlightsTeam&repo=Sumi-Sakurasawa&theme=chartreuse-dark)
 
 ---------
 
 ## <img src="https://raw.githubusercontent.com/vilcajoal/vilcajoal/master/assets/octocat-anime.gif" alt="Github" width="44" height="44"> Github Stats
 
-![github stats](https://github-readme-stats.vercel.app/api?username=Sumi-Sakurasawa&show_icons=true&theme=chartreuse-dark)
-![github toplang](https://github-readme-stats.vercel.app/api/top-langs/?username=Sumi-Sakurasawa&layout=compact&theme=chartreuse-dark)
+![github stats](https://github-readme-stats.vercel.app/api?username=StarlightsTeam&show_icons=true&theme=chartreuse-dark)
+![github toplang](https://github-readme-stats.vercel.app/api/top-langs/?username=StarlightsTeam&layout=compact&theme=chartreuse-dark)
 
 ---------
 <div align="center">
   <h1 align="center">Editor y Propietario de la Bot</h1>
 
-<a href="https://github.com/Sumi-Sakurasawa"><img src="https://github.com/Sumi-Sakurasawa.png" width="300" height="300" alt="おDaniel"/></a>
+<a href="https://github.com/SumiFX"><img src="https://tinyurl.com/2ys6a27z" width="300" height="300" alt="おDaniel"/></a>
 
 `© Sumi Sakurasawa - MD / StarlightsTeam - By おDaniel`
