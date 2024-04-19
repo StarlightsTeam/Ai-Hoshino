@@ -2,7 +2,7 @@ import moment from 'moment-timezone'
 import fetch from 'node-fetch'
 
 let handler = async (m, { conn, args }) => {
-   let res = await fetch('https://api.github.com/repos/NakanoTeam/Ai-Hoshino')
+   let res = await fetch('https://api.github.com/repos/StarlightsTeam/Sumi-Sakurasawa')
    let json = await res.json()
    let txt = `*B O T  -  S C R I P T*\n\n`
       txt += `	◦  *Nombre* : ${json.name}\n`

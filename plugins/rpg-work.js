@@ -1,16 +1,18 @@
-import db from '../lib/database.js'
-
-const cooldown = 18000000 // 5 Horas
+const cooldowns = {}
 
 let handler = async (m, { conn, usedPrefix, command }) => {
    let user = global.db.data.users[m.sender]
    let amount = Math.floor(Math.random() * (5 - 10) + 10) + 1
-   let time = user.lastwork + cooldown
-   if (new Date - user.lastwork < cooldown) return conn.reply(m.chat, `Espera *${(time - new Date()).toTimeString()}* para volver a Trabajar.`, m)
+   const tiempoEspera = 1 * 60 * 60 // 1 hora
+  if (cooldowns[m.sender] && Date.now() - cooldowns[m.sender] < tiempoEspera * 1000) {
+    const tiempoRestante = segundosAHMS(Math.ceil((cooldowns[m.sender] + tiempoEspera * 1000 - Date.now()) / 1000))
+    m.reply(`🕜 Espera *${tiempoRestante}* para volver a Trabajar.`)
+    return
+  }
    let work = works.getRandom()
-   user.star += amount
-   user.lastwork = new Date * 1
-   await conn.reply(m.chat, `🚩 ${work} *${amount} de ⭐ Estrellas.*`, m)
+   user.limit += amount
+   await m.reply(`${work} *${amount} 🍬 Dulces.*`)
+   cooldowns[m.sender] = Date.now()
 }
 
 handler.help = ['work']
@@ -18,6 +20,12 @@ handler.tags = ['rpg']
 handler.command = ['work', 'trabajar', 'w']
 handler.register = true 
 export default handler
+
+function segundosAHMS(segundos) {
+  const minutos = Math.floor((segundos % 3600) / 60)
+  const segundosRestantes = segundos % 60
+  return `${minutos} minutos y ${segundosRestantes} segundos`
+}
 
 // Thanks to FG98
 const works = [

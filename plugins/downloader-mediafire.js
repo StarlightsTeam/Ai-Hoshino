@@ -1,28 +1,23 @@
-import { mediafiredl } from '@bochilteam/scraper'
-let handler = async (m, { conn, args, usedPrefix, command }) => {
-let limit = 200
-if (!args[0]) return conn.reply(m.chat, `*🚩 Escribe la URL de un archivo de Mediafire que deseas descargar.*`, m)
-if (!args[0].match(/mediafire/gi)) return conn.reply(m.chat, `Verifica que la *URL* sea de Mediafire.`, m).then(_ => m.react('✖️'))
-await m.react('🕓')
-let res = await mediafiredl(args[0])
-let { url, url2, filename, ext, aploud, filesize, filesizeH } = res
-let caption = `
-*📓 Nombre ∙* ${filename}
-*📁 Peso ∙* ${filesizeH}
-*📄 Tipo ∙* ${ext}
-*🕐 Subido ∙* ${aploud}
+import Scraper from "@SumiFX/Scraper"
 
-*↻ Espera soy lenta. . .*
-`.trim()
-if (filesizeH.split('MB')[0] >= limit) return conn.reply(m.chat, `El archivo pesa mas de ${limit} MB, se canceló la Descarga.`, m, adReply).then(_ => m.react('✖️'))
-await conn.reply(m.chat, caption, m, adReply)
-await conn.sendFile(m.chat, url, filename, '', m, null, { mimetype: ext, asDocument: true })
-await m.react('✅')
-}
-handler.help = ['mediafire'].map(v => v + ' <url>')
+let handler = async (m, { conn, args, usedPrefix, command }) => {
+if (!args[0]) return m.reply('🍭 Ingresa el enlace del archivo de Mediafire junto al comando.\n\n`Ejemplo:`\n' + `> *${usedPrefix + command}* https://www.mediafire.com/file/433hbpsc95unywu/Oshi_no_Ko_01.mp4/file?dkey=jpivv6z5osa&r=1587`)
+if (!args[0].match(/mediafire/gi)) return m.reply('El enlace deve ser de un archivo de Mediafire.')
+try {
+let { title, ext, aploud, size, dl_url } = await Scraper.mediafire(args[0])
+if (size.includes('GB') || size.replace(' MB', '') > 300) { return await m.reply('El archivo pesa mas de 300 MB, se canceló la Descarga.')}
+let txt = `╭─⬣「 *Mediafire Download* 」⬣\n`
+    txt += `│  ≡◦ *🍭 Nombre ∙* ${title}\n`
+    txt += `│  ≡◦ *🪴 Subido ∙* ${aploud}\n`
+    txt += `│  ≡◦ *📚 MimeType ∙* ${ext}\n`
+    txt += `│  ≡◦ *⚖ Peso ∙* ${size}\n`
+    txt += `╰─⬣`
+await m.reply(txt)
+await conn.sendFile(m.chat, dl_url, title, null, m, null, { mimetype: ext, asDocument: true })
+} catch {
+}}
+handler.help = ['mediafire <url mf>']
 handler.tags = ['downloader']
-handler.command = /^(mediafire|mf)$/i
-//handler.premium = true 
-handler.star = 20
+handler.command = ['mediafire', 'mdfire', 'mf']
 handler.register = true 
 export default handler

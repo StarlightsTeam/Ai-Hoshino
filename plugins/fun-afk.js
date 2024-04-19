@@ -1,12 +1,12 @@
 let handler = async (m, { text, conn }) => {
-    let user = global.db.data.users[m.sender]
-    user.afk = new Date * 1
+    let user = db.data.users[m.sender]
+    user.afk = + new Date
     user.afkReason = text
-    await conn.reply(m.chat, `🚩 @${m.sender.split`@` [0]} ahora estas AFK.`, m, adReply)
+    await m.reply(`🍭 Estas en *AFK*, Motivo *${text ? ': ' + text : ''}*`)
 }
-
-handler.help = ['afk']
+handler.help = ['afk <razón>']
 handler.tags = ['fun']
 handler.command = ['afk']
+handler.group = false 
 
 export default handler

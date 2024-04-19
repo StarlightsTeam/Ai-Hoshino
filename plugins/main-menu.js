@@ -4,63 +4,57 @@ import fetch from 'node-fetch'
 import { xpRange } from '../lib/levelling.js'
 
 let tags = {
-  'main': 'INFO',
-  'game': 'JUEGOS',
- // 'serbot': 'SUB BOTS',
-  'rpg': 'ECONOMÍA',
-  'rg': 'REGISTRO',
-  'downloader': 'DESCARGAS',
-//  'marker': 'LOGO - MAKER',
-  'nable': 'ACTIVADORES',
-  'group': 'GRUPOS',
-  'search': 'BUSCADOR',
-  'img': 'IMÁGENES',
-  'tools': 'HERRAMIENTAS',
-  'fun': 'DIVERCIÓN',
-  'audio': 'EFECTO DE AUDIOS', 
-  'sticker': 'STICKERS',
-  'nsfw': 'NSFW',
-  'owner': 'CREADOR',
-  'advanced': 'AVANZADO',
+  'main': 'Info 📚',
+  'search': 'Busquedas 🔎',
+  'game': 'Juegos 🎮',
+  'serbot': 'Sub Bots 🤖',
+  'rpg': 'RPG 🌠',
+  'rg': 'Registro 📁',
+  'sticker': 'Stickers 🏞',
+  'img': 'Imágenes 📸',
+  'group': 'Grupos 👥',
+  'logo': 'Logo - maker 🎨',
+  'nable': 'On / Off 📴', 
+  'downloader': 'Descargas 📥',
+  'tools': 'Herramientas 🔧',
+  'fun': 'Diversión 🎲',
+  'nsfw': 'Nsfw 🔞', 
+  'owner': 'Creador 😺', 
+  'audio': 'Audios 🔉', 
+  'advanced': 'Avanzado 💠',
 }
 
 const defaultMenu = {
   before: `
-*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
+*꒷꒦꒷꒷꒦꒷꒦꒷꒷꒦꒷꒦꒷꒦꒷꒷꒦꒷꒷꒦꒷꒷꒦꒷꒦꒷꒦꒷꒦꒷*
 
-Hola *%taguser*, soy *Ai Hoshino*, en que puedo ayudarte hoy?
+“ Hola *%name*, Cómo se encuentra el día de hoy? ”
 
-╭────═[ *I N F O  -  U S E R* ]═─────⋆
-│╭───────────────···
-┴│✯ *🍭 Nombre* : %name
-✩│✯ *⭐ Estrellas* : %star
-✩│✯ *📈 Nivel* : %level
-┬│✯ *💫 XP* : %totalexp
-│╰────────────────···
-╰───────────═┅═──────────
+╭──⬣「 *Info User* 」⬣
+│  ≡◦ *🍭 Nombre ∙* %name
+│  ≡◦ *🍬 Dulces ∙* %limit
+│  ≡◦ *💫 XP ∙* %totalexp
+│  ≡◦ *🐢 Nivel ∙* %level
+╰──⬣
 %readmore
-*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
+*꒷꒦꒷꒷꒦꒷꒦꒷꒷꒦꒷꒦꒷꒦꒷꒷꒦꒷꒷꒦꒷꒷꒦꒷꒦꒷꒦꒷꒦꒷*
 
 \t\t\t*L I S T A  -  M E N Ú S*
 `.trimStart(),
-  header: '╭───═[ *MENÚ メ %category* ]═────⋆\n│╭───────────────···',
-  body: '✩│ *%cmd*\n',
-  footer: '│╰────────────────···\n╰───────────═┅═──────────\n',
-  after: '\n*Simple WhatsApp Bot Multi Device*',
+header: '╭──⬣「 *%category* 」⬣',
+body: '│  ≡◦ *%cmd*\n',
+footer: '╰──⬣\n',
+after: '',
 }
 
 let handler = async (m, { conn, usedPrefix: _p, __dirname }) => {
- try {
+  try {
     let _package = JSON.parse(await promises.readFile(join(__dirname, '../package.json')).catch(_ => ({}))) || {}
-    let { exp, star, level } = global.db.data.users[m.sender]
+    let { exp, limit, level } = global.db.data.users[m.sender]
     let { min, xp, max } = xpRange(level, global.multiplier)
     let name = await conn.getName(m.sender)
     let d = new Date(new Date + 3600000)
     let locale = 'es'
-    // d.getTimeZoneOffset()
-    // Offset -420 is 18.00
-    // Offset    0 is  0.00
-    // Offset  420 is  7.00
     let weton = ['Pahing', 'Pon', 'Wage', 'Kliwon', 'Legi'][Math.floor(d / 84600000) % 5]
     let week = d.toLocaleDateString(locale, { weekday: 'long' })
     let date = d.toLocaleDateString(locale, {
@@ -96,7 +90,7 @@ let handler = async (m, { conn, usedPrefix: _p, __dirname }) => {
         help: Array.isArray(plugin.tags) ? plugin.help : [plugin.help],
         tags: Array.isArray(plugin.tags) ? plugin.tags : [plugin.tags],
         prefix: 'customPrefix' in plugin,
-        star: plugin.star,
+        limit: plugin.limit,
         premium: plugin.premium,
         enabled: !plugin.disabled,
       }
@@ -118,8 +112,8 @@ let handler = async (m, { conn, usedPrefix: _p, __dirname }) => {
           ...help.filter(menu => menu.tags && menu.tags.includes(tag) && menu.help).map(menu => {
             return menu.help.map(help => {
               return body.replace(/%cmd/g, menu.prefix ? help : '%p' + help)
-                .replace(/%isstar/g, menu.star ? '˄' : '')
-                .replace(/%isPremium/g, menu.premium ? '˄' : '')
+                .replace(/%islimit/g, menu.limit ? '' : '')
+                .replace(/%isPremium/g, menu.premium ? '' : '')
                 .trim()
             }).join('\n')
           }),
@@ -146,31 +140,16 @@ let handler = async (m, { conn, usedPrefix: _p, __dirname }) => {
       totalexp: exp,
       xp4levelup: max - exp,
       github: _package.homepage ? _package.homepage.url || _package.homepage : '[unknown github url]',
-      level, star, name, weton, week, date, dateIslamic, time, totalreg, rtotalreg,
+      level, limit, name, weton, week, date, dateIslamic, time, totalreg, rtotalreg,
       readmore: readMore
     }
     text = text.replace(new RegExp(`%(${Object.keys(replace).sort((a, b) => b.length - a.length).join`|`})`, 'g'), (_, name) => '' + replace[name])
     
-    let pp = 'https://telegra.ph/file/4c3e4b782c82511b3874d.mp4'
-    let pp2 = 'https://telegra.ph/file/d8c5e18ab0cfc10511f63.mp4'
-    let pp3 = 'https://telegra.ph/file/96e471a87971e2fb4955f.mp4'
-    let pp4 = 'https://telegra.ph/file/09b920486c3c291f5a9e6.mp4'
-    let pp5 = 'https://telegra.ph/file/4948429d0ab0212e9000f.mp4'
-    let pp6 = 'https://telegra.ph/file/cab0bf344ba83d79c1a47.mp4'
-    let pp7 = 'https://telegra.ph/file/6d89bd150ad55db50e332.mp4'
-    let pp8 = 'https://telegra.ph/file/e2f791011e8d183bd6b50.mp4'
-    let pp9 = 'https://telegra.ph/file/546a6a2101423efcce4bd.mp4'
-    let pp10 = 'https://telegra.ph/file/930b9fddde1034360fd86.mp4'
-    let pp11 = 'https://telegra.ph/file/81da492e08bfdb4fda695.mp4'
-    let pp12 = 'https://telegra.ph/file/ec8393df422d40f923e00.mp4'
-    let pp13 = 'https://telegra.ph/file/ba7c4a3eb7bf3d892b0c8.mp4'
-    let pp14 = 'https://tinyurl.com/ymlqb6ml'
-    let pp15 = 'https://tinyurl.com/ykv7g4zy'
-    m.react('⭐')
-    conn.sendMessage(m.chat, { video: { url: [pp, pp2, pp3, pp4, pp5, pp6, pp7, pp8, pp9, pp10, pp11, pp12, pp13, pp14, pp15].getRandom() }, gifPlayback: true, caption: text.trim(), mentions: [m.sender] }, { quoted: estilo })
-    
+    let pp = './src/menu.jpg'
+    await conn.sendFile(m.chat, pp, 'thumbnail.jpg', text.trim(), m)
+
   } catch (e) {
-    conn.reply(m.chat, '❎ Lo sentimos, el menú tiene un error.', m)
+    conn.reply(m.chat, 'Lo sentimos, el menú tiene un error.', m)
     throw e
   }
 }
@@ -178,9 +157,8 @@ let handler = async (m, { conn, usedPrefix: _p, __dirname }) => {
 handler.help = ['menu']
 handler.tags = ['main']
 handler.command = ['menu', 'help', 'menú'] 
-handler.register = true 
+handler.register = false 
 export default handler
-
 
 const more = String.fromCharCode(8206)
 const readMore = more.repeat(4001)

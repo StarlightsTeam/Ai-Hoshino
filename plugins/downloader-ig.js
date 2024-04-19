@@ -1,32 +1,15 @@
-import axios from 'axios'
-let handler = async (m, {conn, args}) => {
+import Scraper from '@SumiFX/Scraper'
 
-if (!args[0]) return conn.reply(m.chat, `*🚩 Escribe la URL de un video de Instagram que deseas descargar.*`, m)
-await m.react('🕓')
-let url = `https://vihangayt.me/download/instagram?url=${encodeURIComponent(args[0])}`
-  
+let handler = async (m, { conn, args, usedPrefix, command }) => {
+if (!args[0]) return m.reply('🍭 Ingresa el enlace del vídeo de Instagram junto al comando.\n\n`Ejemplo:`\n' + `> *${usedPrefix + command}* https://www.instagram.com/reel/CijhxhAD53X/?igsh=amJqMDQ1cW9zOG9s`)
+
 try {
-const response = await axios.get(url)
-if (!response.data.status) {
-throw new Error(`Error al obtener datos`)
-}
-const data = response.data.data
-if (data && data.data && data.data.length > 0) {
-const videoURL = data.data[0].url
-
-await conn.sendFile(m.chat, videoURL, 'instagram_reel.mp4', '', estilo)
-await m.react('✅')
-} else {
-await conn.reply(m.chat, 'No puedo encontrar el vídeo de Instagram.', m).then(_ => m.react('✖️'))
-}
-} catch (error) {
-console.error(error)
-conn.reply(m.chat, '*☓ Ocurrió un error inesperado*', m).then(_ => m.react('✖️'))
-}
-}
-handler.help = ['instagram'].map(v => v + ' <url ig>')
-handler.tags = ['downloader'];
-handler.command = /^(instagramdl|instagram|igdl|ig)$/i;
-handler.star = 2
+let { dl_url } = await Scraper.igdl(args[0])
+await conn.sendMessage(m.chat, { video: { url: dl_url }, caption: null }, { quoted: m})
+} catch {
+}}
+handler.help = ['instagram <url ig>']
+handler.tags = ['downloader']
+handler.command = ['ig', 'igdl', 'instagram']
 handler.register = true 
 export default handler

@@ -1,7 +1,7 @@
 export async function before(m) {
     let user = global.db.data.users[m.sender]
     if (user.afk > 0) {
-        await conn.reply(m.chat, `🚩 @${m.sender.split`@` [0]} dejaste de estar AFK despues de *${(new Date - user.afk).toTimeString()}*.`, m, adReply)
+        await m.reply(`🍭 Dejaste de estar *AFK* despues de *${(new Date - user.afk).toTimeString()}.*`)
         user.afk = 0
         user.afkReason = ''
     }
@@ -14,7 +14,7 @@ export async function before(m) {
         if (!afkTime || afkTime < 0)
             continue
         let reason = user.afkReason || ''
-        await conn.reply(m.chat, `🚩 El usuario que intentas etiquetar esta *AFK* por la razón *${reason ? reason : '...'}* durante *${(new Date - afkTime).toTimeString()}*.`, m, adReply)
+        await m.reply(`🍭 El usuario que intentas etiquetar esta *AFK* por la razón *${reason ? reason : '...'}* durante *${(new Date - afkTime).toTimeString()}*.`)
     }
     return true
 }

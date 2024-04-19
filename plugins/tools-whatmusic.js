@@ -10,20 +10,19 @@ let handler = async (m, { conn, usedPrefix, command }) => {
   let mime = (q.msg || q).mimetype || q.mediaType || ''
   if (/video|audio/.test(mime)) {
   let buffer = await q.download()
-  await m.react('🕓')
   let { status, metadata } = await acr.identify(buffer)
   if (status.code !== 0) throw status.msg 
   let { title, artists, album, genres, release_date } = metadata.music[0]
-  let txt = `*• Titulo:* ${title}${artists ? `\n*• Artists:* ${artists.map(v => v.name).join(', ')}` : ''}`
-  txt += `${album ? `\n*• Album:* ${album.name}` : ''}${genres ? `\n*• Genero:* ${genres.map(v => v.name).join(', ')}` : ''}\n`
-  txt += `*• Fecha de lanzamiento:* ${release_date}`
-  await conn.reply(m.chat, txt, m, adReply)
-  await m.react('✅')
-  } else return conn.reply(m.chat, `*🚩 Responde a un audio o video.*`, m)
+  let txt = '╭─⬣「 *Whatmusic Tools* 」⬣\n\n'
+      txt += `│  ≡◦ *🍭 Titulo ∙*${title}${artists ? `\n│  ≡◦ *👤 Artista ∙* ${artists.map(v => v.name).join(', ')}` : ''}`
+      txt += `${album ? `\n│  ≡◦ *📚 Album ∙* ${album.name}` : ''}${genres ? `\n│  ≡◦ *🪴 Genero ∙* ${genres.map(v => v.name).join(', ')}` : ''}\n`
+      txt += `│  ≡◦ *🕜 Fecha de lanzamiento ∙* ${release_date}`
+     conn.reply(m.chat, txt, m)
+  } else return conn.reply(m.chat, `🍭 Etiqueta un audio o video de poca duración con el comando *${usedPrefix + command}* para ver que música contiene.`, m)
 }
 handler.help = ['whatmusic <audio/video>']
 handler.tags = ['tools']
 handler.command = /^(whatmusic|shazam)$/i
-handler.star = 2
+//handler.limit = 1
 handler.register = true 
 export default handler

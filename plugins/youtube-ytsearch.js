@@ -1,24 +1,24 @@
-import yts from 'yt-search'
+import Scraper from "@SumiFX/Scraper"
 
-let handler = async (m, {conn, usedPrefix, text }) => {
-   if (!text) return conn.reply(m.chat, '*🚩 Ingresa lo que deseas buscar en YouTube.*', m)
-   await m.react('🕓')
-   let results = await yts(text)
-   let res = results.all.map(v => v).filter(v => v.type == "video")
-   if (!res.length) return conn.reply(m.chat, 'No se encontraron resultados, intente con un nombre más Corto.', m).then(_ => m.react('✖️'))
-   let txt = `*YouTube - Search*`
-   for (let i = 0; i < (30 <= res.length ? 30 : res.length); i++) {
-      txt += `\n\n`
-	  txt += `	✰  *Titulo* : ${res[i].title}\n`
-	  txt += `	✰  *Duración* : ${res[i].timestamp || '×'}\n`
-	  txt += `	✰  *Publicado* : ${res[i].ago}\n`
-	  txt += `	✰  *Autor* : ${res[i].author.name || '×'}\n`
-	  txt += `	✰  *Url* : ${'https://youtu.be/' + res[i].videoId}\n`
-	  }
-   await conn.sendFile(m.chat, res[0].image, '', txt, m)
-   await m.react('✅')
+let handler = async (m, { conn, usedPrefix, command, text }) => {
+    if (!text) return conn.reply(m.chat, '🍭 Ingresa el título de un video o canción de YouTube.\n\n`Ejemplo:`\n' + `> *${usedPrefix + command}* Gemini Aaliyah - If Only`, m)
+    let results = await Scraper.ytsearch(text)
+    if (!results || !results.length) return conn.reply(m.chat, `No se encontraron resultados.`, m)
+    let img = results[0].thumbnail
+    let txt = `╭─⬣「 *YouTube Search* 」⬣\n`
+    results.forEach((video, index) => {
+        txt += ` │  ≡◦ *🐢 Nro ∙* ${index + 1}\n`
+        txt += ` │  ≡◦ *🍭 Titulo ∙* ${video.title}\n`
+        txt += ` │  ≡◦ *🕜 Duración ∙* ${video.duration}\n`
+        txt += ` │  ≡◦ *🪴 Publicado ∙* ${video.published}\n`
+        txt += ` │  ≡◦ *📚 Autor ∙* ${video.author}\n`
+        txt += ` │  ≡◦ *⛓ Url ∙* ${video.url}\n`
+        txt += ` ╰──────────⬣`
+        txt += `\n`
+    })
+await conn.sendFile(m.chat, img, 'thumbnail.jpg', txt, m)
 }
-handler.help = ['ytsearch']
+handler.help = ['ytsearch <búsqueda>']
 handler.tags = ['search']
 handler.command = ['ytsearch', 'yts']
 handler.register = true 

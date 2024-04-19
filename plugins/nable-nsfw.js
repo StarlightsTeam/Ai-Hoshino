@@ -1,21 +1,19 @@
-import db from '../lib/database.js'
-
 let handler = async (m, { conn, args, usedPrefix, command }) => {
    let chat = global.db.data.chats[m.chat] || {}
    if (args[0] === 'on') {
-      if (chat.nsfw) return conn.reply(m.chat, 'Nsfw ya esta Activada.', m, adReply)
+      if (chat.nsfw) return conn.reply(m.chat, 'Nsfw ya esta Activado.', m)
       chat.nsfw = true
-      await conn.reply(m.chat, '🚩 Nsfw activada para este Grupo.', m, adReply)
+      await conn.reply(m.chat, '🍭 Nsfw activado para este Grupo.', m)
    } else if (args[0] === 'off') {
-      if (!chat.nsfw) return conn.reply(m.chat, 'Nsfw ya esta Desactivada.', m, adReply)
+      if (!chat.nsfw) return conn.reply(m.chat, 'Nsfw ya esta Desactivado.', m)
       chat.nsfw = false
-      await conn.reply(m.chat, '🚩 Nsfw desactivada para este Grupo.', m, adReply)
+      await conn.reply(m.chat, '🍭 Nsfw desactivado para este Grupo.', m)
    } else {
-      await conn.reply(m.chat, `*Configurar Nsfw*. Escriba on para activar y off para Desactivar.`, m, adReply)
+      await conn.reply(m.chat, `*Configurar Nsfw*. Escriba on para activar y off para Desactivar.`, m)
    }
 }
 
-handler.help = ['nsfw on/off']
+handler.help = ['nsfw <on/off>']
 handler.tags = ['nable']
 handler.command = ['nsfw']
 handler.use = ['on/off']

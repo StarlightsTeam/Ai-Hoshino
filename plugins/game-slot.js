@@ -1,16 +1,19 @@
-import db from '../lib/database.js'
+let cooldowns = {}
 
 let handler = async (m, { conn, args, usedPrefix, command }) => {
-    if (!args[0]) return conn.reply(m.chat, `*🚩 Escribe la cantidad de ⭐ Estrellas que deseas apostar.*`, m, adReply)
-    if (isNaN(args[0])) return conn.reply(m.chat, `*🚩 Escribe la cantidad de ⭐ Estrellas que deseas apostar.*`, m, adReply)
+
+    if (!args[0]) return m.reply('🍭 Ingresa la cantidad de *🍬 Dulces* que deseas apostar.\n\n`Ejemplo:`\n' + `> *${usedPrefix + command}* 10`)
+    if (isNaN(args[0])) return m.reply('🍭 Ingresa la cantidad de *🍬 Dulces* que deseas apostar.\n\n`Ejemplo:`\n' + `> *${usedPrefix + command}* 10`)
     let apuesta = parseInt(args[0])
     let users = global.db.data.users[m.sender]
-    let time = users.lastslot + 30000
-    if (new Date - users.lastslot < 30000) return conn.reply(m.chat, `⏱ Debes esperar *${msToTime(time - new Date())}* para volver a jugar.`, m, adReply)
-    if (apuesta < 1) return conn.reply(m.chat, `El mínimo de la apuesta es *1 ⭐ Estrella.*`, m, adReply)
-    if (users.star < apuesta) {
-        return conn.reply(m.chat, `No tienes suficientes *⭐ Estrellas* para realizar la apuesta.`, m, adReply)
-    }
+    
+    let tiempoEspera = 15
+	    
+	    if (cooldowns[m.sender] && Date.now() - cooldowns[m.sender] < tiempoEspera * 1000) {
+    let tiempoRestante = segundosAHMS(Math.ceil((cooldowns[m.sender] + tiempoEspera * 1000 - Date.now()) / 1000))
+    m.reply(`⏱ Espera *${tiempoRestante}* para apostar nuevamente.`)
+    return
+  }
 
     let emojis = ["🍎", "🍉", "🍓"];
     let a = Math.floor(Math.random() * emojis.length);
@@ -36,39 +39,35 @@ let handler = async (m, { conn, args, usedPrefix, command }) => {
     }
     let end;
     if (a == b && b == c) {
-        end = `acabas de ganar *+${apuesta} ⭐ Estrellas.*`
-        users.star += apuesta
+        end = `Acabas de ganar   *${apuesta} 🍬 Dulces.*`
+        users.limit += apuesta
     } else if (a == b || a == c || b == c) {
-        end = `Casi lo logras sigue intentando :) \nTen *+1 ⭐ Estrellas.*`
-        users.star += 1
+        end = `Casi lo logras sigue intentando :) \nTen *1 🍬 Dulce.*`
+        users.limit += 1
     } else {
-        end = `acabas de perder *${apuesta} ⭐ Estrellas.*`
-        users.star -= apuesta
+        end = `Perdiste  *${apuesta} 🍬 Dulces.*`
+        users.limit -= apuesta
     }
-    users.lastslot = new Date * 1
-    let name = await conn.getName(m.sender)
+    cooldowns[m.sender] = Date.now()
     return await conn.reply(m.chat,
-        ` 🎰 | *SLOTS* 
+        `
+  🎰 | *SLOTS* 
 ──────────
 ${x[0]} : ${y[0]} : ${z[0]}
 ${x[1]} : ${y[1]} : ${z[1]}
 ${x[2]} : ${y[2]} : ${z[2]}
+────────── 
 
-${name}, ${end}
-────────── `, m, adReply) 
+${end}`, m) 
 }
 handler.help = ['slot <apuesta>']
 handler.tags = ['game']
 handler.command = ['slot']
 handler.register = true
-handler.group = true 
+handler.group = false 
 export default handler
 
-function msToTime(duration) {
-    var milliseconds = parseInt((duration % 1000) / 100),
-        seconds = Math.floor((duration / 1000) % 60),
-
-    seconds = (seconds < 10) ? "0" + seconds : seconds
-
-    return seconds + " segundos"
+function segundosAHMS(segundos) {
+  let segundosRestantes = segundos % 60
+  return `${segundosRestantes} segundos`
 }

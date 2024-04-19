@@ -1,4 +1,3 @@
-
 let handler = m => m
 export async function all(m) {
     let user = global.db.data.users[m.sender]
