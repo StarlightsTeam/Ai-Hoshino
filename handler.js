@@ -35,7 +35,7 @@ export async function handler(chatUpdate) {
         if (!m)
             return
         m.exp = 0
-        m.star = false
+        m.limit = false
         try {
             // TODO: use loop to insert data instead of this
             let user = global.db.data.users[m.sender]
@@ -44,8 +44,8 @@ export async function handler(chatUpdate) {
             if (user) {
                 if (!isNumber(user.exp))
                     user.exp = 0
-                if (!isNumber(user.star))
-                    user.star = 20
+                if (!isNumber(user.limit))
+                    user.limit = 20
                 if (!('registered' in user))
                     user.registered = false
                     //-- user registered 
@@ -77,7 +77,7 @@ export async function handler(chatUpdate) {
             } else
                 global.db.data.users[m.sender] = {
                     exp: 0,
-                    star: 20,
+                    limit: 20,
                     registered: false,
                     name: m.name,
                     age: -1,
@@ -99,22 +99,8 @@ export async function handler(chatUpdate) {
                     chat.isBanned = false
                 if (!('welcome' in chat))
                     chat.welcome = true  
-                if (!('detect' in chat))
-                    chat.detect = false
-                if (!('sWelcome' in chat))
-                    chat.sWelcome = ''
-                if (!('sBye' in chat))
-                    chat.sBye = ''
-                if (!('sPromote' in chat))
-                    chat.sPromote = ''
-                if (!('sDemote' in chat))
-                    chat.sDemote = ''
-                if (!('delete' in chat))
-                    chat.delete = true
                 if (!('antiLink' in chat))
                     chat.antiLink = false
-                if (!('viewonce' in chat))
-                    chat.viewonce = false
                 if (!('nsfw' in chat))
                     chat.nsfw = false
                 if (!isNumber(chat.expired))
@@ -123,14 +109,7 @@ export async function handler(chatUpdate) {
                 global.db.data.chats[m.chat] = {
                     isBanned: false,
                     welcome: true,
-                    detect: false,
-                    sWelcome: '',
-                    sBye: '',
-                    sPromote: '',
-                    sDemote: '',
-                    delete: true,
                     antiLink: false,
-                    viewonce: false,
                     nsfw: false, 
                     expired: 0,
                 }
@@ -329,9 +308,9 @@ export async function handler(chatUpdate) {
                     m.reply('chirrido -_-') // Hehehe
                 else
                     m.exp += xp
-                if (!isPrems && plugin.star && global.db.data.users[m.sender].star < plugin.star * 1) {
-                conn.reply(m.chat, `Lo siento @${m.sender.split`@`[0]}, se agotaron tus *Estrellas ⭐*`, estilo, adReply).then(_ => m.react('✖️'))
-                    continue // star habis
+                if (!isPrems && plugin.limit && global.db.data.users[m.sender].limit < plugin.limit * 1) {
+                m.reply(`Se agotaron tus *🍬 Dulces*`)
+                    continue // limit habis
                 }
                 let extra = {
                     match,
@@ -359,7 +338,7 @@ export async function handler(chatUpdate) {
                 try {
                     await plugin.call(this, m, extra)
                     if (!isPrems)
-                        m.star = m.star || plugin.star || false
+                        m.limit = m.limit || plugin.limit || false
                 } catch (e) {
                     // Error occured
                     m.error = e
@@ -379,8 +358,8 @@ export async function handler(chatUpdate) {
                             console.error(e)
                         }
                     }
-                    if (m.star)
-                        conn.reply(m.chat, `Utilizaste *${+m.star}* ⭐`, m, adReply)
+                    if (m.limit)
+                        m.reply(`Utilizaste *${+m.limit}* 🍬`)
                 }
                 break
             }
@@ -398,7 +377,7 @@ export async function handler(chatUpdate) {
         if (m) {
             if (m.sender && (user = global.db.data.users[m.sender])) {
                 user.exp += m.exp
-                user.star -= m.star * 1
+                user.limit -= m.limit * 1
             }
 
             let stat
@@ -441,126 +420,26 @@ export async function handler(chatUpdate) {
   }
 }
 
-/**
- * Handle groups participants update
- * @param {import('@adiwajshing/baileys').BaileysEventMap<unknown>['group-participants.update']} groupsUpdate 
- */
-export async function participantsUpdate({ id, participants, action }) {
-    if (opts['self'])
-        return
-    // if (id in conn.chats) return // First login will spam
-    if (this.isInit)
-        return
-    if (global.db.data == null)
-        await loadDatabase()
-    let chat = global.db.data.chats[id] || {}
-    let text = ''
-    switch (action) {
-        case 'add':
-          let puserd = participants
-          //if (`${puserd}`.startsWith('51')) return this.groupParticipantsUpdate(id, [puserd], 'remove')
-          
-        break
-
-        case 'remove':
-            if (chat.welcome) {
-                let groupMetadata = await this.groupMetadata(id) || (conn.chats[id] || {}).metadata
-                for (let user of participants) {
-                    let pp = './src/avatar_contact.png'
-                    try {
-                        pp = await this.profilePictureUrl(user, 'image')
-                    } catch (e) {
-                    } finally {
-                        text = (action === 'add' ? (chat.sWelcome || this.welcome || conn.welcome || 'Bienvenido, @user').replace('@group', await this.getName(id)).replace('@desc', groupMetadata.desc?.toString() || 'Desconocido') :
-                            (chat.sBye || this.bye || conn.bye || 'Adiós, @user')).replace('@user', '@' + user.split('@')[0])
-                        //this.sendFile(id, pp, 'pp.jpg', text, null, false, { mentions: [user] })
-                    }
-                }
-            }
-            break
-           
-        case 'promote':
-        case 'promover':
-            text = (chat.sPromote || this.spromote || conn.spromote || '@user ahora es administrador')
-        case 'demote':
-        case 'degradar':
-            if (!text)
-                text = (chat.sDemote || this.sdemote || conn.sdemote || '@user ya no es administrador')
-            text = text.replace('@user', '@' + participants[0].split('@')[0])
-            if (chat.detect)
-                this.sendMessage(id, { text, mentions: this.parseMention(text) })
-            break
-    }
-}
-
-/**
- * Handle groups update
- * @param {import('@adiwajshing/baileys').BaileysEventMap<unknown>['groups.update']} groupsUpdate 
- */
-export async function groupsUpdate(groupsUpdate) {
-    if (opts['self'])
-        return
-    for (const groupUpdate of groupsUpdate) {
-        const id = groupUpdate.id
-        if (!id) continue
-        let chats = global.db.data.chats[id], text = ''
-        if (!chats?.detect) continue
-        if (groupUpdate.desc) text = (chats.sDesc || this.sDesc || conn.sDesc || 'Descripción cambiada a \n@desc').replace('@desc', groupUpdate.desc)
-        if (groupUpdate.subject) text = (chats.sSubject || this.sSubject || conn.sSubject || 'El nombre del grupo cambió a \n@group').replace('@group', groupUpdate.subject)
-        if (groupUpdate.icon) text = (chats.sIcon || this.sIcon || conn.sIcon || 'El icono del grupo cambió a').replace('@icon', groupUpdate.icon)
-        if (groupUpdate.revoke) text = (chats.sRevoke || this.sRevoke || conn.sRevoke || 'El enlace del grupo cambia a\n@revoke').replace('@revoke', groupUpdate.revoke)
-        if (!text) continue
-        await this.sendMessage(id, { text, mentions: this.parseMention(text) })
-    }
-}
-
-export async function deleteUpdate(message) {
-    try {
-        const { fromMe, id, participant } = message
-        if (fromMe)
-            return
-        let msg = this.serializeM(this.loadMessage(id))
-        if (!msg)
-            return
-        let chat = global.db.data.chats[msg.chat] || {}
-        if (chat.delete)
-            return
-        await this.reply(msg.chat, `
-≡ Borró un mensaje  
-┌─⊷  𝘼𝙉𝙏𝙄 𝘿𝙀𝙇𝙀𝙏𝙀 
-▢ *Nombre :* @${participant.split`@`[0]} 
-└─────────────
-Para desactivar esta función, escriba 
-*/off antidelete*
-*.enable delete*
-`.trim(), msg, {
-            mentions: [participant]
-        })
-        this.copyNForward(msg.chat, msg).catch(e => console.log(e, msg))
-    } catch (e) {
-        console.error(e)
-    }
-}
-
 global.dfail = (type, m, conn) => {
-    let msg = {
-        rowner: `ⓘ Hola @${m.sender.split`@`[0]}, este comando solo puede ser utilizado por el *Creador* de la Bot.`,
-        owner: `ⓘ Hola @${m.sender.split`@`[0]}, este comando solo puede ser utilizado por el *Creador* de la Bot y *Sub Bots*.`,
-        mods: `ⓘ Hola @${m.sender.split`@`[0]}, este comando solo puede ser utilizado por los *Moderadores* de la Bot.`,
-        premium: `ⓘ Hola @${m.sender.split`@`[0]}, este comando solo puede ser utilizado por Usuarios *Premium*.`,
-        group: `ⓘ Hola @${m.sender.split`@`[0]}, este comando solo puede ser utilizado en *Grupos*.`,
-        private: `ⓘ Hola @${m.sender.split`@`[0]}, este comando solo puede ser utilizado en mi Chat *Privado*.`,
-        admin: `ⓘ Hola @${m.sender.split`@`[0]}, este comando solo puede ser utilizado por los *Administradores* del Grupo.`,
-        botAdmin: `ⓘ Hola @${m.sender.split`@`[0]}, la bot deve ser *Administradora* para ejecutar este Comando.`,
-        unreg: `ⓘ Hola @${m.sender.split`@`[0]}, para usar este comando debes estar *Registrado.*`,
-        restrict: `ⓘ Hola @${m.sender.split`@`[0]}, esta característica está *deshabilitada*`
+	let msg = {
+		rowner: '• Esta función solo puede ser utilizado por el *creador* de la bot',
+        owner: '• Esta función solo puede ser utilizado por el *creador* de la bot',
+        mods: '• Esta función es solo para para *moderadores\'as* de la bot',
+        premium: '• Esta función es solo para miembros *premium*',
+        group: '• Esta función solo se puede usar en *grupos*',
+        private: '• Esta función solo se puede usar en el chat *privado* de la bot',
+        admin: '• Esta función es solo para *admins* del grupo',
+        botAdmin: '• Para ejecutar esta función debo ser *administradora*',
+        unreg: 'Regístrese para usar esta función  Escribiendo:\n\n*/reg nombre.edad*\n\n🍭 Ejemplo : */reg おDaniel.666*',
+        restrict: '• Esta función está *deshabilitada*',
+        nsfw: '• En este grupo está prohibido el contenido +18'
     }[type]
-    if (msg) return conn.reply(m.chat, msg, estilo, adReply).then(_ => m.react('✖️'))
+    if (msg) return conn.reply(m.chat, msg, m)
 }
 
 let file = global.__filename(import.meta.url, true)
 watchFile(file, async () => {
     unwatchFile(file)
-    console.log(chalk.magenta("✅  Se actualizo 'handler.js'"))
+    console.log(chalk.magenta("Se actualizo 'handler.js'"))
     if (global.reloadHandler) console.log(await global.reloadHandler())
 })
