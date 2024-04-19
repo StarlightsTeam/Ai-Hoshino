@@ -1,20 +1,20 @@
-<h1 align="center">‧ ⭐ Ai Hoshino - MD ⭐ ‧
+<h1 align="center">‧ 🍭 Sumi Sakurasawa - MD 🍭 ‧
 </p>
 <p>
-        <img src= "https://telegra.ph/file/89fa6a3c8e9cedda6f5ca.jpg">
+        <img src= "https://tinyurl.com/258rd289">
     </p>
     <p align="center">
         <a href="#"><img title="simple-whatsapp-bot" src="https://img.shields.io/badge/-SIMPLE--WHATSAPP--BOT-green?colorA=%23ff0000&colorB=%23017e40&style=for-the-badge"></a>
     </p>
     <p>
-        <a href="https://github.com/NakanoTeam"><img title="Author"    src="https://img.shields.io/badge/Author-おDaniel-purple.svg?style=for-the-badge&logo=github"></a>
+        <a href="https://github.com/Sumi-Sakurasawa"><img title="Author"    src="https://img.shields.io/badge/Author-おDaniel-purple.svg?style=for-the-badge&logo=github"></a>
     </p>
     <p>
-        <a href="https://github.com/NakanoTeamollowers"><img title="Followers" src="https://img.shields.io/github/followers/NakanoTeam?color=blue&style=flat-square"></a>
-        <a href="https://github.com/NakanoTeam/Ai-Hoshino/stargazers/"><img title="Stars" src="https://img.shields.io/github/stars/NakanoTeam/Ai-Hoshino?color=red&style=flat-square"></a>
-        <a href="https://github.com/NakanoTeam/Ai-Hoshino/network/members"><img title="Forks" src="http://img.shields.io/github/forks/NakanoTeam/Ai-Hoshino?color=red&style=flat-square"></a>
+        <a href="https://github.com/Sumi-Sakurasawaollowers"><img title="Followers" src="https://img.shields.io/github/followers/Sumi-Sakurasawa?color=blue&style=flat-square"></a>
+        <a href="https://github.com/Sumi-Sakurasawa/Sumi-Sakurasawa/stargazers/"><img title="Stars" src="https://img.shields.io/github/stars/Sumi-Sakurasawa/Sumi-Sakurasawa?color=red&style=flat-square"></a>
+        <a href="https://github.com/Sumi-Sakurasawa/Sumi-Sakurasawa/network/members"><img title="Forks" src="http://img.shields.io/github/forks/Sumi-Sakurasawa/Sumi-Sakurasawa?color=red&style=flat-square"></a>
         <a href="#"><img src="https://img.shields.io/badge/MANTENIMIENTO-SI-blue.svg"</a>
-        <img src="https://img.shields.io/github/repo-size/NakanoTeam/Ai-Hoshino" /> <br>
+        <img src="https://img.shields.io/github/repo-size/Sumi-Sakurasawa/Sumi-Sakurasawa" /> <br>
    </p>
    <p>
 </h1>
@@ -47,7 +47,7 @@ pkg install -y git nodejs ffmpeg imagemagick && pkg install yarn
 ```
 
 ```bash
-git clone https://github.com/NakanoTeam/Ai-Hoshino.git && cd Ai-Hoshino
+git clone https://github.com/Sumi-Sakurasawa/Sumi-Sakurasawa.git && cd Sumi-Sakurasawa
 ```
 
 ```bash
@@ -107,19 +107,19 @@ npm start
 
 ## Repo Stats 🔭
 
-![github card](https://github-readme-stats.vercel.app/api/pin/?username=NakanoTeam&repo=Ai-Hoshino&theme=chartreuse-dark)
+![github card](https://github-readme-stats.vercel.app/api/pin/?username=Sumi-Sakurasawa&repo=Sumi-Sakurasawa&theme=chartreuse-dark)
 
 ---------
 
 ## <img src="https://raw.githubusercontent.com/vilcajoal/vilcajoal/master/assets/octocat-anime.gif" alt="Github" width="44" height="44"> Github Stats
 
-![github stats](https://github-readme-stats.vercel.app/api?username=NakanoTeam&show_icons=true&theme=chartreuse-dark)
-![github toplang](https://github-readme-stats.vercel.app/api/top-langs/?username=NakanoTeam&layout=compact&theme=chartreuse-dark)
+![github stats](https://github-readme-stats.vercel.app/api?username=Sumi-Sakurasawa&show_icons=true&theme=chartreuse-dark)
+![github toplang](https://github-readme-stats.vercel.app/api/top-langs/?username=Sumi-Sakurasawa&layout=compact&theme=chartreuse-dark)
 
 ---------
 <div align="center">
   <h1 align="center">Editor y Propietario de la Bot</h1>
 
-<a href="https://github.com/NakanoTeam"><img src="https://github.com/NakanoTeam.png" width="300" height="300" alt="おDaniel"/></a>
+<a href="https://github.com/Sumi-Sakurasawa"><img src="https://github.com/Sumi-Sakurasawa.png" width="300" height="300" alt="おDaniel"/></a>
 
-`© Ai Hoshino - MD / Nakano - Team _ By おDaniel`
+`© Sumi Sakurasawa - MD / StarlightsTeam - By おDaniel`
