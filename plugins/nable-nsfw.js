@@ -12,7 +12,6 @@ let handler = async (m, { conn, args, usedPrefix, command }) => {
       await conn.reply(m.chat, `*Configurar Nsfw*. Escriba on para activar y off para Desactivar.`, m)
    }
 }
-
 handler.help = ['nsfw <on/off>']
 handler.tags = ['nable']
 handler.command = ['nsfw']

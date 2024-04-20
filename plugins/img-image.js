@@ -11,4 +11,5 @@ handler.help = ['imagen <búsqueda>']
 handler.tags = ['img']
 handler.command = ['image', 'gimage', 'imagen']
 handler.register = true 
+//handler.limit = 1
 export default handler

@@ -20,4 +20,5 @@ handler.help = ['mediafire <url mf>']
 handler.tags = ['downloader']
 handler.command = ['mediafire', 'mdfire', 'mf']
 handler.register = true 
+handler.limit = 500
 export default handler

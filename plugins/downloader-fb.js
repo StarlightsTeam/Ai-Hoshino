@@ -12,4 +12,5 @@ handler.help = ['facebook <url fb>']
 handler.tags = ['downloader']
 handler.command = ['fb', 'fbdl', 'facebookdl', 'facebook']
 handler.register = true 
+//handler.limit = 1
 export default handler

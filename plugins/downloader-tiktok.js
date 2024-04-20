@@ -21,4 +21,5 @@ handler.help = ['tiktok <url tt>']
 handler.tags = ['downloader']
 handler.command = ['tiktok', 'ttdl', 'tiktokdl', 'tiktoknowm']
 handler.register = true 
+//handler.limit = 1
 export default handler

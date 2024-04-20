@@ -11,4 +11,5 @@ handler.help = ['ppcouple']
 handler.tags = ['img']
 handler.command = ['ppcouple', 'par']
 handler.register = true 
+//handler.limit = 1
 export default handler

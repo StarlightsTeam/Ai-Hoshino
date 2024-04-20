@@ -20,4 +20,5 @@ handler.help = ['aptoide <búsqueda>']
 handler.tags = ['downloader']
 handler.command = ['aptoide', 'apk']
 handler.register = true 
+//handler.limit = 5
 export default handler

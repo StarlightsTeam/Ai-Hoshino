@@ -25,5 +25,5 @@ handler.help = ["play <búsqueda>"]
 handler.tags = ["downloader"]
 handler.command = ["play"]
 handler.register = true 
-handler.limit = 1
+//handler.limit = 1
 export default handler

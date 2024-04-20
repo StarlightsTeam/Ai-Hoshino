@@ -13,5 +13,5 @@ handler.help = ['megumin']
 handler.tags = ['img']
 handler.command = ['megumin']
 handler.register = true 
-
+//handler.limit = 1
 export default handler

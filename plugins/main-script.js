@@ -4,6 +4,7 @@ import fetch from 'node-fetch'
 let handler = async (m, { conn, args }) => {
    let res = await fetch('https://api.github.com/repos/StarlightsTeam/Sumi-Sakurasawa')
    let json = await res.json()
+   let img = await (await fetch(`https://tinyurl.com/258rd289`)).buffer()
    let txt = `*B O T  -  S C R I P T*\n\n`
       txt += `	◦  *Nombre* : ${json.name}\n`
       txt += `	◦  *Visitas* : ${json.watchers_count}\n`
@@ -12,7 +13,7 @@ let handler = async (m, { conn, args }) => {
       txt += `	◦  *Url* : ${json.html_url}\n`
       txt += `	◦  *Forks* : ${json.forks_count}\n`
       txt += `	◦  *Stars* : ${json.stargazers_count}`
-   await conn.sendFile(m.chat, thumbnail, 'out.png', txt, m)
+   await conn.Sumi(m.chat, botname, txt, img, img, canal, m)
 
 }
 

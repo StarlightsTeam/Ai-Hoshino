@@ -13,6 +13,5 @@ handler.help = ['waifu']
 handler.tags = ['img']
 handler.command = ['waifu']
 handler.register = true 
-
-
+//handler.limit = 1
 export default handler

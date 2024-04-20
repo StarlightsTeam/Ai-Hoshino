@@ -15,4 +15,5 @@ handler.help = ['gitclone <url git>']
 handler.tags = ['downloader']
 handler.command = ['gitclone'] 
 handler.register = true 
+//handler.limit = 1
 export default handler

@@ -21,4 +21,5 @@ handler.tags = ['nsfw']
 handler.command = ['xnxxdl']
 handler.register = true 
 handler.group = true 
+handler.limit = 500
 export default handler

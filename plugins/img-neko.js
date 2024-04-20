@@ -7,12 +7,11 @@ if (!res.ok) return
 let json = await res.json()
 if (!json.url) return 
 await conn.sendFile(m.chat, json.url, 'thumbnail.jpg', null, m)
-await m.react('✅')
 } catch {
 }}
 handler.help = ['neko']
 handler.tags = ['img']
 handler.command = ['neko']
 handler.register = true 
-
+//handler.limit = 1
 export default handler
