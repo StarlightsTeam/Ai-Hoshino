@@ -92,10 +92,10 @@ npm start
 
 - Si tiene algún problema la bot contactanos ฅ^•ﻌ•^ฅ
 
-- おDanịel.xyz
+おDanịel.xyz
 * <a href="https://wa.me/5218261275256"><img alt="WhatsApp" src="https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white"/></a>
 
-- Samuel Fts 
+Samuel Fts 
 * <a href="https://wa.me/5492616532494"><img alt="WhatsApp" src="https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white"/></a>
 ---------
 
