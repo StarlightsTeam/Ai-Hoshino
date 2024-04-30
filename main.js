@@ -12,17 +12,15 @@ import lodash from 'lodash';
 import chalk from 'chalk'
 import syntaxerror from 'syntax-error';
 import { tmpdir } from 'os';
+import NodeCache from 'node-cache';
 import { format } from 'util';
 import { makeWASocket, protoType, serialize } from './lib/simple.js';
 import { Low, JSONFile } from 'lowdb';
 import pino from 'pino';
+import Pino from 'pino';
 import { mongoDB, mongoDBV2 } from './lib/mongoDB.js';
 import store from './lib/store.js'
-import {
-    useMultiFileAuthState,
-    DisconnectReason,
-    fetchLatestBaileysVersion 
-   } from '@whiskeysockets/baileys'
+const {DisconnectReason, useMultiFileAuthState, MessageRetryMap, fetchLatestBaileysVersion, makeCacheableSignalKeyStore, jidNormalizedUser, PHONENUMBER_MCC} = await import('@whiskeysockets/baileys');
 const { CONNECTING } = ws
 const { chain } = lodash
 const PORT = process.env.PORT || process.env.SERVER_PORT || 3000
@@ -79,72 +77,120 @@ global.loadDatabase = async function loadDatabase() {
 loadDatabase()
 
 //-- SESSION
-global.authFolder = `sessions`
-const { state, saveCreds } = await useMultiFileAuthState(global.authFolder)
-let { version, isLatest } = await fetchLatestBaileysVersion() 
+global.authFile = `sessions`
+const { state, saveState, saveCreds } = await useMultiFileAuthState(global.authFile)
+const msgRetryCounterMap = (MessageRetryMap) => {};
+const msgRetryCounterCache = new NodeCache();
+const { version } = await fetchLatestBaileysVersion();
 
+console.info = () => {}
 const connectionOptions = {
-	    version,
-        printQRInTerminal: true,
-        auth: state,
-        browser: ['Sumi Sakurasawa', 'Safari', '3.1.0'], 
-	      patchMessageBeforeSending: (message) => {
-                const requiresPatch = !!(
-                    message.buttonsMessage 
-                    || message.templateMessage
-                    || message.listMessage
-                );
-                if (requiresPatch) {
-                    message = {
-                        viewOnceMessage: {
-                            message: {
-                                messageContextInfo: {
-                                    deviceListMetadataVersion: 2,
-                                    deviceListMetadata: {},
-                                },
-                                ...message,
-                            },
-                        },
-                    };
-                }
-
-                return message;
-            }, 
-      logger: pino({ level: 'silent' })
-} 
+  logger: pino({ level: 'silent' }),
+  printQRInTerminal: true,
+  mobile: process.argv.includes("mobile"),
+  browser: ['Sumi Sakurasawa', 'Safari', '2.0.0'],
+  auth: {
+    creds: state.creds,
+    keys: makeCacheableSignalKeyStore(state.keys, Pino({ level: "fatal" }).child({ level: "fatal" }))
+  },
+  markOnlineOnConnect: true,
+  generateHighQualityLinkPreview: true,
+  getMessage: async (clave) => {
+    let jid = jidNormalizedUser(clave.remoteJid);
+    let msg = await store.loadMessage(jid, clave.id);
+    return msg?.message || "";
+  },
+  msgRetryCounterCache,
+  msgRetryCounterMap,
+  defaultQueryTimeoutMs: undefined,
+  version
+}
 //--
 global.conn = makeWASocket(connectionOptions)
 conn.isInit = false
 
 if (!opts['test']) {
-  setInterval(async () => {
-    if (global.db.data) await global.db.write().catch(console.error)
-    if (opts['autocleartmp']) try {
-      clearTmp()
-
-    } catch (e) { console.error(e) }
-  }, 60 * 1000)
+  if (global.db) {
+    setInterval(async () => {
+      if (global.db.data) await global.db.write();
+      if (opts['autocleartmp'] && (global.support || {}).find) (tmp = [os.tmpdir(), 'tmp', 'serbot'], tmp.forEach((filename) => cp.spawn('find', [filename, '-amin', '3', '-type', 'f', '-delete'])));
+    }, 30 * 1000);
+  }
 }
 
 if (opts['server']) (await import('./server.js')).default(global.conn, PORT)
 
-/* Clear */
 async function clearTmp() {
   const tmp = [tmpdir(), join(__dirname, './tmp')]
   const filename = []
   tmp.forEach(dirname => readdirSync(dirname).forEach(file => filename.push(join(dirname, file))))
 
-  //---
   return filename.map(file => {
     const stats = statSync(file)
-    if (stats.isFile() && (Date.now() - stats.mtimeMs >= 1000 * 60 * 3)) return unlinkSync(file) // 3 minuto
+    if (stats.isFile() && (Date.now() - stats.mtimeMs >= 1000 * 60 * 1)) return unlinkSync(file)
     return false
   })
 }
+
 setInterval(async () => {
-	var a = await clearTmp()
-	console.log(chalk.cyan(`Se limpio la carpeta tmp`))
-}, 180000) //3 muntos
+	await clearTmp()
+}, 60000)
+
+function purgeSession() {
+  let prekey = []
+  let directorio = readdirSync("./sessions")
+  let filesFolderPreKeys = directorio.filter(file => {
+    return file.startsWith('pre-key-')
+  })
+  prekey = [...prekey, ...filesFolderPreKeys]
+  filesFolderPreKeys.forEach(files => {
+    unlinkSync(`./sessions/${files}`)
+  })
+}
+
+function purgeSessionSB() {
+  try {
+    let listaDirectorios = readdirSync('./serbot/')
+    let SBprekey = []
+    listaDirectorios.forEach(directorio => {
+      if (statSync(`./serbot/${directorio}`).isDirectory()) {
+        let DSBPreKeys = readdirSync(`./serbot/${directorio}`).filter(fileInDir => {
+          return fileInDir.startsWith('pre-key-')
+        });
+        SBprekey = [...SBprekey, ...DSBPreKeys]
+        DSBPreKeys.forEach(fileInDir => {
+          unlinkSync(`./serbot/${directorio}/${fileInDir}`)
+        })
+      }
+    })
+    if (SBprekey.length === 0) return null
+  } catch (err) {
+  }
+}
+
+function purgeOldFiles() {
+  const directories = ['./sessions/', './serbot/']
+  const oneHourAgo = Date.now() - (60 * 60 * 1000)
+
+  directories.forEach(dir => {
+    readdirSync(dir, (err, files) => {
+      if (err) throw err
+
+      files.forEach(file => {
+        const filePath = path.join(dir, file)
+        stat(filePath, (err, stats) => {
+          if (err) throw err
+
+          if (stats.isFile() && stats.mtimeMs < oneHourAgo && file !== 'creds.json') {
+            unlinkSync(filePath, err => {
+              if (err) throw err
+            })
+          }
+        })
+      })
+    })
+  })
+}
 
 async function connectionUpdate(update) {
   const {connection, lastDisconnect, isNewLogin} = update;
