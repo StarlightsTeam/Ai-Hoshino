@@ -90,9 +90,9 @@ npm start
 
 ## <img src="https://i.pinimg.com/originals/19/80/6e/19806e91932e6054965fc83b85241270.gif" alt="Contacto" width="42" height="42"> Contacto
 
-- Si tiene algún problema la bot contactame ฅ^•ﻌ•^ฅ
+- Si tiene algún problema la bot contactanos ฅ^•ﻌ•^ฅ
 
-* <a href="https://wa.me/5218261275256"><img alt="WhatsApp" src="https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white"/></a>
+* <a href="https://wa.me/5218261275256"><img alt="おDanịel.xyz" src="https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white"/></a>
 
 ---------
 
