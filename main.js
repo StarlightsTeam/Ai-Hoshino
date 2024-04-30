@@ -1,6 +1,6 @@
- process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
+  process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 import './config.js'; 
-import { createRequire } from "module"; // Bring in the ability to create the 'require' method
+import { createRequire } from "module"; 
 import path, { join } from 'path'
 import { fileURLToPath, pathToFileURL } from 'url'
 import { platform } from 'process'
@@ -12,15 +12,18 @@ import lodash from 'lodash';
 import chalk from 'chalk'
 import syntaxerror from 'syntax-error';
 import { tmpdir } from 'os';
-import NodeCache from 'node-cache';
 import { format } from 'util';
 import { makeWASocket, protoType, serialize } from './lib/simple.js';
 import { Low, JSONFile } from 'lowdb';
 import pino from 'pino';
-import Pino from 'pino';
 import { mongoDB, mongoDBV2 } from './lib/mongoDB.js';
 import store from './lib/store.js'
-const {DisconnectReason, useMultiFileAuthState, MessageRetryMap, fetchLatestBaileysVersion, makeCacheableSignalKeyStore, jidNormalizedUser, PHONENUMBER_MCC} = await import('@whiskeysockets/baileys');
+import { Boom } from '@hapi/boom'
+import {
+    useMultiFileAuthState,
+    DisconnectReason,
+    fetchLatestBaileysVersion 
+   } from '@whiskeysockets/baileys'
 const { CONNECTING } = ws
 const { chain } = lodash
 const PORT = process.env.PORT || process.env.SERVER_PORT || 3000
@@ -76,128 +79,85 @@ global.loadDatabase = async function loadDatabase() {
 loadDatabase()
 
 //-- SESSION
-global.authFile = `sessions`
-const { state, saveState, saveCreds } = await useMultiFileAuthState(global.authFile)
-const msgRetryCounterMap = (MessageRetryMap) => {};
-const msgRetryCounterCache = new NodeCache();
-const { version } = await fetchLatestBaileysVersion();
+global.authFolder = `sessions`
+const { state, saveCreds } = await useMultiFileAuthState(global.authFolder)
+let { version, isLatest } = await fetchLatestBaileysVersion() 
 
-console.info = () => {}
 const connectionOptions = {
-  logger: pino({ level: 'silent' }),
-  printQRInTerminal: true,
-  mobile: process.argv.includes("mobile"),
-  browser: ['Sumi Sakurasawa', 'Safari', '2.0.0'],
-  auth: {
-    creds: state.creds,
-    keys: makeCacheableSignalKeyStore(state.keys, Pino({ level: "fatal" }).child({ level: "fatal" }))
-  },
-  markOnlineOnConnect: true,
-  generateHighQualityLinkPreview: true,
-  getMessage: async (clave) => {
-    let jid = jidNormalizedUser(clave.remoteJid);
-    let msg = await store.loadMessage(jid, clave.id);
-    return msg?.message || "";
-  },
-  msgRetryCounterCache,
-  msgRetryCounterMap,
-  defaultQueryTimeoutMs: undefined,
-  version
-}
+	    version,
+        printQRInTerminal: true,
+        auth: state,
+        browser: ['Sumi Sakurasawa', 'Safari', '2.0.0'], 
+	      patchMessageBeforeSending: (message) => {
+                const requiresPatch = !!(
+                    message.buttonsMessage 
+                    || message.templateMessage
+                    || message.listMessage
+                );
+                if (requiresPatch) {
+                    message = {
+                        viewOnceMessage: {
+                            message: {
+                                messageContextInfo: {
+                                    deviceListMetadataVersion: 2,
+                                    deviceListMetadata: {},
+                                },
+                                ...message,
+                            },
+                        },
+                    };
+                }
+
+                return message;
+            }, 
+      logger: pino({ level: 'silent' })
+} 
 //--
 global.conn = makeWASocket(connectionOptions)
 conn.isInit = false
 
 if (!opts['test']) {
-  if (global.db) {
-    setInterval(async () => {
-      if (global.db.data) await global.db.write();
-      if (opts['autocleartmp'] && (global.support || {}).find) (tmp = [os.tmpdir(), 'tmp', 'jadibts'], tmp.forEach((filename) => cp.spawn('find', [filename, '-amin', '3', '-type', 'f', '-delete'])));
-    }, 30 * 1000);
-  }
+  setInterval(async () => {
+    if (global.db.data) await global.db.write().catch(console.error)
+    if (opts['autocleartmp']) try {
+      clearTmp()
+
+    } catch (e) { console.error(e) }
+  }, 60 * 1000)
 }
 
-if (opts['server']) (await import('./server.js')).default(global.conn, PORT);
+if (opts['server']) (await import('./server.js')).default(global.conn, PORT)
 
-function clearTmp() {
-  const tmp = [join(__dirname, './tmp')];
-  const filename = [];
-  tmp.forEach((dirname) => readdirSync(dirname).forEach((file) => filename.push(join(dirname, file))));
-  return filename.map((file) => {
-    const stats = statSync(file);
-    if (stats.isFile() && (Date.now() - stats.mtimeMs >= 1000 * 60 * 3)) return unlinkSync(file); 
-    return false;
-  });
-}
+/* Clear */
+async function clearTmp() {
+  const tmp = [tmpdir(), join(__dirname, './tmp')]
+  const filename = []
+  tmp.forEach(dirname => readdirSync(dirname).forEach(file => filename.push(join(dirname, file))))
 
-function purgeSession() {
-  let prekey = []
-  let directorio = readdirSync("./sessions")
-  let filesFolderPreKeys = directorio.filter(file => {
-    return file.startsWith('pre-key-')
-  })
-  prekey = [...prekey, ...filesFolderPreKeys]
-  filesFolderPreKeys.forEach(files => {
-    unlinkSync(`./sessions/${files}`)
+  //---
+  return filename.map(file => {
+    const stats = statSync(file)
+    if (stats.isFile() && (Date.now() - stats.mtimeMs >= 1000 * 60 * 1)) return unlinkSync(file) 
+    return false
   })
 }
 
-function purgeSessionSB() {
-  try {
-    let listaDirectorios = readdirSync('./serbot/')
-    let SBprekey = []
-    listaDirectorios.forEach(directorio => {
-      if (statSync(`./serbot/${directorio}`).isDirectory()) {
-        let DSBPreKeys = readdirSync(`./serbot/${directorio}`).filter(fileInDir => {
-          return fileInDir.startsWith('pre-key-')
-        });
-        SBprekey = [...SBprekey, ...DSBPreKeys]
-        DSBPreKeys.forEach(fileInDir => {
-          unlinkSync(`./serbot/${directorio}/${fileInDir}`)
-        })
-      }
-    })
-    if (SBprekey.length === 0) return null
-  } catch (err) {
-  }
-}
-
-function purgeOldFiles() {
-  const directories = ['./sessions/', './serbot/']
-  const oneHourAgo = Date.now() - (60 * 60 * 1000)
-
-  directories.forEach(dir => {
-    readdirSync(dir, (err, files) => {
-      if (err) throw err
-
-      files.forEach(file => {
-        const filePath = path.join(dir, file)
-        stat(filePath, (err, stats) => {
-          if (err) throw err
-
-          if (stats.isFile() && stats.mtimeMs < oneHourAgo && file !== 'creds.json') {
-            unlinkSync(filePath, err => {
-              if (err) throw err
-            })
-          }
-        })
-      })
-    })
-  })
-}
+setInterval(async () => {
+	await clearTmp()
+}, 60000) 
 
 async function connectionUpdate(update) {
-  const {connection, lastDisconnect, isNewLogin} = update;
-  if (isNewLogin) conn.isInit = true;
-  const code = lastDisconnect?.error?.output?.statusCode || lastDisconnect?.error?.output?.payload?.statusCode;
+  const { connection, lastDisconnect, isNewLogin } = update
+  if (isNewLogin) conn.isInit = true
+  const code = lastDisconnect?.error?.output?.statusCode || lastDisconnect?.error?.output?.payload?.statusCode
   if (code && code !== DisconnectReason.loggedOut && conn?.ws.socket == null) {
-    console.log(await global.reloadHandler(true).catch(console.error));
-    global.timestamp.connect = new Date;
+    console.log(await global.reloadHandler(true).catch(console.error))
+    global.timestamp.connect = new Date
   }
   
   if (global.db.data == null) loadDatabase()
-}
 
+} //-- cu 
 
 process.on('uncaughtException', console.error)
 // let strQuot = /(["'])(?:(?=(\\?))\2.)*?\1/
@@ -250,7 +210,7 @@ async function filesInit() {
     }
   }
 }
-filesInit().then((_) => Object.keys(global.plugins)).catch(console.error);
+filesInit().then(_ => console.log(Object.keys(global.plugins))).catch(console.error)
 
 global.reload = async (_ev, filename) => {
   if (pluginFilter(filename)) {
@@ -316,8 +276,12 @@ async function _quickTest() {
   }
   // require('./lib/sticker').support = s
   Object.freeze(global.support)
+
+  if (!s.ffmpeg) conn.logger.warn('Please install ffmpeg for sending videos (pkg install ffmpeg)')
+  if (s.ffmpeg && !s.ffmpegWebp) conn.logger.warn('Stickers may not animated without libwebp on ffmpeg (--enable-ibwebp while compiling ffmpeg)')
+  if (!s.convert && !s.magick && !s.gm) conn.logger.warn('Stickers may not work without imagemagick if libwebp on ffmpeg doesnt isntalled (pkg install imagemagick)')
 }
 
 _quickTest()
-  .then(() => conn.logger.info('Cargando. . .'))
+  .then(() => conn.logger.info('Cargando . . .'))
   .catch(console.error)
