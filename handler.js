@@ -103,15 +103,12 @@ export async function handler(chatUpdate) {
                     chat.antiLink = false
                 if (!('nsfw' in chat))
                     chat.nsfw = false
-                if (!isNumber(chat.expired))
-                    chat.expired = 0
             } else
                 global.db.data.chats[m.chat] = {
                     isBanned: false,
                     welcome: true,
                     antiLink: false,
                     nsfw: false, 
-                    expired: 0,
                 }
             var settings = global.db.data.settings[this.user.jid]
             if (typeof settings !== 'object') global.db.data.settings[this.user.jid] = {}
