@@ -3,7 +3,7 @@ const cooldowns = {}
 let handler = async (m, { conn }) => {
 
   let amount = Math.floor(Math.random() * 20)
-  const tiempoEspera = 1 * 60 * 60 // 1 hora
+  const tiempoEspera = 5 * 60 // 5 minutos
   if (cooldowns[m.sender] && Date.now() - cooldowns[m.sender] < tiempoEspera * 1000) {
     const tiempoRestante = segundosAHMS(Math.ceil((cooldowns[m.sender] + tiempoEspera * 1000 - Date.now()) / 1000))
     m.reply(`🕜 Espera *${tiempoRestante}* para volver a Minar.`)

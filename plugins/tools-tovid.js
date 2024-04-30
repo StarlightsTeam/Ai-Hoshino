@@ -21,7 +21,7 @@ out = await ffmpeg(media, [
 await conn.sendFile(m.chat, out, 'thumbnail.jpg', null , m)
 } catch {
 }}
-handler.help = ['tovid *<sticker>*']
+handler.help = ['tovid <sticker>']
 handler.tags = ['sticker', 'tools']
 handler.command = ['tovideo', 'tovid']
 handler.register = true 

@@ -7,9 +7,7 @@ let handler = async (m, { args }) => {
     else if (/^dec(rypt)?$/i.test(args[0])) m.reply(Buffer.from(args.slice(1).join(' '), 'base64').toString('utf-8'))
   } else throw false
 }
-handler.tags = ['tools <enc/dec>*']
-handler.help = ['base64']
+handler.tags = ['tools']
+handler.help = ['base64 <enc/dec>']
 handler.command = /^base64$/i
 export default handler
-
-//base64 enc y base64 dec

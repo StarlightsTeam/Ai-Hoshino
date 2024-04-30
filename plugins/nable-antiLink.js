@@ -12,7 +12,7 @@ let handler = async (m, { conn, args, usedPrefix, command }) => {
       await conn.reply(m.chat, `*Configurar Anti-Link*. Escriba on para activar y off para Desactivar.`, m)
    }
 }
-handler.help = ['antiLink <on/off>']
+handler.help = ['antilink <on/off>']
 handler.tags = ['nable']
 handler.command = ['antiLink', 'antilink']
 handler.use = ['on/off']
