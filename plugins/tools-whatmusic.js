@@ -13,7 +13,7 @@ let handler = async (m, { conn, usedPrefix, command }) => {
   let { status, metadata } = await acr.identify(buffer)
   if (status.code !== 0) throw status.msg 
   let { title, artists, album, genres, release_date } = metadata.music[0]
-  let txt = '╭─⬣「 *Whatmusic Tools* 」⬣\n\n'
+  let txt = '╭─⬣「 *Whatmusic Tools* 」⬣\n'
       txt += `│  ≡◦ *🍭 Titulo ∙* ${title}${artists ? `\n│  ≡◦ *👤 Artista ∙* ${artists.map(v => v.name).join(', ')}` : ''}`
       txt += `${album ? `\n│  ≡◦ *📚 Album ∙* ${album.name}` : ''}${genres ? `\n│  ≡◦ *🪴 Genero ∙* ${genres.map(v => v.name).join(', ')}` : ''}\n`
       txt += `│  ≡◦ *🕜 Fecha de lanzamiento ∙* ${release_date}\n`
