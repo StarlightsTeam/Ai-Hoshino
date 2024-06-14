@@ -44,6 +44,7 @@
 		"@whiskeysockets/baileys": "^6.7.2",
 		"@ibaraki-douji/pixivts": "^2.4.1",
 		"@bochilteam/scraper-sosmed": "^1.0.5",
+		"@SumiFX/Scraper": "github:SumiFX/SumiFX-Scraper",
 		"@StarlightsTeam/Scraper": "github:StarlightsTeam/StarlightsTeam-Scraper",
 		"awesome-phonenumber": "^6.4.0",
 		"@xct007/frieren-scraper": "^0.0.2",
