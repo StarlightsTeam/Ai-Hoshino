@@ -1,7 +1,7 @@
-<h1 align="center">‧ 🍭 Sumi Sakurasawa - MD 🍭 ‧
+<h1 align="center">‧ 【 ✯ Ai Hoshino - MD ✰ 】 ‧
 </p>
 <p>
-        <img src= "https://tinyurl.com/258rd289">
+        <img src= "https://telegra.ph/file/89fa6a3c8e9cedda6f5ca.jpg">
     </p>
     <p align="center">
         <a href="#"><img title="simple-whatsapp-bot" src="https://img.shields.io/badge/-SIMPLE--WHATSAPP--BOT-green?colorA=%23ff0000&colorB=%23017e40&style=for-the-badge"></a>
@@ -10,11 +10,11 @@
         <a href="https://github.com/StarlightsTeam"><img title="Author"    src="https://img.shields.io/badge/Author-おDaniel-purple.svg?style=for-the-badge&logo=github"></a>
     </p>
     <p>
-        <a href="https://github.com/StarlightsTeam"><img title="Followers" src="https://img.shields.io/github/followers/StarlightsTeam?color=blue&style=flat-square"></a>
-        <a href="https://github.com/StarlightsTeam/Sumi-Sakurasawa/stargazers/"><img title="Stars" src="https://img.shields.io/github/stars/StarlightsTeam/Sumi-Sakurasawa?color=red&style=flat-square"></a>
-        <a href="https://github.com/StarlightsTeam/Sumi-Sakurasawa/network/members"><img title="Forks" src="http://img.shields.io/github/forks/StarlightsTeam/Sumi-Sakurasawa?color=red&style=flat-square"></a>
+        <a href="https://github.com/StarlightsTeamollowers"><img title="Followers" src="https://img.shields.io/github/followers/StarlightsTeam?color=blue&style=flat-square"></a>
+        <a href="https://github.com/StarlightsTeam/Ai-Hoshino/stargazers/"><img title="Stars" src="https://img.shields.io/github/stars/StarlightsTeam/Ai-Hoshino?color=red&style=flat-square"></a>
+        <a href="https://github.com/StarlightsTeam/Ai-Hoshino/network/members"><img title="Forks" src="http://img.shields.io/github/forks/StarlightsTeam/Ai-Hoshino?color=red&style=flat-square"></a>
         <a href="#"><img src="https://img.shields.io/badge/MANTENIMIENTO-SI-blue.svg"</a>
-        <img src="https://img.shields.io/github/repo-size/StarlightsTeam/Sumi-Sakurasawa" /> <br>
+        <img src="https://img.shields.io/github/repo-size/StarlightsTeam/Ai-Hoshino" /> <br>
    </p>
    <p>
 </h1>
@@ -47,7 +47,7 @@ pkg install -y git nodejs ffmpeg imagemagick && pkg install yarn
 ```
 
 ```bash
-git clone https://github.com/StarlightsTeam/Sumi-Sakurasawa.git && cd Sumi-Sakurasawa
+git clone https://github.com/StarlightsTeam/Ai-Hoshino.git && cd Ai-Hoshino
 ```
 
 ```bash
@@ -90,13 +90,10 @@ npm start
 
 ## <img src="https://i.pinimg.com/originals/19/80/6e/19806e91932e6054965fc83b85241270.gif" alt="Contacto" width="42" height="42"> Contacto
 
-- Si tiene algún problema la bot contactanos ฅ^•ﻌ•^ฅ
+- Si tiene algún problema la bot contactame ฅ^•ﻌ•^ฅ
 
-おDanịel.xyz
-* <a href="https://wa.me/5218261275256"><img alt="WhatsApp" src="https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white"/></a>
+* <a href="https://wa.me/5218132588591"><img alt="WhatsApp" src="https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white"/></a>
 
-Samuel Fts 
-* <a href="https://wa.me/5492616532494"><img alt="WhatsApp" src="https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white"/></a>
 ---------
 
 ## <img src="https://static.wikia.nocookie.net/nyancat/images/d/d3/Nyan-cat.gif/revision/latest/scale-to-width-down/400?cb=20131231222500&path-prefix=es" alt="Grupo" width="45" height="43"> Grupo de WhatsApp
@@ -110,7 +107,7 @@ Samuel Fts
 
 ## Repo Stats 🔭
 
-![github card](https://github-readme-stats.vercel.app/api/pin/?username=StarlightsTeam&repo=Sumi-Sakurasawa&theme=chartreuse-dark)
+![github card](https://github-readme-stats.vercel.app/api/pin/?username=StarlightsTeam&repo=Ai-Hoshino&theme=chartreuse-dark)
 
 ---------
 
@@ -120,14 +117,9 @@ Samuel Fts
 ![github toplang](https://github-readme-stats.vercel.app/api/top-langs/?username=StarlightsTeam&layout=compact&theme=chartreuse-dark)
 
 ---------
-
-## Créditos 
-<a href="https://github.com/BrunoSobrino"><img src="https://github.com/BrunoSobrino.png" width="100" height="100" alt="BrunoSobrino"/></a>
-
----------
 <div align="center">
   <h1 align="center">Editor y Propietario de la Bot</h1>
 
-<a href="https://github.com/SumiFX"><img src="https://tinyurl.com/2ys6a27z" width="300" height="300" alt="おDaniel"/></a>
+<a href="https://github.com/StarlightsTeam"><img src="https://i.ibb.co/qRfKp3t/file.jpg" width="300" height="300" alt="おDaniel"/></a>
 
-`© Sumi Sakurasawa - MD / StarlightsTeam - By おDaniel`
+`© Ai Hoshino - MD / Starlights Team _ By おDaniel`
