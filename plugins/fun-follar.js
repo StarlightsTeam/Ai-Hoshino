@@ -1,6 +1,6 @@
 
 let handler = async (m, { conn, command, text }) => {
-if (!text) throw `*Ingresa el @ o el nombre de la persona que quieras saber si te puedes ${command.replace('how', '')}*`
+if (!text) return m.reply(`*Ingresa el @ o el nombre de la persona que quieras saber si te puedes ${command.replace('how', '')}*`)
 try {
 let user = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted.sender
 m.reply(`🤤👅🥵 *𝐀𝐂𝐀𝐁𝐀𝐒 𝐃𝐄 𝐅𝐎𝐋𝐋𝐀𝐑𝐓𝐄𝐋@!*🥵👅🤤

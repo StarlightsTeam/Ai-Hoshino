@@ -1,5 +1,5 @@
 let handler = async (m, { conn, command, text, usedPrefix }) => {
-if (!text) throw `Etiqueta a una persona`
+if (!text) return m.reply(`🚩 Etiqueta a una persona.`)
 if (command == 'gay2') {
 conn.reply(m.chat, `
 _*${text.toUpperCase()}* *ES 🏳️‍🌈* *${(500).getRandom()}%* *GAY*_

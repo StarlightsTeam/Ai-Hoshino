@@ -15,7 +15,7 @@ let hasil = Math.floor(Math.random() * 5000)
 handler.tags = ['fun']
 handler.command = handler.help = ['piropo']
 
-handler.limit = 1
+//handler.limit = 1
 handler.register = true 
 handler.fail = null
 handler.exp = 0

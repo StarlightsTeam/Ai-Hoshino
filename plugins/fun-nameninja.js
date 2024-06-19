@@ -1,5 +1,5 @@
 function handler(m, { text }) {
-if (!text) throw `*• Ingresα un texto*`
+if (!text) return m.reply(`🚩 Ingresa tu nombre junto al comando.`)
     let teks = text ? text : m.quoted && m.quoted.text ? m.quoted.text : m.text
     m.reply(teks.replace(/[a-z]/gi, v => {
         return {
