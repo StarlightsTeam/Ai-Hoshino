@@ -76,13 +76,12 @@ npm start
 
 - [x] Interacción con voz y texto
 - [x] Configuración de grupo
-- [x] antidelete, antilink, antispam, etc
+- [x] antidelete, antilink, antiarabes, etc
 - [x] Bienvenida personalizada
-- [x] Juegos, tictactoe, mate, etc
 - [x] Chatbot (simsimi)
 - [x] Crear sticker de image/video/gif/url
 - [x] SubBot (Jadibot)
-- [ ] Juego RPG
+- [x] Juego RPG
 - [x] Descarga de música y video de YT
 - [ ] Otros
 
@@ -90,16 +89,16 @@ npm start
 
 ## <img src="https://i.pinimg.com/originals/19/80/6e/19806e91932e6054965fc83b85241270.gif" alt="Contacto" width="42" height="42"> Contacto
 
-- Si tiene algún problema la bot contactame ฅ^•ﻌ•^ฅ
+- Si la Bot tiene algún contactame ฅ^•ﻌ•^ฅ
 
-* <a href="https://wa.me/5218132588591"><img alt="WhatsApp" src="https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white"/></a>
+* <a href="https://wa.me/5218139760662"><img alt="WhatsApp" src="https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white"/></a>
 
 ---------
 
 ## <img src="https://static.wikia.nocookie.net/nyancat/images/d/d3/Nyan-cat.gif/revision/latest/scale-to-width-down/400?cb=20131231222500&path-prefix=es" alt="Grupo" width="45" height="43"> Grupo de WhatsApp
 
 
-- Si quieres probar el bot antes de instalar
+- Si quieres probar la Bot antes de instalar
 
 * <a href="https://chat.whatsapp.com/CqdWTXmS702JD31SQzr0Ph"><img alt="Group" src="https://img.shields.io/badge/Group-25D366?style=for-the-badge&logo=whatsapp&logoColor=white"/></a>
 
