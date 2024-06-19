@@ -21,7 +21,7 @@ let handler = async (m, { conn, usedPrefix, command, text }) => {
             txt += `    ✩  *Compartidos* : ${video.share_count}\n`
             txt += `    ✩  *Publicado* : ${video.published}\n`
             txt += `    ✩  *Descargas* : ${video.download_count}\n\n`
-            txt += `> 🚩 ${text}`
+            txt += `> 🚩 ${textbot}`
 
         await conn.sendFile(m.chat, video.dl_url, `video_${i + 1}.mp4`, txt, m, null, rcanal)
       }
