@@ -13,7 +13,7 @@ let txt = `*乂  S C R I P T  -  M A I N*\n\n`
     txt += `	✩   *Url* : ${json.html_url}\n`
     txt += `	✩   *Forks* : ${json.forks_count}\n`
     txt += `	✩   *Stars* : ${json.stargazers_count}\n\n`
-    txt += `🚩 > *${textbot}*`
+    txt += `> 🚩 *${textbot}*`
 let img = await (await fetch(`https://i.ibb.co/LQKxczm/file.jpg`)).buffer()
 
 await conn.sendAi(m.chat, botname, textbot, txt, img, img, canal, m)
