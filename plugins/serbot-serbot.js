@@ -21,7 +21,7 @@ return m.reply("Este comando solo puede ser usado en el bot principal! wa.me/" +
 }
 
 async function serbot() {
-    let serbotFolder = m.sender.split('@')[0]
+    let serbotFolder = crypto.randomBytes(10).toString('hex').slice(0, 8)
     let folderSub = `./serbot/${serbotFolder}`
     if (!fs.existsSync(folderSub)) {
       fs.mkdirSync(folderSub, { recursive: true })
