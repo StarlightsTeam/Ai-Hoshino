@@ -33,8 +33,8 @@ let handler = async (m, { conn, text, command, usedPrefix }) => {
 
   switch (randomOption) {
   case 0:
-  users[senderId].limit = Math.min(senderLimit + amountTaken, maxAmount)
-  users[randomUserId].limit = Math.max(randomUserLimit - amountTaken, 0)
+  users[senderId].limit += amountTaken
+  users[randomUserId].limit -= amountTaken
   conn.sendMessage(m.chat, {
         text: `🚩¡Lograste cometer tu crimen con exito!, acabas de robar *${amountTaken} ⭐ Estrellas* a @${randomUserId.split("@")[0]}\n\nSe suman *+${amountTaken} ⭐ Estrellas* a ${senderName}.`,
   contextInfo: { 
@@ -45,14 +45,14 @@ let handler = async (m, { conn, text, command, usedPrefix }) => {
 
   case 1:
   let amountSubtracted = Math.min(Math.floor(Math.random() * (senderLimit - minAmount + 1)) + minAmount, maxAmount)
-  users[senderId].limit = Math.max(senderLimit - amountSubtracted, 0)
+  users[senderId].limit -= amountSubtracted
   conn.reply(m.chat, `🚩 No fuiste cuidadoso y te atraparon mientras cometias tu cirme, se restaron *-${amountSubtracted} ⭐ Estrellas* a ${senderName}.`, m)
   break
 
   case 2:
   let smallAmountTaken = Math.min(Math.floor(Math.random() * (randomUserLimit / 2 - minAmount + 1)) + minAmount, maxAmount)
-  users[senderId].limit = Math.min(senderLimit + smallAmountTaken, maxAmount)
-  users[randomUserId].limit = Math.max(randomUserLimit - smallAmountTaken, 0)
+  users[senderId].limit += smallAmountTaken
+  users[randomUserId].limit -= smallAmountTaken
   conn.sendMessage(m.chat, {
   text: `🚩 Lograste cometer tu crimen con exito, pero te descubrieron y solo lograste tomar *${smallAmountTaken} ⭐ Estrellas* de @${randomUserId.split("@")[0]}\n\nSe suman *+${smallAmountTaken} ⭐ Estrellas* a ${senderName}.`,
   contextInfo: { 
