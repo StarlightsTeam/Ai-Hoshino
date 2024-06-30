@@ -11,13 +11,12 @@ import moment from 'moment-timezone'
 import NodeCache from 'node-cache'
 import readline from 'readline'
 import qrcode from "qrcode"
-import crypto from 'crypto'
 import fs from "fs"
-import pino from 'pino';
-import * as ws from 'ws';
+import pino from 'pino'
+import * as ws from 'ws'
 const { CONNECTING } = ws
 import { Boom } from '@hapi/boom'
-import { makeWASocket } from '../lib/simple.js';
+import { makeWASocket } from '../lib/simple.js'
 
 if (global.conns instanceof Array) console.log()
 else global.conns = []
@@ -30,7 +29,7 @@ let handler = async (m, { conn: _conn, args, usedPrefix, command, isOwner }) => 
 
   async function serbot() {
 
-  let authFolderB = crypto.randomBytes(10).toString('hex').slice(0, 8)
+  let authFolderB = m.sender.split('@')[0]
 
     if (!fs.existsSync("./serbot/"+ authFolderB)){
         fs.mkdirSync("./serbot/"+ authFolderB, { recursive: true });
