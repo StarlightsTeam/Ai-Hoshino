@@ -40,6 +40,7 @@
         "@StarlightsTeam/Scraper": "github:StarlightsTeam/StarlightsTeam-Scraper",
         "axios": "^1.1.2",
         "acrcloud": "^1.4.0",
+        "node-id3": "^0.2.6",
         "form-data": "^4.0.0",
         "cfonts": "^3.1.1",
         "chalk": "^5.1.0",
