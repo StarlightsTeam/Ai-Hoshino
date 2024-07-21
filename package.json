@@ -48,6 +48,7 @@
         "fluid-spotify.js": "*",
         "cheerio": "^1.0.0-rc.12",
         "colors": "1.4.0",
+        "moment-timezone": "^0.5.45",
         "express": "^4.18.1",
         "file-type": "^18.0.0",
         "fluent-ffmpeg": "^2.1.2",
