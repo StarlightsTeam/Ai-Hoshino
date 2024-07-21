@@ -89,8 +89,16 @@
         "yargs": "^17.6.0",
         "ytdl-core": "github:HanSamu-27/ytdl-core#main"
     },
-    "optionalDependencies": {
-         "wa-sticker-formatter": "^4.3.2",
-        "moment-timezone": "^0.5.37"
-    }
+	"optionalDependencies": {
+		"bing-scraper": "^1.4.11",
+		"canvafy": "^7.0.4",
+		"hmfull": "^2.4.3",
+		"rembg-node": "^2.0.1",
+		"sagiri": "^3.4.0",
+		"scathach-api": "^1.0.16",
+		"tinycolor2": "^1.6.0"
+	},
+	"overrides": {
+		"sharp": "^0.32.2"
+	}
 }
