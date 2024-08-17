@@ -16,7 +16,7 @@ let handler = async (m, { conn, usedPrefix, command}) => {
   let username = conn.getName(who)
   let prem = global.prems.includes(who.split`@`[0])
   let sn = createHash('md5').update(who).digest('hex')
-  let api = await axios.get(`https://delirius-api-oficial.vercel.app/api/country?text=${PhoneNumber('+' + who.replace('@s.whatsapp.net', '')).getNumber('international')}`)
+  let api = await axios.get(`https://deliriusapi-official.vercel.app/tools/country?text=${PhoneNumber('+' + who.replace('@s.whatsapp.net', '')).getNumber('international')}`)
   let userNationalityData = api.data.result
   let userNationality = userNationalityData ? `${userNationalityData.name} ${userNationalityData.emoji}` : 'Desconocido'
   let img = await (await fetch(`${pp}`)).buffer()
