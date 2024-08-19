@@ -81,6 +81,7 @@ loadDatabase()
   const { state, saveCreds } = await useMultiFileAuthState(`./sessions`)
   const { version } = await fetchLatestBaileysVersion()
 
+  console.info = () => {} 
   const connectionOptions = {
     version, 
     keepAliveIntervalMs: 30000,
