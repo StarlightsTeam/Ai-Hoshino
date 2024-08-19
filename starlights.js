@@ -22,7 +22,7 @@ import {Low, JSONFile} from 'lowdb'
 import {mongoDB, mongoDBV2} from './lib/mongoDB.js'
 import store from './lib/store.js'
 const {proto} = (await import('@whiskeysockets/baileys')).default
-const {DisconnectReason, useMultiFileAuthState, MessageRetryMap, fetchLatestBaileysVersion, makeCacheableSignalKeyStore, jidNormalizedUser, PHONENUMBER_MCC} = await import('@whiskeysockets/baileys')
+const { makeInMemoryStore, fetchLatestBaileysVersion, useMultiFileAuthState, DisconnectReason } = await import('@whiskeysockets/baileys')
 import readline from 'readline'
 import NodeCache from 'node-cache'
 const {CONNECTING} = ws
@@ -78,94 +78,23 @@ global.loadDatabase = async function loadDatabase() {
 }
 loadDatabase()
 
-global.authFile = `sessions`
-const {state, saveState, saveCreds} = await useMultiFileAuthState(global.authFile)
-const msgRetryCounterMap = (MessageRetryMap) => { }
-const msgRetryCounterCache = new NodeCache()
-const {version} = await fetchLatestBaileysVersion()
-let phoneNumber = global.botnumber
+  const { state, saveCreds } = await useMultiFileAuthState(`./sessions`)
+  const { version } = await fetchLatestBaileysVersion()
 
-const methodCodeQR = process.argv.includes("qr")
-const methodCode = !!phoneNumber || process.argv.includes("code")
-const MethodMobile = process.argv.includes("mobile")
-const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
-const question = (texto) => new Promise((resolver) => rl.question(texto, resolver))
-
-let opcion
-if (methodCodeQR) {
-opcion = '1'
-}
-if (!methodCodeQR && !methodCode && !fs.existsSync(`./${authFile}/creds.json`)) {
-do {
-opcion = await question('Seleccione una opción:\n1. Con código QR\n2. Con código de texto de 8 dígitos\n---> ')
-
-if (!/^[1-2]$/.test(opcion)) {
-console.log('Por favor, seleccione solo 1 o 2.\n')
-}} while (opcion !== '1' && opcion !== '2' || fs.existsSync(`./${authFile}/creds.json`))
-}
-
-console.info = () => {} 
-const connectionOptions = {
-logger: pino({ level: 'silent' }),
-printQRInTerminal: opcion == '1' ? true : methodCodeQR ? true : false,
-mobile: MethodMobile, 
-browser: opcion == '1' ? ['Ai Hoshino', 'Safari', '2.0.0'] : methodCodeQR ? ['Ai Hoshino', 'Safari', '2.0.0'] : ['Ubuntu', 'Chrome', '110.0.5585.95'],
-auth: {
-creds: state.creds,
-keys: makeCacheableSignalKeyStore(state.keys, Pino({ level: "fatal" }).child({ level: "fatal" })),
-},
-markOnlineOnConnect: true, 
-generateHighQualityLinkPreview: true, 
-getMessage: async (clave) => {
-let jid = jidNormalizedUser(clave.remoteJid)
-let msg = await store.loadMessage(jid, clave.id)
-return msg?.message || ""
-},
-msgRetryCounterCache,
-msgRetryCounterMap,
-defaultQueryTimeoutMs: undefined,   
-version
-}
-
+  const connectionOptions = {
+    version, 
+    keepAliveIntervalMs: 30000,
+    printQRInTerminal: true,
+    logger: pino({ level: "fatal" }),
+    auth: state,
+    browser: ["Ai Hoshino", "IOS", "4.1.0"],
+  }
+  
 global.conn = makeWASocket(connectionOptions);
-
-if (!fs.existsSync(`./${authFile}/creds.json`)) {
-if (opcion === '2' || methodCode) {
-
-opcion = '2'
-if (!conn.authState.creds.registered) {  
-if (MethodMobile) throw new Error('No se puede usar un código de emparejamiento con la API móvil')
-
-let numeroTelefono
-if (!!phoneNumber) {
-numeroTelefono = phoneNumber.replace(/[^0-9]/g, '')
-if (!Object.keys(PHONENUMBER_MCC).some(v => numeroTelefono.startsWith(v))) {
-console.log(chalk.bgBlack(chalk.bold.redBright("Comience con el código de país de su número de WhatsApp.\nEjemplo: 5218261275256\n")))
-process.exit(0)
-}} else {
-while (true) {
-numeroTelefono = await question(chalk.bgBlack(chalk.bold.yellowBright('Por favor, escriba su número de WhatsApp.\nEjemplo: 5218261275256\n')))
-numeroTelefono = numeroTelefono.replace(/[^0-9]/g, '')
-
-if (numeroTelefono.match(/^\d+$/) && Object.keys(PHONENUMBER_MCC).some(v => numeroTelefono.startsWith(v))) {
-break 
-} else {
-console.log(chalk.bgBlack(chalk.bold.redBright("Por favor, escriba su número de WhatsApp.\nEjemplo: 5218261275256.\n")))
-}}
-rl.close()  
-} 
-
-        setTimeout(async () => {
-            let codigo = await conn.requestPairingCode(numeroTelefono)
-            codigo = codigo?.match(/.{1,4}/g)?.join("-") || codigo
-            console.log(chalk.yellow('introduce el código de emparejamiento en WhatsApp.'))
-            console.log(chalk.black(chalk.bgGreen(`Su código de emparejamiento: `)), chalk.black(chalk.white(codigo)))
-        }, 3000)
-}}
-}
 
 conn.isInit = false
 conn.well = false
+conn.logger.info(`Cargando...\n`)
 
 if (!opts['test']) {
   if (global.db) {
@@ -197,58 +126,6 @@ setInterval(async () => {
 	console.log(chalk.cyan(`Se limpio la carpeta tmp`))
 }, 60000)
 
-function purgeSession() {
-let prekey = []
-let directorio = readdirSync("./sessions")
-let filesFolderPreKeys = directorio.filter(file => {
-return file.startsWith('pre-key-')
-})
-prekey = [...prekey, ...filesFolderPreKeys]
-filesFolderPreKeys.forEach(files => {
-unlinkSync(`./sessions/${files}`)
-})
-} 
-
-function purgeSessionSB() {
-try {
-let listaDirectorios = readdirSync('./serbot/');
-let SBprekey = []
-listaDirectorios.forEach(directorio => {
-if (statSync(`./serbot/${directorio}`).isDirectory()) {
-let DSBPreKeys = readdirSync(`./serbot/${directorio}`).filter(fileInDir => {
-return fileInDir.startsWith('pre-key-')
-})
-SBprekey = [...SBprekey, ...DSBPreKeys]
-DSBPreKeys.forEach(fileInDir => {
-unlinkSync(`./serbot/${directorio}/${fileInDir}`)
-})
-}
-})
-if (SBprekey.length === 0) return; console.log(chalk.cyanBright(`=> No hay archivos por eliminar.`))
-} catch (err) {
-console.log(chalk.bold.red(`Algo salio mal durante la eliminaciÃ³n, archivos no eliminados`))
-}}
-
-function purgeOldFiles() {
-const directories = ['./sessions/', './serbot/']
-const oneHourAgo = Date.now() - (60 * 60 * 1000)
-directories.forEach(dir => {
-readdirSync(dir, (err, files) => {
-if (err) throw err
-files.forEach(file => {
-const filePath = path.join(dir, file)
-stat(filePath, (err, stats) => {
-if (err) throw err;
-if (stats.isFile() && stats.mtimeMs < oneHourAgo && file !== 'creds.json') { 
-unlinkSync(filePath, err => {  
-if (err) throw err
-console.log(chalk.bold.green(`Archivo ${file} borrado con Ã©xito`))
-})
-} else {  
-console.log(chalk.bold.red(`Archivo ${file} no borrado` + err))
-} }) }) }) })
-}
-
 async function connectionUpdate(update) {
   const {connection, lastDisconnect, isNewLogin} = update
   global.stopped = connection
@@ -258,10 +135,7 @@ async function connectionUpdate(update) {
     await global.reloadHandler(true).catch(console.error)
   }
   if (global.db.data == null) loadDatabase()
-if (update.qr != 0 && update.qr != undefined || methodCodeQR) {
-if (opcion == '1' || methodCodeQR) {
-    console.log(chalk.cyan('Escanea el código QR.'))
- }}
+
   if (connection == 'open') {
     console.log(chalk.cyan('Conectado correctamente.'))
   }
@@ -375,20 +249,4 @@ async function _quickTest() {
   const s = global.support = {ffmpeg, ffprobe, ffmpegWebp, convert, magick, gm, find};
   Object.freeze(global.support);
 }
-setInterval(async () => {
-  if (stopped === 'close' || !conn || !conn.user) return
-  const a = await clearTmp()
-}, 180000)
-setInterval(async () => {
-  if (stopped === 'close' || !conn || !conn.user) return
-  await purgeSession()
-}, 1000 * 60 * 60);
-setInterval(async () => {
-  if (stopped === 'close' || !conn || !conn.user) return
-  await purgeSessionSB()
-}, 1000 * 60 * 60);
-setInterval(async () => {
-  if (stopped === 'close' || !conn || !conn.user) return
-  await purgeOldFiles()
-}, 1000 * 60 * 60);
 _quickTest().catch(console.error)
