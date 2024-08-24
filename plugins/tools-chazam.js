@@ -18,12 +18,12 @@ let txt = `*\`-• C H A Z A M - M U S I C •-\`*\n\n` +
 `🍟 *Link:* ${app.url}`
 m.reply(txt)
 } else {
-throw '🚩 *Responde a un audio/video*'
+return conn.reply(m.chat, '🚩 Responde a un *Audio/Video.*', m, rcanal)
 }}
-handler.help = ['chazam *<audio>*']
+handler.help = ['chazam *<Audio/Video>*']
 handler.tags = ['tools']
 handler.command = /^(chazam)$/i
-handler.limit = 3
+//handler.limit = 3
 handler.register = true
 export default handler
 

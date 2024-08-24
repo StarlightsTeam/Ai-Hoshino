@@ -7,7 +7,8 @@ import fs from 'fs'
 import nodeID3 from 'node-id3'
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
-if (!text) return conn.reply(m.chat, `*🚩 Ingrese el nombre de la cancion de Soundcloud*`, m)
+if (!text) return conn.reply(m.chat, `🚩 Ingrese el nombre de la cancion de *Soundcloud.*`, m, rcanal)
+await m.react('🕓')
 try {
 let { data: results } = await axios.get(`https://apis-starlights-team.koyeb.app/starlight/soundcloud-search?text=${text}`, { headers: { 'Content-Type': 'application/json' } })
 let randoms = results[Math.floor(Math.random() * results.length)]
@@ -32,11 +33,13 @@ txt += `🚩 Powered By Starlights Team`
 await conn.sendFile(m.chat, randoms.image, 'thumb.jpg', txt, m)
 await conn.sendMessage(m.chat, { audio: fs.readFileSync(mp3), fileName: `${sm.title}.mp3`, mimetype: 'audio/mpeg' }, { quoted: m })
 fs.unlinkSync(mp3)
-} catch (error) {
+await m.react('✅')
+} catch {
+await m.react('✖️')
 }}
 handler.help = ['soundcloud *<búsqueda>*']
 handler.tags = ['downloader']
 handler.command = ['soundcloud', 'sound']
 handler.register = true
-handler.limit = 3
+//handler.limit = 3
 export default handler
