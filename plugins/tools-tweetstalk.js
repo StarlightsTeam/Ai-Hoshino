@@ -2,7 +2,7 @@ import fetch from 'node-fetch'
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
     if (!text) return conn.reply(m.chat, '🚩 Ingrese el nombre de usuario de Twitter.\n\n`Ejemplo:`\n' + `> *${usedPrefix + command}* Fernanfloo`, m, rcanal)
-    await m.react('💬')
+    await m.react('🕓')
 
     try {
         let api = await fetch(`https://apis-starlights-team.koyeb.app/starlight/tweeter-stalk?text=${text}`)
@@ -16,6 +16,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
                 txt += `> 🚩 *${textbot}*`
                 
             await conn.reply(m.chat, txt, m, rcanal)
+            await m.react('✅')
         } else {
             await m.react('✖️')
         }
