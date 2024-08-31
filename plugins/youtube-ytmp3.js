@@ -1,7 +1,7 @@
 //Colocar en Package.json: 
 //"ytdl-core": "github:HanSamu-27/ytdl-core#main"
 
-import ytdl from 'ytdl-core' 
+/*import ytdl from 'ytdl-core' 
 import axios from 'axios'
 import fetch from 'node-fetch' 
 import sharp from 'sharp'
@@ -50,7 +50,7 @@ let dm = decimals < 0 ? 0 : decimals
 let sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
 let i = Math.floor(Math.log(bytes) / Math.log(k))
 return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
-}
+}*/
 
 
 
@@ -58,7 +58,7 @@ return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
 
 
 
-/*import fg from 'api-dylux'
+import fg from 'api-dylux'
 import yts from 'yt-search'
 import { youtubedl, youtubedlv2 } from '@bochilteam/scraper'
 import fetch from 'node-fetch' 
@@ -129,4 +129,4 @@ handler.command = ['ytmp3', 'yta', 'fgmp3']
 //handler.limit = 1
 handler.register = true 
 
-export default handler*/
+export default handler
