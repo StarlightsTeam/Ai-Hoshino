@@ -13,7 +13,7 @@ let handler = async (m, { conn, args, usedPrefix, command }) => {
     }
 }
 handler.help = ['antibot *<on/off>*']
-handler.tags = ['enable', 'group']
+handler.tags = ['group']
 handler.command = ['antibot']
 handler.use = ['on/off']
 handler.group = true
