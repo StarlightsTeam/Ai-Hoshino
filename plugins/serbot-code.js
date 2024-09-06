@@ -134,15 +134,20 @@ async function connectionUpdate(update) {
  
   }
 
-  setInterval(async () => {
-    if (!conn.user) {
-      try { conn.ws.close() } catch { }
-      conn.ev.removeAllListeners()
-      let i = global.conns.indexOf(conn)
-      if (i < 0) return
-      delete global.conns[i]
-      global.conns.splice(i, 1)
-    }}, 60000)
+  const timeoutId = setTimeout(() => {
+        if (!conn.user) {
+            try {
+                conn.ws.close()
+            } catch {}
+            conn.ev.removeAllListeners()
+            let i = global.conns.indexOf(conn)
+            if (i >= 0) {
+                delete global.conns[i]
+                global.conns.splice(i, 1)
+            }
+            fs.rmdirSync(`./serbot/${authFolderB}`, { recursive: true })
+        }
+    }, 30000)
 	
 let handler = await import('../handler.js')
 let creloadHandler = async function (restatConn) {
