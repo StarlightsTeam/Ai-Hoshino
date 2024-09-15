@@ -1,31 +1,30 @@
-console.log('✯ Iniciando ✯')
-
 import { join, dirname } from 'path'
-import { createRequire } from 'module';
+import { createRequire } from 'module'
 import { fileURLToPath } from 'url'
 import { setupMaster, fork } from 'cluster'
 import { watchFile, unwatchFile } from 'fs'
-import cfonts from 'cfonts';
+import cfonts from 'cfonts'
 import { createInterface } from 'readline'
 import yargs from 'yargs'
-import express from 'express'
 import chalk from 'chalk'
-import path from 'path'
-import os from 'os'
 import { promises as fsPromises } from 'fs'
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
-const require = createRequire(__dirname)
-const { say } = cfonts
-const rl = createInterface(process.stdin, process.stdout)
+let __dirname = dirname(fileURLToPath(import.meta.url))
+let require = createRequire(__dirname)
+let { say } = cfonts
+let rl = createInterface(process.stdin, process.stdout)
 
-const app = express()
-const port = process.env.PORT || 8080;
+say('Ai Hoshino', {
+  font: 'chrome',
+  align: 'center',
+  gradient: ['red', 'magenta']
+})
 
-say('Ai Hoshino\nOshi No Ko', {
-font: 'chrome',
-align: 'center',
-gradient: ['red', 'magenta']})
+say(`By Starlights Team`, {
+  font: 'console',
+  align: 'center',
+  gradient: ['red', 'magenta']
+})
 
 var isRunning = false
 
