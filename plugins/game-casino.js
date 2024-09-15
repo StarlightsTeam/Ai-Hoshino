@@ -1,4 +1,4 @@
-import db from '../lib/database.js'
+
 
 let buatall = 1
 let cooldowns = {}

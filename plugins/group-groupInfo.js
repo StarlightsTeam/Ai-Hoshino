@@ -1,4 +1,4 @@
-//import db from '../lib/database.js'
+//
 
 let handler = async (m, { conn, participants, groupMetadata }) => {
     const pp = await conn.profilePictureUrl(m.chat, 'image').catch(_ => null) || './src/avatar_contact.png'

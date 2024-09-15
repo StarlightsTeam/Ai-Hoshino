@@ -1,4 +1,4 @@
-//import db from '../lib/database.js'
+//
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
    let who

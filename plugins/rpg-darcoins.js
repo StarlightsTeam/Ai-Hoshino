@@ -1,4 +1,4 @@
-import db from '../lib/database.js'
+
 
 import MessageType from '@whiskeysockets/baileys'
 let impuesto = 0.02

@@ -1,6 +1,6 @@
 //By HaroldMendoza "LevelUp"
 
-import db from '../lib/database.js'
+
 
 let handler = async (m, { conn, text}) => {
 
