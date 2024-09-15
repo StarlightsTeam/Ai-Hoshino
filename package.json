@@ -2,14 +2,14 @@
 	"name": "Ai Hoshino",
 	"version": "6.0.0",
 	"description": "Simple WhatsApp Bot Multi Device",
-	"main": "main.js",
+	"main": "starlights.js",
 	"type": "module",
 	"directories": {
 		"lib": "lib",
 		"plugins": "plugins"
 	},
 	"scripts": {
-		"start": "node main.js",
+		"start": "node starlights.js",
 		"test": "node test.js",
 		"test2": "nodemon index.js"
 	},
