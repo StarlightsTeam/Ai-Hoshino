@@ -6,7 +6,7 @@ import {fileURLToPath, pathToFileURL} from 'url'
 import {platform} from 'process'
 import * as ws from 'ws'
 import {readdirSync, statSync, unlinkSync, existsSync, readFileSync, rmSync, watch} from 'fs'
-import yargs from 'yargs';
+import yargs from 'yargs'
 import {spawn} from 'child_process'
 import lodash from 'lodash'
 import chalk from 'chalk'
@@ -15,14 +15,12 @@ import {tmpdir} from 'os'
 import {format} from 'util'
 import P from 'pino'
 import pino from 'pino'
-import Pino from 'pino';
-import {Boom} from '@hapi/boom'
+import Pino from 'pino'
 import {makeWASocket, protoType, serialize} from './lib/simple.js'
 import {Low, JSONFile} from 'lowdb'
-import {mongoDB, mongoDBV2} from './lib/mongoDB.js'
 import store from './lib/store.js'
 const {proto} = (await import('@whiskeysockets/baileys')).default
-const { fetchLatestBaileysVersion, useMultiFileAuthState, DisconnectReason } = await import('@whiskeysockets/baileys')
+const { makeInMemoryStore, fetchLatestBaileysVersion, useMultiFileAuthState, DisconnectReason } = await import('@whiskeysockets/baileys')
 import readline from 'readline'
 import NodeCache from 'node-cache'
 const {CONNECTING} = ws
@@ -40,10 +38,6 @@ global.__filename = function filename(pathURL = import.meta.url, rmPrefix = plat
   return createRequire(dir)
 }
 
-global.API = (name, path = '/', query = {}, apikeyqueryname) => (name in global.APIs ? global.APIs[name] : name) + path + (query || apikeyqueryname ? '?' + new URLSearchParams(Object.entries({...query, ...(apikeyqueryname ? {[apikeyqueryname]: global.APIKeys[name in global.APIs ? global.APIs[name] : name]} : {})})) : '');
-
-global.timestamp = {start: new Date}
-
 const __dirname = global.__dirname(import.meta.url)
 
 global.opts = new Object(yargs(process.argv.slice(2)).exitProcess(false).parse())
@@ -51,7 +45,7 @@ global.prefix = new RegExp('^[' + (opts['prefix'] || 'â€Žz/#$%.\\-').replace
 
 // global.opts['db'] = process.env['db']
 
-global.db = new Low(/https?:\/\//.test(opts['db'] || '') ? new cloudDBAdapter(opts['db']) : new JSONFile(`storage/databases/database.json`));
+global.db = new Low(new JSONFile(`storage/databases/database.json`))
 
 global.DATABASE = global.db 
 global.loadDatabase = async function loadDatabase() {
@@ -78,24 +72,40 @@ global.loadDatabase = async function loadDatabase() {
 }
 loadDatabase()
 
-  const { state, saveCreds } = await useMultiFileAuthState(`./sessions`)
-  const { version } = await fetchLatestBaileysVersion()
+const { state, saveCreds } = await useMultiFileAuthState("sessions")
+const question = (text) => { const rl = readline.createInterface({ input: process.stdin, output: process.stdout }); return new Promise((resolve) => { rl.question(text, resolve) }) }
 
-  console.info = () => {} 
-  const connectionOptions = {
-    version, 
-    keepAliveIntervalMs: 30000,
-    printQRInTerminal: true,
-    logger: pino({ level: "fatal" }),
-    auth: state,
-    browser: ["Ai Hoshino", "IOS", "4.1.0"],
-  }
+console.info = () => {} 
+const connectionOptions = {
+  logger: pino({ level: "silent" }),
+  printQRInTerminal: false,
+  auth: state,
+  connectTimeoutMs: 60000,
+  defaultQueryTimeoutMs: 0,
+  keepAliveIntervalMs: 10000,
+  emitOwnEvents: true,
+  fireInitQueries: true,
+  generateHighQualityLinkPreview: true,
+  syncFullHistory: true,
+  markOnlineOnConnect: true,
+  browser: ["Ubuntu", "Chrome", "20.0.04"],
+}
+
+global.conn = makeWASocket(connectionOptions)
+
+if (!conn.authState.creds.registered) {
+  const phoneNumber = await question(chalk.blue(' Ingresa el número de WhatsApp en el cual estará la Bot\n'))
   
-global.conn = makeWASocket(connectionOptions);
+  if (conn.requestPairingCode) {
+    let code = await conn.requestPairingCode(phoneNumber);
+    code = code?.match(/.{1,4}/g)?.join("-") || code;
+    console.log(chalk.magenta(`Su código es:`, code))
+  } else {
+  }
+}
 
 conn.isInit = false
 conn.well = false
-conn.logger.info(`Cargando...\n`)
 
 if (!opts['test']) {
   if (global.db) {
@@ -106,14 +116,10 @@ if (!opts['test']) {
   }
 }
 
-if (opts['server']) (await import('./server.js')).default(global.conn, PORT);
-
-
 async function clearTmp() {
   const tmp = [tmpdir(), join(__dirname, './tmp')]
   const filename = []
   tmp.forEach(dirname => readdirSync(dirname).forEach(file => filename.push(join(dirname, file))))
-
 
   return filename.map(file => {
     const stats = statSync(file)
@@ -194,7 +200,7 @@ async function filesInit() {
     }
   }
 }
-filesInit().then((_) => Object.keys(global.plugins)).catch(console.error);
+filesInit().then((_) => Object.keys(global.plugins)).catch(console.error)
 
 global.reload = async (_ev, filename) => {
   if (pluginFilter(filename)) {
@@ -216,38 +222,12 @@ global.reload = async (_ev, filename) => {
         const module = (await import(`${global.__filename(dir)}?update=${Date.now()}`));
         global.plugins[filename] = module.default || module;
       } catch (e) {
-        conn.logger.error(`error require plugin '${filename}\n${format(e)}'`)
-      } finally {
-        global.plugins = Object.fromEntries(Object.entries(global.plugins).sort(([a], [b]) => a.localeCompare(b)))
+        conn.logger.error(e);
       }
     }
   }
 }
 Object.freeze(global.reload)
 watch(pluginFolder, global.reload)
+
 await global.reloadHandler()
-async function _quickTest() {
-  const test = await Promise.all([
-    spawn('ffmpeg'),
-    spawn('ffprobe'),
-    spawn('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-filter_complex', 'color', '-frames:v', '1', '-f', 'webp', '-']),
-    spawn('convert'),
-    spawn('magick'),
-    spawn('gm'),
-    spawn('find', ['--version']),
-  ].map((p) => {
-    return Promise.race([
-      new Promise((resolve) => {
-        p.on('close', (code) => {
-          resolve(code !== 127);
-        });
-      }),
-      new Promise((resolve) => {
-        p.on('error', (_) => resolve(false));
-      })]);
-  }));
-  const [ffmpeg, ffprobe, ffmpegWebp, convert, magick, gm, find] = test;
-  const s = global.support = {ffmpeg, ffprobe, ffmpegWebp, convert, magick, gm, find};
-  Object.freeze(global.support);
-}
-_quickTest().catch(console.error)
