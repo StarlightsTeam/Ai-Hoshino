@@ -5,9 +5,9 @@ import pkg2 from 'fluid-spotify.js'
 let { Spotify } = pkg2
 
 let handler = async (m, { conn, text }) => {
- if (!text) throw `🚩 Ingresa el enlace de algún Track, PlayList o Álbum de Spotify.`; 
+ if (!text) return conn.reply(m.chat,`🚩 Ingresa el enlace de algún Track, PlayList o Álbum de Spotify.`, m) 
  let isSpotifyUrl = text.match(/^(https:\/\/open\.spotify\.com\/(album|track|playlist)\/[a-zA-Z0-9]+)/i);
- if (!isSpotifyUrl && !text) throw `🚩 Ingresa el enlace de algún Track, Playlist o Álbum de Spotify.`
+ if (!isSpotifyUrl && !text) return conn.reply(m.chat, `🚩 Ingresa el enlace de algún Track, Playlist o Álbum de Spotify.`, m)
 let user = global.db.data.users[m.sender]
 await m.react('🕓')
 try {
