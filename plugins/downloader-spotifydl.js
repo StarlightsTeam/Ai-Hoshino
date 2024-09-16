@@ -18,7 +18,7 @@ let txt = `*乂  S P O T I F Y  -  D O W N L O A D*\n\n`;
     txt += `    ✩  *Artista* : ${artist}\n\n`;
     txt += `*- ↻ Los audios se están enviando, espera un momento. . .*`;
 
-await conn.sendFile(m.chat, img, 'thumbnail.jpg', txt, m);
+await conn.sendFile(m.chat, img, 'thumbnail.jpg', txt, m, null, rcanal);
 await conn.sendMessage(m.chat, { audio: { url: dl_url }, fileName: `${title}.mp3`, mimetype: 'audio/mp4' }, { quoted: m });
 
 await m.react('✅');
@@ -30,7 +30,7 @@ await m.react('✖️');
 handler.help = ['spotifydl'];
 handler.tags = ['downloader'];
 handler.command = ['spotifydl'];
-// handler.limit = 1; // Si necesitas limitar el uso del comando
+// handler.limit = 1;
 handler.register = true;
 
 export default handler;
