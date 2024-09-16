@@ -23,7 +23,7 @@ let txt = `*\`- S O U N C L O U D - M U S I C -\`*\n\n`;
     txt += `	✩  *Url* : ${url}\n\n`;
     txt += `> 🚩 *${textbot}*`
 
-await conn.sendFile(m.chat, image, 'thumbnail.jpg', txt, m);
+await conn.sendFile(m.chat, image, 'thumbnail.jpg', txt, m, null, rcanal);
 await conn.sendMessage(m.chat, { audio: audio, fileName: `${json[0].title}.mp3`, mimetype: 'audio/mpeg' }, { quoted: m })
 
 await m.react('✅');
