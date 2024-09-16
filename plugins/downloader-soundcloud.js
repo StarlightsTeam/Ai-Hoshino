@@ -21,7 +21,7 @@ let txt = `*\`- S O U N C L O U D - M U S I C -\`*\n\n`;
     txt += `*Título* : ${json[0].title}\n`;
     txt += `*Calidad* : ${quality}\n`;
     txt += `*Url* : ${url}\n\n`;
-    txt += `> 🚩 *${text}*`;
+    txt += `> 🚩 *${textbot}*`
 
 await conn.sendFile(m.chat, image, 'thumbnail.jpg', txt, m);
 await conn.sendMessage(m.chat, { audio: audio, fileName: `${json[0].title}.mp3`, mimetype: 'audio/mpeg' }, { quoted: m })
