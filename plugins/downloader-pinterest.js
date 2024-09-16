@@ -11,7 +11,8 @@ let txt = '`乂  P I N T E R E S T  -  D O W N L O A D E R`\n\n'
 txt += `  ✩   *Calidad* : ${quality}\n`;
 txt += `  ✩   *Tamaño* : ${size}\n`;
 txt += `  ✩   *Duracion* : ${duration}\n`;
-txt += `  ✩   *Url* : ${url}\n`;
+txt += `  ✩   *Url* : ${url}\n\n`
+txt += `> 🚩 *${textbot}*`
 
 
 await conn.sendMessage(m.chat, { video: { url: dl_url }, caption: txt, mimetype: 'video/mp4', fileName:  `pinterest.mp4`}, {quoted: m })
