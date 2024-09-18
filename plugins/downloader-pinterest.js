@@ -7,7 +7,7 @@ await m.react('🕓');
 try {
 let { dl_url, quality, size, duration, url } = await Starlights.pinterestdl(args[0]);
 
-let txt = '`乂  P I N T E R E S T  -  D O W N L O A D E R`\n\n'
+let txt = '`乂  P I N T E R E S T  -  D L`\n\n'
 txt += `  ✩   *Calidad* : ${quality}\n`;
 txt += `  ✩   *Tamaño* : ${size}\n`;
 txt += `  ✩   *Duracion* : ${duration}\n`;
