@@ -40,4 +40,5 @@ handler.help = ['detectface']
 handler.tags = ['tools']
 handler.command = /^(detectface|detectarcara|detect-face)$/i;
 handler.register = true 
+
 export default handler;
