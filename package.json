@@ -74,7 +74,7 @@
 		"syntax-error": "^1.4.0",
 		"speedtest-net": "^2.2.0",
 		"yargs": "^17.7.2",
-		"yt-search": "^2.10.4",
+		"yt-search": "^2.10.4"
 	},
 	"optionalDependencies": {
 		"@vitalets/google-translate-api": "^9.2.0"
