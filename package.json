@@ -51,7 +51,6 @@
 		"chalk": "^5.3.0",
 		"cheerio": "github:AikerDev/cheeiro",
 		"acrcloud": "*",
-		"emoji-api": "*",
 		"file-type": "*",
 		"fluent-ffmpeg": "^2.1.2",
 		"formdata-node": "*",
@@ -76,7 +75,6 @@
 		"speedtest-net": "^2.2.0",
 		"yargs": "^17.7.2",
 		"yt-search": "^2.10.4",
-		"ytdl-core": "github:HanSamu-27/ytdl-core#main"
 	},
 	"optionalDependencies": {
 		"@vitalets/google-translate-api": "^9.2.0"
