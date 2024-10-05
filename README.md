@@ -25,7 +25,7 @@
 
 <a href="https://star.starlights.uk"><img src="https://i.ibb.co/37T9Nnk/file.jpg" width="300" height="300" alt="Cloud Starlights"/></a>
 
-- Dash: [dash.starlights.uk](https://dash.starlights.uk)
+- Dash: [star.starlights.uk](https://star.starlights.uk)
 - Panel: [cloud.starlights.uk](https://cloud.starlights.uk/)
 - Canal de WhatsApp: [【 ✯ Starlights Team - Oficial Chanel ✰ 】](https://whatsapp.com/channel/0029VaBfsIwGk1FyaqFcK91S)
 
