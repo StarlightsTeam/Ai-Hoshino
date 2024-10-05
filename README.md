@@ -23,7 +23,7 @@
 
 ### ⭐ Activa En Cloud Starlights
 
-<a href="https://dash.starlights.uk"><img src="https://i.ibb.co/37T9Nnk/file.jpg" width="300" height="300" alt="Cloud Starlights"/></a>
+<a href="https://star.starlights.uk"><img src="https://i.ibb.co/37T9Nnk/file.jpg" width="300" height="300" alt="Cloud Starlights"/></a>
 
 - Dash: [dash.starlights.uk](https://dash.starlights.uk)
 - Panel: [cloud.starlights.uk](https://cloud.starlights.uk/)
