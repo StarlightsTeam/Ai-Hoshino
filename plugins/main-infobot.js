@@ -1,8 +1,8 @@
-
 import { cpus as _cpus, totalmem, freemem, platform, hostname, version, release, arch } from 'os'
 import speed from 'performance-now'
 import { performance } from 'perf_hooks'
 import { sizeFormatter } from 'human-readable'
+import ws from 'ws'
 
 let format = sizeFormatter({
     std: 'JEDEC',
@@ -12,9 +12,15 @@ let format = sizeFormatter({
 })
 
 let handler = async (m, { conn, usedPrefix }) => {
-   let bot = global.db.data.settings[conn.user.jid]
-   let _uptime = process.uptime() * 1000
-   let uptime = (_uptime).toTimeString()
+   let uniqueUsers = new Map()
+
+   global.conns.forEach((conn) => {
+     if (conn.user && conn.ws.socket && conn.ws.socket.readyState !== ws.CLOSED) {
+       uniqueUsers.set(conn.user.jid, conn)
+     }
+   })
+   let users = [...uniqueUsers.values()]
+   let totalUsers = users.length
    let totalreg = Object.keys(global.db.data.users).length
    let totalbots = Object.keys(global.db.data.settings).length
    let totalStats = Object.values(global.db.data.stats).reduce((total, stat) => total + stat.total, 0)
@@ -49,43 +55,38 @@ let handler = async (m, { conn, usedPrefix }) => {
          irq: 0
       }
    })
-   let _muptime
-   if (process.send) {
+   	let _muptime
+    if (process.send) {
       process.send('uptime')
       _muptime = await new Promise(resolve => {
-         process.once('message', resolve)
-         setTimeout(resolve, 1000)
+        process.once('message', resolve)
+        setTimeout(resolve, 1000)
       }) * 1000
-   }
+    }
+    let muptime = clockString(_muptime)
    let timestamp = speed()
    let latensi = speed() - timestamp
-   let teks = ` –  *I N F O  -  B O T*
+   let txt = '`*⭒─ׄ─ׅ─ׄ─⭒ Info Bot ⭒─ׄ─ׅ─ׄ─⭒*`\n\n'
+       txt += `╭── ︿︿︿︿︿ *⭒   ⭒   ⭒   ⭒   ⭒   ⭒*\n`
+       txt += `┊ ‹‹ *Status De* :: *Ai Hoshino ดาว⁩*\n`
+       txt += `┊•*⁀➷ °⭒⭒⭒ *【 ✯ Starlights Team ✰ 】*\n`
+       txt += `╰─── ︶︶︶︶ ✰⃕  ⌇ *⭒ ⭒ ⭒*   ˚̩̥̩̥*̩̩͙✩\n`
+       txt += `┊🪴 [ *Moneda* :: *Estrellas ⭐*   ✯ﾟ. * ･ ｡ﾟ\n`
+       txt += `┊🍟 [ *Prefijo* :: *【  ${usedPrefix}  】*   ˚̩̥̩̥*̩̩͙✩ ✯ﾟ. * ･ ｡ﾟ\n`
+       txt += `┊✨ [ *Plugins* :: *${totalf}*   ☆ﾟ. * ･ ｡ﾟ ˚̩̥̩̥*̩̩͙✩\n`
+       txt += `┊☁️ [ *Sub-Bots* :: *${totalUsers || '0'}*   ˚̩̥̩̥*̩̩͙✩ ✯ﾟ. * ･ ｡ﾟ\n`
+       txt += `┊🍟 [ *Plataforma* :: *${platform()}*   ˚̩̥̩̥*̩̩͙✩ ˚̩̥̩̥*̩̩͙✯\n`
+       txt += `┊🍁 [ *RAM* :: *${format(totalmem() - freemem())} / ${format(totalmem())}*\n`
+       txt += `┊🌸 [ *FreeRAM* :: *${format(freemem())}*   ˚̩̥̩̥*̩̩͙✩ ˚̩̥̩̥*̩̩͙✩\n`
+       txt += `┊🍄 [ *Speed* :: *${latensi.toFixed(4)} ms*   ☆ﾟ. * ･ ｡ﾟ\n`
+       txt += `┊💐 [ *Comandos Ejecutados* :: *${formatNumber(totalStats)}*\n`
+       txt += `┊🌴 [ *Grupos Registrados* :: *${formatNumber(totalchats)}*\n`
+       txt += `┊🌺 [ *Registrados* :: *${formatNumber(totalreg)} Usuarios*\n`
+       txt += `╰─────────\n\n`
+       txt += `> 🚩 ${textbot}`
 
-┌  ✩  *Creador* : @${owner[0][0].split('@s.whatsapp.net')[0]}
-│  ✩  *Prefijo* : [  ${usedPrefix}  ]
-│  ✩  *Total Plugins* : ${totalf}
-│  ✩  *Plataforma* : ${platform()}
-│  ✩  *Servidor* : ${hostname()}
-│  ✩  *RAM* : ${format(totalmem() - freemem())} / ${format(totalmem())}
-│  ✩  *FreeRAM* : ${format(freemem())}
-│  ✩  *Speed* : ${latensi.toFixed(4)} ms
-│  ✩  *Uptime* : ${uptime}
-│  ✩  *Modo* : ${bot.public ? 'Privado' : 'Publico'}
-│  ✩  *Comandos Ejecutados* : ${toNum(totalStats)} ( *${totalStats}* )
-│  ✩  *Grupos Registrados* : ${toNum(totalchats)} ( *${totalchats}* )
-└  ✩  *Registrados* : ${toNum(totalreg)} ( *${totalreg}* ) Usuarios
-
- –  *I N F O  -  C H A T*
-
-┌  ✩  *${groupsIn.length}* Chats en Grupos
-│  ✩  *${groupsIn.length}* Grupos Unidos
-│  ✩  *${groupsIn.length - groupsIn.length}* Grupos Salidos
-│  ✩  *${chats.length - groupsIn.length}* Chats Privados
-└  ✩  *${chats.length}* Chats Totales
-
-*≡  _NodeJS Uso de memoria_*
-${'```' + Object.keys(used).map((key, _, arr) => `${key.padEnd(Math.max(...arr.map(v => v.length)), ' ')}: ${format(used[key])}`).join('\n') + '```'}`
-await conn.reply(m.chat, teks, m, { contextInfo: { mentionedJid: [owner[0][0] + '@s.whatsapp.net'], externalAdReply: { mediaUrl: false, mediaType: 1, description: false, title: '↷✦╎Info - Bot╎⭐˖ ⸙',body: false, previewType: 0, thumbnail: miniurl, sourceUrl: ''}}})
+let img = `./storage/img/menu.jpg`
+await conn.sendFile(m.chat, img, 'thumbnail.jpg', txt, m, null, rcanal)
 }
 handler.help = ['info']
 handler.tags = ['main']
@@ -93,16 +94,14 @@ handler.command = ['info', 'infobot']
 
 export default handler
 
-function toNum(number) {
-    if (number >= 1000 && number < 1000000) {
-        return (number / 1000).toFixed(1) + 'k'
-    } else if (number >= 1000000) {
-        return (number / 1000000).toFixed(1) + 'M'
-    } else if (number <= -1000 && number > -1000000) {
-        return (number / 1000).toFixed(1) + 'k'
-    } else if (number <= -1000000) {
-        return (number / 1000000).toFixed(1) + 'M'
-    } else {
-        return number.toString()
-    }
+function formatNumber(number) {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function clockString(ms) {
+  let d = isNaN(ms) ? '--' : Math.floor(ms / 86400000)
+  let h = isNaN(ms) ? '--' : Math.floor(ms / 3600000) % 24
+  let m = isNaN(ms) ? '--' : Math.floor(ms / 60000) % 60
+  let s = isNaN(ms) ? '--' : Math.floor(ms / 1000) % 60
+  return [d, ' D ', h, ' H ', m, ' M ', s, ' S'].map(v => v.toString().padStart(2, 0)).join('')
 }
