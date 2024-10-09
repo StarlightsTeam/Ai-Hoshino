@@ -1,5 +1,4 @@
-<h1 align="center">‧ 【 ✯ Ai Hoshino - MD ✰ 】 ‧
-</p>
+<h1 align="center">【 ✯ Ai Hoshino - MD ✰ 】</p>
 <p>
         <img src= "https://i.ibb.co/C5DNBRH/file.jpg">
     </p>
