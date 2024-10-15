@@ -9,7 +9,7 @@
 		"plugins": "plugins"
 	},
 	"scripts": {
-		"start": "node starlights.js"
+		"start": "node system/starlights.js"
 	},
 	"keywords": [
 		"termux-whatsapp-bot",
