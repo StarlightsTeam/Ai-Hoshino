@@ -58,6 +58,7 @@
 		"lowdb": "^3.0.0",
 		"jimp": "*",
 		"moment-timezone": "*",
+		"translate-google-api": "^1.0.4",
 		"node-gtts": "*",
 		"url-regex-safe": "*",
 		"perf_hooks": "*",
