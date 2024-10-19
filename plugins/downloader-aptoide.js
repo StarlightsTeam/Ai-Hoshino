@@ -1,7 +1,7 @@
 import Starlights from "@StarlightsTeam/Scraper"
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
-if (!text) return conn.reply(m.chat, `*• Ingresa el nombre de la aplicación que deseas descargar.*\n\nEjemplo:\n*${usedPrefix + command}* WhatsApp`, m, rcanal)
+if (!text) return conn.reply(m.chat, '[ ✰ ] Ingresa el nombre de la aplicación que deseas descargar de *Aptoide* junto al comando.\n\n`» Ejemplo :`\n' + `> *${usedPrefix + command}* WhatsApp`, m, rcanal)
 await m.react('🕓')
 try {
 let { name, version, amount_downloads, size, thumbnail, dl_url } = await Starlights.aptoide(text)
