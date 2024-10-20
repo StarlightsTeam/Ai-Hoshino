@@ -18,10 +18,10 @@ let handler = async (m, { conn, text, command, usedPrefix }) => {
     let esGanador = text.toLowerCase() === resultado
 
     if (esGanador) {
-        global.database.users[m.sender].limit += 1000
+        global.db.data.users[m.sender].limit += 1000
         conn.reply(m.chat, `✿︎ La moneda cayó en *${text}*, acabas de ganar *1000 ⭐ Estrellas*`, m, rcanal)       
     } else {
-        global.database.users[m.sender].limit -= 500
+        global.db.data.users[m.sender].limit -= 500
         conn.reply(m.chat, `✿︎ La moneda cayó en *${text}*, acabas de perder *500 ⭐ Estrellas*`, m, rcanal)
     }
 }
