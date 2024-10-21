@@ -44,8 +44,8 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 handler.help = ['ppt']
 handler.tags = ['game']
 handler.command = ['ppt']
-handler.group = true
-
+//handler.group = true
+handler.register = true
 export default handler
 
 function segundosAHMS(segundos) {
