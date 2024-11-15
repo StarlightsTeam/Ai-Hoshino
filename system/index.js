@@ -22,7 +22,7 @@ import Pino from 'pino'
 import {makeWASocket, protoType, serialize} from '../lib/simple.js'
 import {Low, JSONFile} from 'lowdb'
 import store from '../lib/store.js'
-const {proto} = (await import('@whiskeysockets/baileys')).default
+//const {proto} = (await import('@whiskeysockets/baileys')).default
 const { DisconnectReason, useMultiFileAuthState, MessageRetryMap, fetchLatestBaileysVersion, Browsers, makeCacheableSignalKeyStore, jidNormalizedUser, PHONENUMBER_MCC } = await import('@whiskeysockets/baileys')
 import readline, { createInterface } from 'readline'
 import NodeCache from 'node-cache'
