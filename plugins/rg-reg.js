@@ -4,7 +4,7 @@ import fetch from 'node-fetch'
 
 let Reg = /\|?(.*)([.|] *?)([0-9]*)$/i
 let handler = async function (m, { conn, text, usedPrefix, command }) {
-  let user = global.database.users[m.sender]
+  let user = global.db.data.users[m.sender]
   let name2 = conn.getName(m.sender)
   if (user.registered === true) return m.reply(`[ ✰ ] Ya estás registrado.`)
   if (!Reg.test(text)) return m.reply(`*[ ✰ ] Por favor, ingresa tu nombre de usuario para proceder con el registro.*\n\n*🍟 Ejem. de Uso* :\n*${usedPrefix + command}* おDanịel.xyz.19`)
