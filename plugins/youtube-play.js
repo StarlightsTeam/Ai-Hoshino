@@ -2,19 +2,20 @@ import fetch from 'node-fetch'
 import yts from 'yt-search'
 
 let handler = async (m, { conn: star, command, args, text, usedPrefix }) => {
-  if (!text) return star.reply(m.chat, '🚩 Ingresa el título de un video o canción de YouTube.\n\n`Ejemplo:`\n' + `> *${usedPrefix + command}* Gemini Aaliyah - If Only`, m, rcanal)
+  if (!text) return m.reply('[ ✰ ] Ingresa el título de un video o canción de *YouTube*.\n\n`Ejemplo:`\n' + `> *${usedPrefix + command}* Mc Davo - Debes De Saber`)
     await m.react('🕓')
     try {
     let res = await search(args.join(" "))
     let img = await (await fetch(`${res[0].image}`)).buffer()
     let txt = '`乂  Y O U T U B E  -  P L A Y`\n\n'
-       txt += `	✩   *Título* : ${res[0].title}\n`
-       txt += `	✩   *Duración* : ${secondString(res[0].duration.seconds)}\n`
-       txt += `	✩   *Publicado* : ${eYear(res[0].ago)}\n`
-       txt += `	✩   *Canal* : ${res[0].author.name || 'Desconocido'}\n`
-       txt += `	✩   *Url* : ${'https://youtu.be/' + res[0].videoId}\n\n`
+       txt += `\t\t*» Título* : ${res[0].title}\n`
+       txt += `\t\t*» Duración* : ${secondString(res[0].duration.seconds)}\n`
+       txt += `\t\t*» Publicado* : ${eYear(res[0].ago)}\n`
+       txt += `\t\t*» Canal* : ${res[0].author.name || 'Desconocido'}\n`
+       txt += `\t\t*» ID* : ${res[0].videoId}\n`
+       txt += `\t\t*» Url* : ${'https://youtu.be/' + res[0].videoId}\n\n`
        txt += `> *-* Para descargar responde a este mensaje con *Video* o *Audio*.`
-await star.sendFile(m.chat, img, 'thumbnail.jpg', txt, m, null, rcanal)
+await star.sendFile(m.chat, img, 'thumbnail.jpg', txt, m)
 await m.react('✅')
 } catch {
 await m.react('✖️')
@@ -22,7 +23,7 @@ await m.react('✖️')
 handler.help = ['play *<búsqueda>*']
 handler.tags = ['downloader']
 handler.command = ['play']
-//handler.register = true 
+handler.register = true 
 export default handler
 
 async function search(query, options = {}) {
