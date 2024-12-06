@@ -28,126 +28,73 @@ let handler = async (m, { conn: _conn, args, usedPrefix, command, isOwner }) => 
     }
     args[0] ? fs.writeFileSync("./serbot/" + authFolderB + "/creds.json", JSON.stringify(JSON.parse(Buffer.from(args[0], "base64").toString("utf-8")), null, '\t')) : ""
 
-const { state, saveCreds } = await useMultiFileAuthState(`./serbot/${authFolderB}`)
+    const {state, saveState, saveCreds} = await useMultiFileAuthState(`./serbot/${authFolderB}`)
+    const msgRetryCounterMap = (MessageRetryMap) => { }
+    const msgRetryCounterCache = new NodeCache()
+    const {version} = await fetchLatestBaileysVersion()
+    let phoneNumber = m.sender.split('@')[0]
 
-const { version } = await fetchLatestBaileysVersion()
+    const methodCodeQR = process.argv.includes("qr")
+    const methodCode = !!phoneNumber || process.argv.includes("code")
+    const MethodMobile = process.argv.includes("mobile")
 
-const logger = pino({
-  timestamp: () => `,"time":"${new Date().toJSON()}"`,
-}).child({ class: "client" })
-logger.level = "fatal"
+    const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
+    const question = (texto) => new Promise((resolver) => rl.question(texto, resolver))
 
-  const connectionOptions = {
-    version: [2, 3000, 1015901307],
-    logger,
-    printQRInTerminal: false,
-    auth: {
-      creds: state.creds,
-      keys: makeCacheableSignalKeyStore(state.keys, logger),
-    },
-    browser: Browsers.ubuntu("Chrome"),
-    markOnlineOnclientect: false,
-    generateHighQualityLinkPreview: true,
-    syncFullHistory: true,
-    retryRequestDelayMs: 10,
-    transactionOpts: { maxCommitRetries: 10, delayBetweenTriesMs: 10 },
-    defaultQueryTimeoutMs: undefined,
-    maxMsgRetryCount: 15,
-    appStateMacVerification: {
-      patch: false,
-      snapshot: false,
-    },
-    getMessage: async (key) => {
-      const jid = jidNormalizedUser(key.remoteJid)
-      const msg = await store.loadMessage(jid, key.id)
-
-      return msg?.message || ""
-    },
-  }
-/*const msgRetryCounterMap = (MessageRetryMap) => { };
-const msgRetryCounterCache = new NodeCache()
-const {version} = await fetchLatestBaileysVersion();
-let phoneNumber = m.sender.split('@')[0]
-
-const methodCodeQR = process.argv.includes("qr")
-const methodCode = !!phoneNumber || process.argv.includes("code")
-const MethodMobile = process.argv.includes("mobile")
-
-const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
-const question = (texto) => new Promise((resolver) => rl.question(texto, resolver))
-
-const connectionOptions = {
-  logger: pino({ level: 'silent' }),
-  printQRInTerminal: false,
-  mobile: MethodMobile, 
-  browser: [ "Ubuntu", "Chrome", "20.0.04" ], 
-  auth: {
-  creds: state.creds,
-  keys: makeCacheableSignalKeyStore(state.keys, pino({ level: "fatal" }).child({ level: "fatal" })),
-  },
-  markOnlineOnConnect: true, 
-  generateHighQualityLinkPreview: true, 
-  getMessage: async (clave) => {
-  let jid = jidNormalizedUser(clave.remoteJid)
-  let msg = await store.loadMessage(jid, clave.id)
-  return msg?.message || ""
-  },
-  msgRetryCounterCache,
-  msgRetryCounterMap,
-  defaultQueryTimeoutMs: undefined,   
-  version
-  }*/
-
-let conn = makeWASocket(connectionOptions)
-
-if (!conn.authState.creds.registered) {
-    const phoneNumber = authFolderB
-
-    if (conn.requestPairingCode) {
-        let code = await conn.requestPairingCode(phoneNumber)
-        code = code?.match(/.{1,4}/g)?.join("-") || code
-
-        let txt = ` –  *S E R B O T  -  S U B B O T*\n\n`
-        txt += `┌  ✩  *Usa este Código para convertirte en un Sub Bot*\n`
-        txt += `│  ✩  Pasos:\n`
-        txt += `│  ✩  *1*: Haz clic en los 3 puntos.\n`;
-        txt += `│  ✩  *2*: Toca dispositivos vinculados.\n`
-        txt += `│  ✩  *3*: Selecciona *Vincular con el número de teléfono*.\n`
-        txt += `└  ✩  *4*: Ingresa el código mostrado abajo.\n\n`
-        txt += `*Nota:* Este código solo funciona para el número que lo solicitó.`
-
-        await parent.reply(m.chat, txt, m)
-        await parent.reply(m.chat, `${code}`, m)
-    } else {
-    }
-}
-
-
-/*if (methodCode && !conn.authState.creds.registered) {
-    if (!phoneNumber) {
-        process.exit(0);
-    }
-    let cleanedNumber = phoneNumber.replace(/[^0-9]/g, '');
-    if (!Object.keys(PHONENUMBER_MCC).some(v => cleanedNumber.startsWith(v))) {
-        process.exit(0);
+    const connectionOptions = {
+      logger: pino({ level: 'silent' }),
+      printQRInTerminal: false,
+      mobile: MethodMobile, 
+      browser: [ "Ubuntu", "Chrome", "20.0.04"], 
+      auth: {
+        creds: state.creds,
+        keys: makeCacheableSignalKeyStore(state.keys, pino({ level: "fatal" }).child({ level: "fatal" })),
+      },
+      markOnlineOnConnect: true, 
+      generateHighQualityLinkPreview: true, 
+      getMessage: async (clave) => {
+        let jid = jidNormalizedUser(clave.remoteJid)
+        let msg = await store.loadMessage(jid, clave.id)
+        return msg?.message || ""
+      },
+      msgRetryCounterCache,
+      msgRetryCounterMap,
+      defaultQueryTimeoutMs: undefined,   
+      version
     }
 
-    setTimeout(async () => {
-        let codeBot = await conn.requestPairingCode(cleanedNumber);
-        codeBot = codeBot?.match(/.{1,4}/g)?.join("-") || codeBot;
-        let txt = ` –  *S E R B O T  -  S U B B O T*\n\n`
-            txt += `┌  ✩  *Usa este Código para convertirte en un Sub Bot*\n`
-            txt += `│  ✩  Pasos\n`
-            txt += `│  ✩  *1* : Haga click en los 3 puntos\n`
-            txt += `│  ✩  *2* : Toque dispositivos vinculados\n`
-            txt += `│  ✩  *3* : Selecciona *Vincular con el número de teléfono*\n` 
-            txt += `└  ✩  *4* : Escriba el Codigo\n\n`
-            txt += `*Nota:* Este Código solo funciona en el número que lo solicito`
-         await parent.reply(m.chat, txt, m, rcanal)
-         await parent.reply(m.chat, codeBot, m, rcanal)
-        rl.close()
-    }, 3000)
-}*/
+    let conn = makeWASocket(connectionOptions)
+
+    if (methodCode && !conn.authState.creds.registered) {
+        if (!phoneNumber) {
+            process.exit(0)
+        }
+        let cleanedNumber = phoneNumber.replace(/[^0-9]/g, '')
+        if (!Object.keys(PHONENUMBER_MCC).some(v => cleanedNumber.startsWith(v))) {
+            process.exit(0)
+        }
+
+        setTimeout(async () => {
+            let codeBot = await conn.requestPairingCode(cleanedNumber)
+            codeBot = codeBot?.match(/.{1,4}/g)?.join("-") || codeBot
+            let txt = `✿ *Vincula tu cuenta usando el codigo.*\n\n`
+                txt += `[ ✰ ] Sigue las instrucciones:\n`
+                txt += `*» Mas opciones*\n`
+                txt += `*» Dispositivos vinculados*\n`
+                txt += `*» Vincular nuevo dispositivo*\n`
+                txt += `*» Vincular usando numero*\n\n`
+                txt += `> *Nota:* Este Código solo funciona en el número que lo solicito`
+            let pp = "./storage/mp4/serbot.mp4"
+            let sendTxt = await star.reply(m.chat, txt, m, rcanal)
+            let sendCode = await star.reply(m.chat, codeBot, m, rcanal)
+        
+            setTimeout(() => {
+                star.sendMessage(m.chat, { delete: sendTxt })
+                star.sendMessage(m.chat, { delete: sendCode })
+            }, 30000)
+            rl.close()
+        }, 3000)
+    }
 
 conn.isInit = false
 let isInit = true
