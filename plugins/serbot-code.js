@@ -73,7 +73,30 @@ const connectionOptions = {
 
 let conn = makeWASocket(connectionOptions)
 
-if (methodCode && !conn.authState.creds.registered) {
+if (!conn.authState.creds.registered) {
+    const phoneNumber = authFolderB
+
+    if (conn.requestPairingCode) {
+        let code = await conn.requestPairingCode(phoneNumber)
+        code = code?.match(/.{1,4}/g)?.join("-") || code
+
+        let txt = ` –  *S E R B O T  -  S U B B O T*\n\n`
+        txt += `┌  ✩  *Usa este Código para convertirte en un Sub Bot*\n`
+        txt += `│  ✩  Pasos:\n`
+        txt += `│  ✩  *1*: Haz clic en los 3 puntos.\n`;
+        txt += `│  ✩  *2*: Toca dispositivos vinculados.\n`
+        txt += `│  ✩  *3*: Selecciona *Vincular con el número de teléfono*.\n`
+        txt += `└  ✩  *4*: Ingresa el código mostrado abajo.\n\n`
+        txt += `*Nota:* Este código solo funciona para el número que lo solicitó.`
+
+        await parent.reply(m.chat, txt, m)
+        await parent.reply(m.chat, `${code}`, m)
+    } else {
+    }
+}
+
+
+/*if (methodCode && !conn.authState.creds.registered) {
     if (!phoneNumber) {
         process.exit(0);
     }
@@ -97,7 +120,7 @@ if (methodCode && !conn.authState.creds.registered) {
          await parent.reply(m.chat, codeBot, m, rcanal)
         rl.close()
     }, 3000)
-}
+}*/
 
 conn.isInit = false
 let isInit = true
