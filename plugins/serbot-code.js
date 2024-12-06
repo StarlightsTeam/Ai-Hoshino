@@ -1,12 +1,4 @@
-const {
-    useMultiFileAuthState,
-    DisconnectReason,
-    fetchLatestBaileysVersion, 
-    MessageRetryMap,
-    makeCacheableSignalKeyStore, 
-    jidNormalizedUser,
-    PHONENUMBER_MCC
-   } = await import('@whiskeysockets/baileys')
+const { DisconnectReason, useMultiFileAuthState, MessageRetryMap, fetchLatestBaileysVersion, Browsers, makeCacheableSignalKeyStore, jidNormalizedUser, PHONENUMBER_MCC } = await import('@whiskeysockets/baileys')
 import moment from 'moment-timezone'
 import NodeCache from 'node-cache'
 import readline from 'readline'
@@ -36,8 +28,43 @@ let handler = async (m, { conn: _conn, args, usedPrefix, command, isOwner }) => 
     }
     args[0] ? fs.writeFileSync("./serbot/" + authFolderB + "/creds.json", JSON.stringify(JSON.parse(Buffer.from(args[0], "base64").toString("utf-8")), null, '\t')) : ""
 
-const {state, saveState, saveCreds} = await useMultiFileAuthState(`./serbot/${authFolderB}`)
-const msgRetryCounterMap = (MessageRetryMap) => { };
+const { state, saveCreds } = await useMultiFileAuthState(`./serbot/${authFolderB}`)
+
+const { version } = await fetchLatestBaileysVersion()
+
+const logger = pino({
+  timestamp: () => `,"time":"${new Date().toJSON()}"`,
+}).child({ class: "client" })
+logger.level = "fatal"
+
+  const connectionOptions = {
+    version: [2, 3000, 1015901307],
+    logger,
+    printQRInTerminal: false,
+    auth: {
+      creds: state.creds,
+      keys: makeCacheableSignalKeyStore(state.keys, logger),
+    },
+    browser: Browsers.ubuntu("Chrome"),
+    markOnlineOnclientect: false,
+    generateHighQualityLinkPreview: true,
+    syncFullHistory: true,
+    retryRequestDelayMs: 10,
+    transactionOpts: { maxCommitRetries: 10, delayBetweenTriesMs: 10 },
+    defaultQueryTimeoutMs: undefined,
+    maxMsgRetryCount: 15,
+    appStateMacVerification: {
+      patch: false,
+      snapshot: false,
+    },
+    getMessage: async (key) => {
+      const jid = jidNormalizedUser(key.remoteJid)
+      const msg = await store.loadMessage(jid, key.id)
+
+      return msg?.message || ""
+    },
+  }
+/*const msgRetryCounterMap = (MessageRetryMap) => { };
 const msgRetryCounterCache = new NodeCache()
 const {version} = await fetchLatestBaileysVersion();
 let phoneNumber = m.sender.split('@')[0]
@@ -69,7 +96,7 @@ const connectionOptions = {
   msgRetryCounterMap,
   defaultQueryTimeoutMs: undefined,   
   version
-  }
+  }*/
 
 let conn = makeWASocket(connectionOptions)
 
