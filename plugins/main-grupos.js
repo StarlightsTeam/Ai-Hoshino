@@ -6,20 +6,26 @@ const more = String.fromCharCode(8206)
 const readMore = more.repeat(4001)
 let txt = `*Hola!, te invito a unirte a los grupos oficiales de del Bot para convivir con la comunidad :D*
 
-1- https://chat.whatsapp.com/IozDcUnkCoVDBQBDNYF6GB
+1- 【 ✯ Starlights Team ✰ 】
 *✰* ${group}
+
+2- 【 ✯ Starlights Team ✰ 】- ll
+*✰* ${group2}
+
+3- 【 ✯ Starlights Team ✰ 】- lll
+*✰* ${group3}
 
 *─ׄ─ׅ─ׄ⭒─ׄ─ׅ─ׄ⭒─ׄ─ׅ─ׄ⭒─ׄ─ׅ─ׄ⭒─ׄ─ׅ─ׄ⭒─ׄ─ׅ─ׄ*
 
-➠ Enlace anulado? entre aquí! 
+➠ Enlaces anulados? entre aquí! 
 
 Canal :
 *✰* ${canal}
 
-> 🚩 ${textbot}`
+> [ ✰ ] ${textbot}`
 await conn.sendFile(m.chat, img, "Thumbnail.jpg", txt, m, null, rcanal)
 }
 handler.help = ['grupos']
 handler.tags = ['main']
 handler.command = /^(grupos)$/i
-export default handler
+export default handler 
