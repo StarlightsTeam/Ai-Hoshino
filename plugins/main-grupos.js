@@ -7,22 +7,22 @@ const readMore = more.repeat(4001)
 let txt = `*Hola!, te invito a unirte a los grupos oficiales de del Bot para convivir con la comunidad :D*
 
 1- 【 ✯ Starlights Team ✰ 】
-*✰* ${group}
+*✰* ${global.group}
 
 2- 【 ✯ Starlights Team ✰ 】- ll
-*✰* ${group2}
+*✰* ${global.group2}
 
 3- 【 ✯ Starlights Team ✰ 】- lll
-*✰* ${group3}
+*✰* ${global.group3}
 
 *─ׄ─ׅ─ׄ⭒─ׄ─ׅ─ׄ⭒─ׄ─ׅ─ׄ⭒─ׄ─ׅ─ׄ⭒─ׄ─ׅ─ׄ⭒─ׄ─ׅ─ׄ*
 
 ➠ Enlaces anulados? entre aquí! 
 
 Canal :
-*✰* ${canal}
+*✰* ${global.canal}
 
-> [ ✰ ] ${textbot}`
+> [ ✰ ] ${global.textbot}`
 await conn.sendFile(m.chat, img, "Thumbnail.jpg", txt, m, null, rcanal)
 }
 handler.help = ['grupos']
