@@ -27,16 +27,6 @@ let handler = async (m, { conn, args, usedPrefix, text, command }) => {
       txt += `> *- ↻ El archivo se esta enviando espera un momento, soy lenta. . .*`
 
   await conn.sendFile(m.chat, vid.thumbnail, 'thumbnail.jpg', txt, m, null, rcanal)
-
-  try {
-    let data = feature.includes('mp3') ? await Starlights.ytmp3v2(vid.url) : await Starlights.ytmp4v2(vid.url)
-    let isDoc = feature.includes('doc')
-    let mimetype = feature.includes('mp3') ? 'audio/mpeg' : 'video/mp4'
-    let file = { url: data.dl_url }
-
-    await conn.sendMessage(m.chat, { [isDoc ? 'document' : feature.includes('mp3') ? 'audio' : 'video']: file, mimetype, fileName: `${data.title}.${feature.includes('mp3') ? 'mp3' : 'mp4'}` }, { quoted: m })
-    await m.react('✅')
-  } catch {
   try {
   let data = feature.includes('mp3') ? await Starlights.ytmp3(vid.url) : await Starlights.ytmp4(vid.url)
     let isDoc = feature.includes('doc')
@@ -49,7 +39,6 @@ let handler = async (m, { conn, args, usedPrefix, text, command }) => {
     await m.react('✖️')
   }
  }
-}
 handler.help = ['play2 <formato> <búsqueda>']
 handler.tags = ['downloader']
 handler.command = ['ytplay', 'play2']
