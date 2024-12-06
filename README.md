@@ -63,7 +63,7 @@
 
 - Si quieres probar la Bot antes de instalar
 
-* <a href="https://chat.whatsapp.com/IozDcUnkCoVDBQBDNYF6GB"><img alt="Group" src="https://img.shields.io/badge/Group-25D366?style=for-the-badge&logo=whatsapp&logoColor=white"/></a>
+* <a href="https://chat.whatsapp.com/CqdWTXmS702JD31SQzr0Ph"><img alt="Group" src="https://img.shields.io/badge/Group-25D366?style=for-the-badge&logo=whatsapp&logoColor=white"/></a>
 
 ---------
 
