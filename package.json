@@ -2,14 +2,14 @@
 	"name": "Ai Hoshino",
 	"version": "6.0.0",
 	"description": "Simple WhatsApp Bot Multi Device",
-	"main": "system/index.js",
+	"main": "index.js",
 	"type": "module",
 	"directories": {
 		"lib": "lib",
 		"plugins": "plugins"
 	},
 	"scripts": {
-		"start": "node system/index.js"
+		"start": "node index.js"
 	},
 	"keywords": [
 		"termux-whatsapp-bot",
