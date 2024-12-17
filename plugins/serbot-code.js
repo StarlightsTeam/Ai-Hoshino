@@ -146,10 +146,10 @@ async function connectionUpdate(update) {
         }
     }, 30000)
 	
-let handler = await import('../system/handler.js')
+let handler = await import('../handler.js')
 let creloadHandler = async function (restatConn) {
 try {
-const Handler = await import(`../system/handler.js?update=${Date.now()}`).catch(console.error)
+const Handler = await import(`../handler.js?update=${Date.now()}`).catch(console.error)
 if (Object.keys(Handler || {}).length) handler = Handler
 } catch (e) {
 console.error(e)
