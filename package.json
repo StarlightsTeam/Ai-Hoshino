@@ -40,7 +40,7 @@
 		"@whiskeysockets/baileys": "github:CarlosTwT/bail",
 		"@ibaraki-douji/pixivts": "^2.4.1",
 		"@StarlightsTeam/Scraper": "github:StarlightsTeam/StarlightsTeam-Scraper",
-		"awesome-phonenumber": "^6.7.8",
+		"awesome-phonenumber": "*",
 		"fluid-spotify.js": "*",
 		"axios": "*",
 		"cfonts": "^3.2.0",
