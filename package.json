@@ -71,6 +71,7 @@
 		"syntax-error": "^1.4.0",
 		"speedtest-net": "^2.2.0",
 		"yargs": "^17.7.2",
+		"ytdl-han": "github:HanSamu-27/ytdl-han",
 		"yt-search": "^2.10.4"
 	},
 	"optionalDependencies": {
