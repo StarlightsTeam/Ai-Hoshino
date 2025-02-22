@@ -13,7 +13,7 @@ import { makeWASocket } from '../lib/simple.js'
 if (global.conns instanceof Array) console.log()
 else global.conns = []
 
-let handler = async (m, { conn: _conn, args, usedPrefix, command, isOwner }) => {
+let handler = async (m, { conn: star, args, usedPrefix, command, isOwner }) => {
   let parent = args[0] && args[0] == 'plz' ? _conn : await global.conn
   if (!((args[0] && args[0] == 'plz') || (await global.conn).user.jid == _conn.user.jid)) {
 	return m.reply(`Este comando solo puede ser usado en el bot principal! wa.me/${global.conn.user.jid.split`@`[0]}?text=${usedPrefix}code`)
