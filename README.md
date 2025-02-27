@@ -71,4 +71,4 @@
 
 <a href="https://github.com/IrokzDal"><img src="https://github.com/IrokzDal.png" width="300" height="300" alt="Irokz Dal ダーク"/></a>
 
-`© Ai Hoshino - MD / Starlights Team _ By おDaniel`
+`© Ai Hoshino - MD / Starlights Team _ By Irokz Dal ダーク`
