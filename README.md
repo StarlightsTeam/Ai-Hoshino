@@ -69,6 +69,6 @@
 <div align="center">
   <h1 align="center">Editor y Propietario de la Bot</h1>
 
-<a href="https://github.com/IrokzDal"><img src="https://github.com/IrokzDal.png" width="300" height="300" alt="おDaniel"/></a>
+<a href="https://github.com/IrokzDal"><img src="https://github.com/IrokzDal.png" width="300" height="300" alt="Irokz Dal ダーク"/></a>
 
 `© Ai Hoshino - MD / Starlights Team _ By おDaniel`
