@@ -1,4 +1,4 @@
-<h1 align="center">【 ✯ Ai Hoshino - MD ✰ 】</p>
+<h1 align="center">【 ✯ CHAT GPT - MD ✰ 】</p>
 <p>
         <img src= "https://i.ibb.co/C5DNBRH/file.jpg">
     </p>
@@ -33,7 +33,7 @@
 - [x] SubBot (Jadibot)
 - [x] Juego RPG
 - [x] Descarga de música y video de YT
-- [ ] Otros
+- [x] Otros
 
 ---------
 
@@ -41,7 +41,7 @@
 
 - Si la Bot tiene algún contactame ฅ^•ﻌ•^ฅ
 
-* <a href="https://wa.me/5218261000681"><img alt="WhatsApp" src="https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white"/></a>
+* <a href="https://wa.me/59896288844"><img alt="WhatsApp" src="https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white"/></a>
 
 ---------
 
@@ -71,4 +71,4 @@
 
 <a href="https://github.com/IrokzDal"><img src="https://github.com/IrokzDal.png" width="300" height="300" alt="Irokz Dal ダーク"/></a>
 
-`© Ai Hoshino - MD / Starlights Team _ By Irokz Dal ダーク`
+`© Ai CHAT GPT - MD / Starlights Team _ By Irokz Dal ダーク`
