@@ -1,4 +1,4 @@
-import acrcloud from 'acrcloud'
+/*import acrcloud from 'acrcloud'
 import { youtubedl, youtubedlv2 } from '@bochilteam/scraper'
 import yts from 'yt-search'
 
@@ -38,4 +38,4 @@ handler.tags = ['tools']
 handler.command = ['whatmusic', 'shazam']
 //handler.limit = 1
 handler.register = true 
-export default handler
+export default handler*/
