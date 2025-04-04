@@ -60,6 +60,7 @@
 		"moment-timezone": "*",
 		"translate-google-api": "^1.0.4",
 		"node-gtts": "*",
+		"node-cache": "*",
 		"url-regex-safe": "*",
 		"perf_hooks": "*",
 		"url-file-size": "*",
