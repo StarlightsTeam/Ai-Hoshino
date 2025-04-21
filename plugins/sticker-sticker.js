@@ -3,6 +3,7 @@ import path from 'path'
 import fetch from 'node-fetch'
 import fluent from 'fluent-ffmpeg'
 import { fileTypeFromBuffer as fromBuffer } from 'file-type'
+import { addExif } from '../lib/sticker.js'
 
 let handler = async (m, { conn, args }) => {
   let q = m.quoted ? m.quoted : m
@@ -23,8 +24,9 @@ let handler = async (m, { conn, args }) => {
     await m.react('🕓')
 
     const stickers = await toWebp(buffer) 
+    let dl_url = await addExif(stickers, global.packname, global.author)
     
-    await conn.sendFile(m.chat, stickers, 'sticker.webp', '', m)
+    await conn.sendFile(m.chat, dl_url, 'sticker.webp', '', m)
     await m.react('✅')
   } catch (e) {
     await m.react('✖️')
