@@ -5,8 +5,7 @@ let handler = async (m, { conn, usedPrefix, command, text, args }) => {
   if (!text) return conn.reply(m.chat, `🚩 Ingresa el nombre video que deseas buscar en TikTok.\n\nEjemplo:\n> *${usedPrefix + command}* Ai Hoshino Edit`, m, rcanal)
   
   await m.react('🕓')
-  let img = await (await axios.get('https://i.ibb.co/kyTcqt9/file.jpg', { responseType: 'arraybuffer' })).data
-
+  let img = `./storage/img/menu.jpg`
   try {
     let data = await Starlights.tiktokSearch(text)
 
