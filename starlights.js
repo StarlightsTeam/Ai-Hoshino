@@ -120,12 +120,21 @@ logger.level = "fatal"
 global.conn = makeWASocket(connectionOptions)
 
 if (!conn.authState.creds.registered) {
-  const phoneNumber = await question(chalk.blue('Ingresa el número de WhatsApp en el cual estará la Bot\n'))
-  
+  let phoneNumber = await question(chalk.blue('Ingresa el número de WhatsApp en el cual estará la Bot\n'))
+
+  phoneNumber = phoneNumber.replace(/\D/g, '')
+  if (phoneNumber.startsWith('52') && phoneNumber.length === 12) {
+    phoneNumber = `521${phoneNumber.slice(2)}`
+  } else if (phoneNumber.startsWith('52')) {
+    phoneNumber = `521${phoneNumber.slice(2)}`
+  } else if (phoneNumber.startsWith('0')) {
+    phoneNumber = phoneNumber.replace(/^0/, '')
+  }
+
   if (conn.requestPairingCode) {
     let code = await conn.requestPairingCode(phoneNumber)
-    code = code?.match(/.{1,4}/g)?.join("-") || code;
-    console.log(chalk.cyan(`Su código es:`, code))
+    code = code?.match(/.{1,4}/g)?.join("-") || code
+    console.log(chalk.cyan('Su código es:', code))
   } else {
   }
 }
