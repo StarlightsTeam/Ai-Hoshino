@@ -147,8 +147,8 @@ export async function handler(chatUpdate) {
 
         let usedPrefix
         
-        const groupMetadata = (m.isGroup ? ((conn.chats[m.chat] || {}).metadata || await this.groupMetadata(m.chat).catch(_ => null)) : {}) || {}
-        const participants = (m.isGroup ? groupMetadata.participants : []) || []
+        const groupMetadata = m.isGroup ? { ...(conn.chats[m.chat]?.metadata || await this.groupMetadata(m.chat).catch(_ => null) || {}), ...(((conn.chats[m.chat]?.metadata || await this.groupMetadata(m.chat).catch(_ => null) || {}).participants) && { participants: ((conn.chats[m.chat]?.metadata || await this.groupMetadata(m.chat).catch(_ => null) || {}).participants || []).map(p => ({ ...p, id: p.jid, jid: p.jid, lid: p.lid })) }) } : {};
+       const participants = ((m.isGroup ? groupMetadata.participants : []) || []).map(participant => ({ id: participant.jid, jid: participant.jid, lid: participant.lid, admin: participant.admin }));
         const user = (m.isGroup ? participants.find(u => conn.decodeJid(u.id) === m.sender) : {}) || {}
         const bot = (m.isGroup ? participants.find(u => conn.decodeJid(u.id) == this.user.jid) : {}) || {}
         const isRAdmin = user?.admin == 'superadmin' || false
@@ -241,7 +241,7 @@ export async function handler(chatUpdate) {
                     let chat = global.db.data.chats[m.chat]
                     let user = global.db.data.users[m.sender]
                     let setting = global.db.data.settings[this.user.jid]
-                    if (name != 'group-unbanchat.js' && chat?.isBanned)
+                    if (name != 'nable-bot.js' && chat?.isBanned)
                         return 
                     if (name != 'owner-unbanuser.js' && user?.banned)
                         return
@@ -293,7 +293,7 @@ export async function handler(chatUpdate) {
                 else
                     m.exp += xp
                 if (!isPrems && plugin.limit && global.db.data.users[m.sender].limit < plugin.limit * 1) {
-                    conn.reply(m.chat, `Se agotaron tus *⭐ Estrellas*`, m, rcanal)
+                    conn.reply(m.chat, `Se agotaron tus *Estrellas ⭐*`, m, rcanal)
                     continue
                 }
                 let extra = {
@@ -341,7 +341,7 @@ export async function handler(chatUpdate) {
                         }
                     }
                     if (m.limit)
-                        conn.reply(m.chat, `Utilizaste *${+m.limit}* ⭐`, m, rcanal)
+                        conn.reply(m.chat, `Utilizaste *${+m.limit}* Estrellas ⭐`, m, rcanal)
                 }
                 break
             }
