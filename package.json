@@ -39,7 +39,7 @@
 		"@bochilteam/scraper": "^4.2.4",
 		"@whiskeysockets/baileys": "git+ssh://git@github.com/BrunoSobrino/Baileys-Itsukichann.git",
 		"@ibaraki-douji/pixivts": "^2.4.1",
-		"@StarlightsTeam/Scraper": "github:StarlightsTeam/StarlightsTeam-Scraper",
+		"@StarlightsTeam/Scraper": "github:IrokzDal/Scraper",
 		"awesome-phonenumber": "^3.4.0",
 		"fluid-spotify.js": "*",
 		"axios": "*",
