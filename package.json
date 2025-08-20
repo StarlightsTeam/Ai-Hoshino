@@ -37,7 +37,7 @@
 	"license": "GPL-3.0-or-later",
 	"dependencies": {
 		"@bochilteam/scraper": "^4.2.4",
-		"@whiskeysockets/baileys": "npm:@itsukichan/baileys",
+		"@whiskeysockets/baileys": "git+ssh://git@github.com/BrunoSobrino/Baileys-Itsukichann.git",
 		"@ibaraki-douji/pixivts": "^2.4.1",
 		"@StarlightsTeam/Scraper": "github:StarlightsTeam/StarlightsTeam-Scraper",
 		"awesome-phonenumber": "^3.4.0",
