@@ -1,54 +1,63 @@
-console.log('✯ Iniciando ✯')
-
-import { join, dirname } from 'path'
-import { createRequire } from 'module'
+import cluster from 'cluster'
+import path from 'path'
 import { fileURLToPath } from 'url'
-import { setupMaster, fork } from 'cluster'
-import { watchFile, unwatchFile } from 'fs'
-import cfonts from 'cfonts'
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
-const require = createRequire(__dirname)
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
-cfonts.say('Ai\nHoshino', {
-  font: 'chrome',
-  align: 'center',
-  gradient: ['red', 'magenta']
-})
+const main = ['starlights.js']
+let activeWorkers = new Set()
+let isRestarting = false
 
-cfonts.say(`WhatsApp Bot Multi Device`, {
-  font: 'console',
-  align: 'center',
-  gradient: ['red', 'magenta']
-})
+function start() {
+    if (cluster.isPrimary) {
+        main.forEach(file => spawnWorker(file))
+    } else {
+        const fileToRun = process.env.FILE
 
-let isRunning = false
-
-async function start(files) {
-  if (isRunning) return
-  isRunning = true
-
-  for (const file of files) {
-    const args = [join(__dirname, file), ...process.argv.slice(2)]
-
-    setupMaster({
-      exec: args[0],
-      args: args.slice(1),
-    })
-
-    let p = fork()
-
-    p.on('exit', (code) => {
-      isRunning = false
-      start(files)
-
-      if (code === 0) return
-      watchFile(args[0], () => {
-        unwatchFile(args[0])
-        start(files)
-      })
-    })
-  }
+        if (fileToRun) {
+            import(path.join('file://', __dirname, fileToRun))
+                .catch(err => {
+                    console.error(`Error al importar ${fileToRun}:`, err)
+                })
+        }
+    }
 }
 
-start(['starlights.js'])
+function spawnWorker(file) {
+    const worker = cluster.fork({ FILE: file })
+    activeWorkers.add(worker)
+
+    worker.on('message', (data) => {
+        if (data === 'restart') {
+            triggerFullRestart()
+        }
+    })
+
+    worker.on('exit', () => {
+        if (!isRestarting) {
+            triggerFullRestart()
+        }
+    })
+}
+
+function triggerFullRestart() {
+    if (isRestarting) return
+
+    isRestarting = true
+
+    console.log('🍃 Restarting...')
+
+    activeWorkers.forEach(worker => {
+        if (!worker.isDead()) worker.kill()
+    })
+
+    activeWorkers.clear()
+
+    setTimeout(() => {
+        isRestarting = false
+        start()
+    }, 1000)
+}
+
+start()
