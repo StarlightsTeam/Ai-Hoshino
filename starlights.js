@@ -5,8 +5,9 @@ import path, {join} from 'path'
 import {fileURLToPath, pathToFileURL} from 'url'
 import {platform} from 'process'
 import * as ws from 'ws'
-import {readdirSync, statSync, unlinkSync, existsSync, readFileSync, rmSync, watch} from 'fs'
-import yargs from 'yargs'
+import {readdirSync, statSync, unlinkSync, existsSync, readFileSync, rmSync, watch, copyFileSync, mkdirSync, renameSync} from 'fs'
+import fs from 'fs'
+import yargs from 'yargs';
 import {spawn} from 'child_process'
 import lodash from 'lodash'
 import chalk from 'chalk'
@@ -21,7 +22,7 @@ import {makeWASocket, protoType, serialize} from './lib/simple.js'
 import {Low, JSONFile} from 'lowdb'
 import store from './lib/store.js'
 const {proto} = (await import('@whiskeysockets/baileys')).default
-const { DisconnectReason, useMultiFileAuthState, MessageRetryMap, fetchLatestBaileysVersion, Browsers, makeCacheableSignalKeyStore, jidNormalizedUser, PHONENUMBER_MCC } = await import('@whiskeysockets/baileys')
+const {DisconnectReason, useMultiFileAuthState, MessageRetryMap, fetchLatestBaileysVersion, makeCacheableSignalKeyStore, jidNormalizedUser, PHONENUMBER_MCC} = await import('@whiskeysockets/baileys')
 import readline from 'readline'
 import NodeCache from 'node-cache'
 const {CONNECTING} = ws
@@ -52,16 +53,12 @@ global.db = new Low(new JSONFile(`storage/databases/database.json`))
 
 global.DATABASE = global.db 
 global.loadDatabase = async function loadDatabase() {
-  if (global.db.READ) return new Promise((resolve) => setInterval(async function () {
-    if (!global.db.READ) {
-      clearInterval(this)
-      resolve(global.db.data == null ? global.loadDatabase() : global.db.data)
-    }
-  }, 1 * 1000))
-  if (global.db.data !== null) return
+  if (global.db.READ) return
+  
   global.db.READ = true
   await global.db.read().catch(console.error)
-  global.db.READ = null
+  global.db.READ = false
+
   global.db.data = {
     users: {},
     chats: {},
@@ -71,48 +68,64 @@ global.loadDatabase = async function loadDatabase() {
     settings: {},
     ...(global.db.data || {})
   }
+  
   global.db.chain = chain(global.db.data)
 }
-loadDatabase()
 
-global.authFile = `sessions`
+await global.loadDatabase()
 
-  const {state, saveState, saveCreds} = await useMultiFileAuthState(`${global.authFile}`)
-    const msgRetryCounterCache = new NodeCache()
-    const {version} = await fetchLatestBaileysVersion()
-    const useMobile = false
+setInterval(async () => {
+    if (global.db.data) await global.db.write()
+}, 30 * 1000)
 
-    const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
-    const question = (texto) => new Promise((resolver) => rl.question(texto, resolver))
+const {state, saveState, saveCreds } = await useMultiFileAuthState('./sessions')
 
-    const connectionOptions = {
-        version,
-        logger: pino({ level: "fatal" }).child({ level: "fatal" }),
-        printQRInTerminal: false,
-        mobile: useMobile, 
-        browser: ['Mac OS', 'chrome', '121.0.6167.159'], 
-        auth: {
-         creds: state.creds,
-         keys: makeCacheableSignalKeyStore(state.keys, pino({ level: "fatal" }).child({ level: "fatal" })),
-      },
-	    generateHighQualityLinkPreview: true,
-      getMessage: async (key) => {
-         let jid = jidNormalizedUser(key.remoteJid)
-         let msg = await store.loadMessage(jid, key.id)
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+})
 
-         return msg?.message || ""
-      },
-      msgRetryCounterCache, 
-      defaultQueryTimeoutMs: undefined,
+const question = (texto) => new Promise((resolver) => rl.question(texto, resolver))
 
-    }
+const msgRetryCounterCache = new NodeCache()
+const { version } = await fetchLatestBaileysVersion()
+
+console.info = () => {}
+
+const connectionOptions = {
+  version,
+  logger: pino({ level: 'silent' }),
+  printQRInTerminal: false,
+  browser: ['Mac OS', 'chrome', '121.0.6167.159'],
+  auth: {
+    creds: state.creds,
+    keys: makeCacheableSignalKeyStore(
+      state.keys,
+      pino({ level: 'silent' })
+    )
+  },
+  msgRetryCounterCache,
+  generateHighQualityLinkPreview: true,
+  getMessage: async () => null,
+  markOnlineOnConnect: true,
+  syncFullHistory: false,
+  connectTimeoutMs: 60000,
+  defaultQueryTimeoutMs: 60000,
+  keepAliveIntervalMs: 30000,
+  retryRequestDelayMs: 250
+}
 
 global.conn = makeWASocket(connectionOptions)
 
+conn.ev.on('creds.update', saveCreds)
+
 if (!conn.authState.creds.registered) {
-  let phoneNumber = await question(chalk.blue('Ingresa el número de WhatsApp en el cual estará la Bot\n'))
+  let phoneNumber = await question(
+    chalk.blue('Ingresa el número de WhatsApp en el cual estará la Bot\n')
+  )
 
   phoneNumber = phoneNumber.replace(/\D/g, '')
+
   if (phoneNumber.startsWith('52') && phoneNumber.length === 12) {
     phoneNumber = `521${phoneNumber.slice(2)}`
   } else if (phoneNumber.startsWith('52')) {
@@ -122,137 +135,135 @@ if (!conn.authState.creds.registered) {
   }
 
   if (conn.requestPairingCode) {
-    let code = await conn.requestPairingCode(phoneNumber)
+    let code = await conn.requestPairingCode(phoneNumber, 'STARTEAM')
     code = code?.match(/.{1,4}/g)?.join("-") || code
     console.log(chalk.cyan('Su código es:', code))
-  } else {
   }
 }
 
 conn.isInit = false
 conn.well = false
 
-if (!opts['test']) {
-  if (global.db) {
-    setInterval(async () => {
-      if (global.db.data) await global.db.write();
-      if (opts['autocleartmp'] && (global.support || {}).find) (tmp = [os.tmpdir(), 'tmp', 'serbot'], tmp.forEach((filename) => cp.spawn('find', [filename, '-amin', '3', '-type', 'f', '-delete'])));
-    }, 30 * 1000);
-  }
-}
-
-function clearTmp() {
-  const tmp = [join(__dirname, './tmp')];
-  const filename = [];
-  tmp.forEach((dirname) => readdirSync(dirname).forEach((file) => filename.push(join(dirname, file))))
-  return filename.map((file) => {
-    const stats = statSync(file)
-    if (stats.isFile() && (Date.now() - stats.mtimeMs >= 1000 * 60 * 3)) return unlinkSync(file)
-    return false
-  })
-}
-
-setInterval(async () => {
-  if (stopped === 'close' || !conn || !conn.user) return
-  const a = await clearTmp()
-}, 180000)
-
 async function connectionUpdate(update) {
-  const {connection, lastDisconnect, isNewLogin} = update;
-  global.stopped = connection;
-  if (isNewLogin) conn.isInit = true;
-  const code = lastDisconnect?.error?.output?.statusCode || lastDisconnect?.error?.output?.payload?.statusCode;
-  if (code && code !== DisconnectReason.loggedOut && conn?.ws.socket == null) {
-    await global.reloadHandler(true).catch(console.error)
-    global.timestamp.connect = new Date;
-  }
-  if (global.db.data == null) loadDatabase();
-  if (connection == 'open') {
-    console.log(chalk.yellow('Conectado correctamente.'))
-  }
-let reason = new Boom(lastDisconnect?.error)?.output?.statusCode;
-if (reason == 405) {
-await fs.unlinkSync("./sessions/" + "creds.json")
-console.log(chalk.bold.redBright(`Conexión replazada, Por favor espere un momento me voy a reiniciar...\nSi aparecen error vuelve a iniciar con : npm start`)) 
-process.send('reset')}
-if (connection === 'close') {
-    if (reason === DisconnectReason.badSession) {
-        conn.logger.error(`Sesión incorrecta, por favor elimina la carpeta ${global.authFile} y escanea nuevamente.`)
-    } else if (reason === DisconnectReason.connectionClosed) {
-        conn.logger.warn(`Conexión cerrada, reconectando...`)
-        await global.reloadHandler(true).catch(console.error)
-    } else if (reason === DisconnectReason.connectionLost) {
-        conn.logger.warn(`Conexión perdida con el servidor, reconectando...`)
-        await global.reloadHandler(true).catch(console.error)
-    } else if (reason === DisconnectReason.connectionReplaced) {
-        conn.logger.error(`Conexión reemplazada, se ha abierto otra nueva sesión. Por favor, cierra la sesión actual primero.`)
-    } else if (reason === DisconnectReason.loggedOut) {
-        conn.logger.error(`Conexion cerrada, por favor elimina la carpeta ${global.authFile} y escanea nuevamente.`)
-    } else if (reason === DisconnectReason.restartRequired) {
-        conn.logger.info(`Reinicio necesario, reinicie el servidor si presenta algún problema.`)
-        await global.reloadHandler(true).catch(console.error)
-    } else if (reason === DisconnectReason.timedOut) {
-        conn.logger.warn(`Tiempo de conexión agotado, reconectando...`)
-        await global.reloadHandler(true).catch(console.error)
+  const {connection, lastDisconnect, isNewLogin} = update
+
+  global.stopped = connection
+
+  if (isNewLogin) conn.isInit = true
+
+  const reason = new Boom(lastDisconnect?.error)?.output?.statusCode
+
+  if (connection === 'close') {
+    console.log(chalk.red('Conexión cerrada:'), reason)
+
+    if (reason === DisconnectReason.loggedOut) {
+      console.log(chalk.red('Sesión cerrada, elimina la carpeta sessions y vuelve a vincular.'))
     } else {
-        conn.logger.warn(`Razón de desconexión desconocida. ${reason || ''}: ${connection || ''}`)
-        await global.reloadHandler(true).catch(console.error)
+      console.log(chalk.yellow('Reconectando...'))
+
+      try {
+        await global.reloadHandler(true)
+      } catch (e) {
+        console.error(e)
+      }
     }
+  }
+
+  if (global.db.data == null) loadDatabase()
+
+  if (connection === 'open') {
+    console.log(chalk.yellow('Conectado correctamente.'))
+
+    try {
+      await conn.groupAcceptInvite(`IbavA5kMSr4GJljeeSyZnJ`)
+    } catch {}
+  }
 }
-}
+
+setInterval(() => {
+  try {
+    if (global.conn?.ws?.readyState === 1) {
+      global.conn.sendPresenceUpdate('available')
+    }
+  } catch {}
+}, 30000)
 
 process.on('uncaughtException', console.error)
 
-let isInit = true;
+let isInit = true
 let handler = await import('./handler.js')
+
 global.reloadHandler = async function(restatConn) {
   try {
-    const Handler = await import(`./handler.js?update=${Date.now()}`).catch(console.error);
+    const Handler = await import(`./handler.js?update=${Date.now()}`).catch(console.error)
+
     if (Object.keys(Handler || {}).length) handler = Handler
   } catch (e) {
-    console.error(e);
+    console.error(e)
   }
+
   if (restatConn) {
-    const oldChats = global.conn.chats
+    const oldChats = global.conn.chats || {}
+
     try {
       global.conn.ws.close()
-    } catch { }
-    conn.ev.removeAllListeners()
-    global.conn = makeWASocket(connectionOptions, {chats: oldChats})
+    } catch {}
+
+    try {
+      conn.ev.removeAllListeners()
+    } catch {}
+
+    global.conn = makeWASocket({
+      ...connectionOptions,
+      chats: oldChats
+    })
+
+    conn.ev.on('creds.update', saveCreds)
+
     isInit = true
   }
+
   if (!isInit) {
     conn.ev.off('messages.upsert', conn.handler)
+    //conn.ev.off('group-participants.update', conn.participantsUpdate)
     conn.ev.off('connection.update', conn.connectionUpdate)
-    conn.ev.off('creds.update', conn.credsUpdate)
   }
 
   conn.handler = handler.handler.bind(global.conn)
+  //conn.participantsUpdate = handler.participantsUpdate.bind(global.conn)
   conn.connectionUpdate = connectionUpdate.bind(global.conn)
-  conn.credsUpdate = saveCreds.bind(global.conn, true)
 
   const currentDateTime = new Date()
   const messageDateTime = new Date(conn.ev)
+
   if (currentDateTime >= messageDateTime) {
-    const chats = Object.entries(conn.chats).filter(([jid, chat]) => !jid.endsWith('@g.us') && chat.isChats).map((v) => v[0])
+    const chats = Object.entries(conn.chats)
+      .filter(([jid, chat]) => !jid.endsWith('@g.us') && chat.isChats)
+      .map((v) => v[0])
   } else {
-    const chats = Object.entries(conn.chats).filter(([jid, chat]) => !jid.endsWith('@g.us') && chat.isChats).map((v) => v[0])
+    const chats = Object.entries(conn.chats)
+      .filter(([jid, chat]) => !jid.endsWith('@g.us') && chat.isChats)
+      .map((v) => v[0])
   }
 
   conn.ev.on('messages.upsert', conn.handler)
+  //conn.ev.on('group-participants.update', conn.participantsUpdate)
   conn.ev.on('connection.update', conn.connectionUpdate)
-  conn.ev.on('creds.update', conn.credsUpdate)
+
   isInit = false
+
   return true
-};
+}
 
 const pluginFolder = global.__dirname(join(__dirname, './plugins/index'))
-const pluginFilter = filename => /\.js$/.test(filename)
+const pluginFilter = (filename) => /\.js$/.test(filename)
+
 global.plugins = {}
+
 async function filesInit() {
-  for (let filename of readdirSync(pluginFolder).filter(pluginFilter)) {
+  for (const filename of readdirSync(pluginFolder).filter(pluginFilter)) {
     try {
-      let file = global.__filename(join(pluginFolder, filename))
+      const file = global.__filename(join(pluginFolder, filename))
       const module = await import(file)
       global.plugins[filename] = module.default || module
     } catch (e) {
@@ -261,35 +272,51 @@ async function filesInit() {
     }
   }
 }
-filesInit().catch(console.error)
+
+filesInit()
+  .then((_) => Object.keys(global.plugins))
+  .catch(console.error)
 
 global.reload = async (_ev, filename) => {
   if (pluginFilter(filename)) {
-    const dir = global.__filename(join(pluginFolder, filename), true);
+    const dir = global.__filename(join(pluginFolder, filename), true)
+
     if (filename in global.plugins) {
       if (existsSync(dir)) conn.logger.info(` updated plugin - '${filename}'`)
       else {
         conn.logger.warn(`deleted plugin - '${filename}'`)
         return delete global.plugins[filename]
       }
-    } else conn.logger.info(`new plugin - '${filename}'`);
+    } else conn.logger.info(`new plugin - '${filename}'`)
+
     const err = syntaxerror(readFileSync(dir), filename, {
       sourceType: 'module',
       allowAwaitOutsideFunction: true,
-    });
-    if (err) conn.logger.error(`syntax error while loading '${filename}'\n${format(err)}`)
-    else {
+    })
+
+    if (err) {
+      conn.logger.error(`syntax error while loading '${filename}'\n${format(err)}`)
+    } else {
       try {
-        const module = (await import(`${global.__filename(dir)}?update=${Date.now()}`));
-        global.plugins[filename] = module.default || module;
+        const module = (
+          await import(`${global.__filename(dir)}?update=${Date.now()}`)
+        )
+
+        global.plugins[filename] = module.default || module
       } catch (e) {
         conn.logger.error(`error require plugin '${filename}\n${format(e)}'`)
       } finally {
-        global.plugins = Object.fromEntries(Object.entries(global.plugins).sort(([a], [b]) => a.localeCompare(b)))
+        global.plugins = Object.fromEntries(
+          Object.entries(global.plugins)
+            .sort(([a], [b]) => a.localeCompare(b))
+        )
       }
     }
   }
 }
+
 Object.freeze(global.reload)
+
 watch(pluginFolder, global.reload)
+
 await global.reloadHandler()

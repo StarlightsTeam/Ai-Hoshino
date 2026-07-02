@@ -37,9 +37,10 @@
 	"license": "GPL-3.0-or-later",
 	"dependencies": {
 		"@bochilteam/scraper": "^4.2.4",
-		"@whiskeysockets/baileys": "git+ssh://git@github.com/BrunoSobrino/Baileys-Itsukichann.git",
+		"@whiskeysockets/baileys": "npm:@whiskeysockets/baileys",
+		"@irokz/baileys": "npm:@whiskeysockets/baileys",
 		"@ibaraki-douji/pixivts": "^2.4.1",
-		"@StarlightsTeam/Scraper": "github:IrokzDal/Scraper",
+		"@StarlightsTeam/Scraper": "github:XdrianGM/Ba",
 		"awesome-phonenumber": "^3.4.0",
 		"fluid-spotify.js": "*",
 		"axios": "*",
@@ -71,7 +72,6 @@
 		"sanzy-spotifydl": "*",
 		"syntax-error": "^1.4.0",
 		"yargs": "^17.7.2",
-		"ytdl-han": "github:HanSamu-27/ytdl-han",
 		"yt-search": "^2.10.4"
 	},
 	"optionalDependencies": {

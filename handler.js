@@ -147,13 +147,46 @@ export async function handler(chatUpdate) {
 
         let usedPrefix
         
-        const groupMetadata = m.isGroup ? { ...(conn.chats[m.chat]?.metadata || await this.groupMetadata(m.chat).catch(_ => null) || {}), ...(((conn.chats[m.chat]?.metadata || await this.groupMetadata(m.chat).catch(_ => null) || {}).participants) && { participants: ((conn.chats[m.chat]?.metadata || await this.groupMetadata(m.chat).catch(_ => null) || {}).participants || []).map(p => ({ ...p, id: p.jid, jid: p.jid, lid: p.lid })) }) } : {};
-       const participants = ((m.isGroup ? groupMetadata.participants : []) || []).map(participant => ({ id: participant.jid, jid: participant.jid, lid: participant.lid, admin: participant.admin }));
-        const user = (m.isGroup ? participants.find(u => conn.decodeJid(u.id) === m.sender) : {}) || {}
-        const bot = (m.isGroup ? participants.find(u => conn.decodeJid(u.id) == this.user.jid) : {}) || {}
-        const isRAdmin = user?.admin == 'superadmin' || false
-        const isAdmin = isRAdmin || user?.admin == 'admin' || false
-        const isBotAdmin = bot?.admin || false
+        let groupMetadata = {}
+
+        if (m.isGroup) {
+            const metadata = await this.groupMetadata(m.chat).catch(() => null)
+
+            if (metadata) {
+                groupMetadata = {
+                    ...metadata,
+                    participants: (metadata.participants || []).map(p => ({
+                        id: p.id || p.lid || p.jid,
+                        phoneNumber: p.phoneNumber || p.jid,
+                        admin: p.admin
+                    }))
+                }
+            }
+        }
+
+        const participants = (m.isGroup
+            ? (groupMetadata.participants || [])
+            : []).map(participant => ({
+                id: participant.id,
+                jid: participant.phoneNumber,
+                admin: participant.admin
+            }))
+
+        const user = (m.isGroup
+            ? participants.find(u =>
+                conn.decodeJid(u.jid || u.id) === m.sender
+            )
+            : {}) || {}
+
+        const bot = (m.isGroup
+            ? participants.find(u =>
+                conn.decodeJid(u.jid || u.id) === this.user.jid
+            )
+            : {}) || {}
+
+        const isRAdmin = user?.admin === 'superadmin'
+        const isAdmin = isRAdmin || user?.admin === 'admin'
+        const isBotAdmin = !!bot?.admin
 
         const ___dirname = path.join(path.dirname(fileURLToPath(import.meta.url)), './plugins')
         for (let name in global.plugins) {
@@ -403,16 +436,16 @@ export async function handler(chatUpdate) {
 
 global.dfail = (type, m, conn, usedPrefix) => {
     let msg = {
-        rowner: `✯ Hola, este comando solo puede ser utilizado por el *Creador* de la Bot.`,
-        owner: `✯ Hola, este comando solo puede ser utilizado por el *Creador* de la Bot y *Sub Bots*.`,
-        mods: `✯ Hola, este comando solo puede ser utilizado por los *Moderadores* de la Bot.`,
-        premium: `✯ Hola, este comando solo puede ser utilizado por Usuarios *Premium*.`,
-        group: `✯ Hola, este comando solo puede ser utilizado en *Grupos*.`,
-        private: `✯ Hola, este comando solo puede ser utilizado en mi Chat *Privado*.`,
-        admin: `✯ Hola, este comando solo puede ser utilizado por los *Administradores* del Grupo.`,
-        botAdmin: `✯ Hola, la bot debe ser *Administradora* para ejecutar este Comando.`,
-        unreg: `✯ Hola, para usar este comando debes estar *Registrado.*\n\nPara usar el bot debes registrarte primero\n\nUtiliza: */reg nombre.edad*\n\n_Ejemplo: */reg おDanịel.xyz⁩.666*_\n\nNo pongas los * *`,
-        restrict: `✯ Hola, esta característica está *deshabilitada.*`  
+        rowner: `[ ✰ ] Hola, este comando solo puede ser utilizado por el *Creador* de la Bot.`,
+        owner: `[ ✰ ] Hola, este comando solo puede ser utilizado por el *Creador* de la Bot y *Sub Bots*.`,
+        mods: `[ ✰ ] Hola, este comando solo puede ser utilizado por los *Moderadores* de la Bot.`,
+        premium: `[ ✰ ] Hola, este comando solo puede ser utilizado por Usuarios *Premium*.`,
+        group: `[ ✰ ] Hola, este comando solo puede ser utilizado en *Grupos*.`,
+        private: `[ ✰ ] Hola, este comando solo puede ser utilizado en mi Chat *Privado*.`,
+        admin: `[ ✰ ] Hola, este comando solo puede ser utilizado por los *Administradores* del Grupo.`,
+        botAdmin: `[ ✰ ] Hola, la bot debe ser *Administradora* para ejecutar este Comando.`,
+        unreg: `[ ✰ ] Para utilizar este comando, debe estar registrado.\n\n> Ejemplo:\n/reg おDanịel.xyz⁩.19`,
+        restrict: `[ ✰ ] Hola, esta característica está *deshabilitada.*`
     }[type]
     if (msg) return conn.reply(m.chat, msg, m, rcanal).then(_ => m.react('✖️'))
 }
